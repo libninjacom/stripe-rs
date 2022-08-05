@@ -1,0 +1,33 @@
+[package]
+name = "stripe2"
+edition = "2021"
+version = "0.1.0"
+description = "Stripe client, generated from the OpenAPI spec."
+homepage = "https://github.com/libninjacom/stripe-rs"
+documentation = "https://docs.rs/stripe2"
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/libninjacom/stripe-rs"
+
+[dependencies]
+anyhow = "1.0.57"
+httpclient = "0.6.0"
+serde_json = "1.0.81"
+
+[dependencies.serde]
+version = "1.0.137"
+features = ["derive"]
+optional = false
+[dev-dependencies.tokio]
+version = "1.18.2"
+features = ["full"]
+optional = false
+
+[lib]
+path = "src/lib.rs"
+name = "stripe2"
+plugin = false
+proc-macro = false
+edition = "2021"
+crate-type = ["rlib"]
+required-features = []
