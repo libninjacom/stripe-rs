@@ -15395,10 +15395,24 @@ impl std::fmt::Display for TerminalReaderReaderResourceLineItem {
     }
 }
 #[derive(Debug, Serialize, Deserialize)]
+pub struct TerminalReaderReaderResourceProcessConfig {
+    #[serde(rename = "skip_tipping")]
+    ///Override showing a tipping selection screen on this transaction.
+    pub skip_tipping: Option<bool>,
+}
+impl std::fmt::Display for TerminalReaderReaderResourceProcessConfig {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize)]
 pub struct TerminalReaderReaderResourceProcessPaymentIntentAction {
     #[serde(rename = "payment_intent")]
     ///Most recent PaymentIntent processed by the reader.
     pub payment_intent: serde_json::Value,
+    #[serde(rename = "process_config")]
+    ///Represents a per-transaction override of a reader configuration
+    pub process_config: Option<TerminalReaderReaderResourceProcessConfig>,
 }
 impl std::fmt::Display for TerminalReaderReaderResourceProcessPaymentIntentAction {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
