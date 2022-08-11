@@ -1764,6 +1764,9 @@ in Stripe.js.*/
     #[serde(rename = "payment_link")]
     ///The ID of the Payment Link that created this Session.
     pub payment_link: Option<serde_json::Value>,
+    #[serde(rename = "payment_method_collection")]
+    ///Configure whether a Checkout Session should collect a payment method.
+    pub payment_method_collection: Option<String>,
     #[serde(rename = "payment_method_options")]
     ///Payment-method-specific configuration for the PaymentIntent or SetupIntent of this CheckoutSession.
     pub payment_method_options: Option<serde_json::Value>,
@@ -8615,6 +8618,9 @@ pub struct PaymentLink {
     #[serde(rename = "payment_intent_data")]
     ///Indicates the parameters to be passed to PaymentIntent creation during checkout.
     pub payment_intent_data: Option<serde_json::Value>,
+    #[serde(rename = "payment_method_collection")]
+    ///Configuration for collecting a payment method during checkout.
+    pub payment_method_collection: String,
     #[serde(rename = "payment_method_types")]
     ///The list of payment method types that customers can use. When `null`, Stripe will dynamically show relevant payment methods you've enabled in your [payment method settings](https://dashboard.stripe.com/settings/payment_methods).
     pub payment_method_types: Option<Vec<String>>,
