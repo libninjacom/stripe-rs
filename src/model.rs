@@ -15634,13 +15634,8 @@ pub struct Topup {
     ///String representing the object's type. Objects of the same type share the same value.
     pub object: String,
     #[serde(rename = "source")]
-    /**`Source` objects allow you to accept a variety of payment methods. They
-represent a customer's payment instrument, and can be used with the Stripe API
-just like a `Card` object: once chargeable, they can be charged, or can be
-attached to customers.
-
-Related guides: [Sources API](https://stripe.com/docs/sources) and [Sources & Customers](https://stripe.com/docs/sources/customers).*/
-    pub source: Source,
+    ///For most Stripe users, the source of every top-up is a bank account. This hash is then the [source object](https://stripe.com/docs/api#source_object) describing that bank account.
+    pub source: Option<serde_json::Value>,
     #[serde(rename = "statement_descriptor")]
     ///Extra information about a top-up. This will appear on your source's bank statement. It must contain at least one letter.
     pub statement_descriptor: Option<String>,
