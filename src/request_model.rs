@@ -9,8 +9,10 @@ pub struct GetAccountRequest<'a> {
 impl<'a> GetAccountRequest<'a> {
     pub async fn send(self) -> anyhow::Result<Account> {
         let mut r = self.client.client.get("/v1/account");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -89,8 +91,10 @@ impl<'a> GetAccountBankAccountsIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/account/bank_accounts/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -156,8 +160,10 @@ pub struct GetAccountCapabilitiesRequest<'a> {
 impl<'a> GetAccountCapabilitiesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/account/capabilities");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -189,8 +195,10 @@ impl<'a> GetAccountCapabilitiesCapabilityRequest<'a> {
                     "/v1/account/capabilities/{capability}", capability = self.capability
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -242,17 +250,19 @@ pub struct GetAccountExternalAccountsRequest<'a> {
 impl<'a> GetAccountExternalAccountsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/account/external_accounts");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -309,8 +319,10 @@ impl<'a> GetAccountExternalAccountsIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/account/external_accounts/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -397,20 +409,22 @@ pub struct GetAccountPeopleRequest<'a> {
 impl<'a> GetAccountPeopleRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/account/people");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref relationship) = self.relationship {
-            r = r.push_query("relationship", &relationship.to_string());
+        if let Some(ref unwrapped) = self.relationship {
+            r = r.push_query("relationship", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -471,8 +485,10 @@ impl<'a> GetAccountPeoplePersonRequest<'a> {
             .client
             .client
             .get(&format!("/v1/account/people/{person}", person = self.person));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -542,20 +558,22 @@ pub struct GetAccountPersonsRequest<'a> {
 impl<'a> GetAccountPersonsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/account/persons");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref relationship) = self.relationship {
-            r = r.push_query("relationship", &relationship.to_string());
+        if let Some(ref unwrapped) = self.relationship {
+            r = r.push_query("relationship", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -616,8 +634,10 @@ impl<'a> GetAccountPersonsPersonRequest<'a> {
             .client
             .client
             .get(&format!("/v1/account/persons/{person}", person = self.person));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -704,20 +724,22 @@ pub struct GetAccountsRequest<'a> {
 impl<'a> GetAccountsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/accounts");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -778,8 +800,10 @@ impl<'a> GetAccountsAccountRequest<'a> {
             .client
             .client
             .get(&format!("/v1/accounts/{account}", account = self.account));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -878,8 +902,10 @@ impl<'a> GetAccountsAccountBankAccountsIdRequest<'a> {
                     id = self.id
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -963,8 +989,10 @@ impl<'a> GetAccountsAccountCapabilitiesRequest<'a> {
             .get(
                 &format!("/v1/accounts/{account}/capabilities", account = self.account),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -998,8 +1026,10 @@ impl<'a> GetAccountsAccountCapabilitiesCapabilityRequest<'a> {
                     .account, capability = self.capability
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1061,17 +1091,19 @@ impl<'a> GetAccountsAccountExternalAccountsRequest<'a> {
                     "/v1/accounts/{account}/external_accounts", account = self.account
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1142,8 +1174,10 @@ impl<'a> GetAccountsAccountExternalAccountsIdRequest<'a> {
                     .account, id = self.id
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1252,20 +1286,22 @@ impl<'a> GetAccountsAccountPeopleRequest<'a> {
             .client
             .client
             .get(&format!("/v1/accounts/{account}/people", account = self.account));
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref relationship) = self.relationship {
-            r = r.push_query("relationship", &relationship.to_string());
+        if let Some(ref unwrapped) = self.relationship {
+            r = r.push_query("relationship", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1336,8 +1372,10 @@ impl<'a> GetAccountsAccountPeoplePersonRequest<'a> {
                     person = self.person
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1423,20 +1461,22 @@ impl<'a> GetAccountsAccountPersonsRequest<'a> {
             .client
             .client
             .get(&format!("/v1/accounts/{account}/persons", account = self.account));
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref relationship) = self.relationship {
-            r = r.push_query("relationship", &relationship.to_string());
+        if let Some(ref unwrapped) = self.relationship {
+            r = r.push_query("relationship", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1507,8 +1547,10 @@ impl<'a> GetAccountsAccountPersonsPersonRequest<'a> {
                     person = self.person
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1611,20 +1653,22 @@ pub struct GetApplePayDomainsRequest<'a> {
 impl<'a> GetApplePayDomainsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/apple_pay/domains");
-        if let Some(ref domain_name) = self.domain_name {
-            r = r.push_query("domain_name", &domain_name.to_string());
+        if let Some(ref unwrapped) = self.domain_name {
+            r = r.push_query("domain_name", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1685,8 +1729,10 @@ impl<'a> GetApplePayDomainsDomainRequest<'a> {
             .client
             .client
             .get(&format!("/v1/apple_pay/domains/{domain}", domain = self.domain));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1736,23 +1782,25 @@ pub struct GetApplicationFeesRequest<'a> {
 impl<'a> GetApplicationFeesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/application_fees");
-        if let Some(ref charge) = self.charge {
-            r = r.push_query("charge", &charge.to_string());
+        if let Some(ref unwrapped) = self.charge {
+            r = r.push_query("charge", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1806,8 +1854,10 @@ impl<'a> GetApplicationFeesFeeRefundsIdRequest<'a> {
                     .id
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1862,8 +1912,10 @@ impl<'a> GetApplicationFeesIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/application_fees/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1915,17 +1967,19 @@ impl<'a> GetApplicationFeesIdRefundsRequest<'a> {
             .client
             .client
             .get(&format!("/v1/application_fees/{id}/refunds", id = self.id));
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -1986,20 +2040,22 @@ pub struct GetAppsSecretsRequest<'a> {
 impl<'a> GetAppsSecretsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/apps/secrets");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref scope) = self.scope {
-            r = r.push_query("scope", &scope.to_string());
+        if let Some(ref unwrapped) = self.scope {
+            r = r.push_query("scope", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2075,12 +2131,14 @@ pub struct GetAppsSecretsFindRequest<'a> {
 impl<'a> GetAppsSecretsFindRequest<'a> {
     pub async fn send(self) -> anyhow::Result<AppsSecret> {
         let mut r = self.client.client.get("/v1/apps/secrets/find");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("name", &self.name.to_string());
-        if let Some(ref scope) = self.scope {
-            r = r.push_query("scope", &scope.to_string());
+        if let Some(ref unwrapped) = self.scope {
+            r = r.push_query("scope", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2108,8 +2166,10 @@ pub struct GetBalanceRequest<'a> {
 impl<'a> GetBalanceRequest<'a> {
     pub async fn send(self) -> anyhow::Result<Balance> {
         let mut r = self.client.client.get("/v1/balance");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2141,32 +2201,34 @@ pub struct GetBalanceHistoryRequest<'a> {
 impl<'a> GetBalanceHistoryRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/balance/history");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref currency) = self.currency {
-            r = r.push_query("currency", &currency.to_string());
+        if let Some(ref unwrapped) = self.currency {
+            r = r.push_query("currency", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref payout) = self.payout {
-            r = r.push_query("payout", &payout.to_string());
+        if let Some(ref unwrapped) = self.payout {
+            r = r.push_query("payout", &unwrapped.to_string());
         }
-        if let Some(ref source) = self.source {
-            r = r.push_query("source", &source.to_string());
+        if let Some(ref unwrapped) = self.source {
+            r = r.push_query("source", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref type_) = self.type_ {
-            r = r.push_query("type", &type_.to_string());
+        if let Some(ref unwrapped) = self.type_ {
+            r = r.push_query("type", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2226,8 +2288,10 @@ impl<'a> GetBalanceHistoryIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/balance/history/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2259,32 +2323,34 @@ pub struct GetBalanceTransactionsRequest<'a> {
 impl<'a> GetBalanceTransactionsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/balance_transactions");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref currency) = self.currency {
-            r = r.push_query("currency", &currency.to_string());
+        if let Some(ref unwrapped) = self.currency {
+            r = r.push_query("currency", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref payout) = self.payout {
-            r = r.push_query("payout", &payout.to_string());
+        if let Some(ref unwrapped) = self.payout {
+            r = r.push_query("payout", &unwrapped.to_string());
         }
-        if let Some(ref source) = self.source {
-            r = r.push_query("source", &source.to_string());
+        if let Some(ref unwrapped) = self.source {
+            r = r.push_query("source", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref type_) = self.type_ {
-            r = r.push_query("type", &type_.to_string());
+        if let Some(ref unwrapped) = self.type_ {
+            r = r.push_query("type", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2344,8 +2410,10 @@ impl<'a> GetBalanceTransactionsIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/balance_transactions/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2374,23 +2442,25 @@ pub struct GetBillingPortalConfigurationsRequest<'a> {
 impl<'a> GetBillingPortalConfigurationsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/billing_portal/configurations");
-        if let Some(ref active) = self.active {
-            r = r.push_query("active", &active.to_string());
+        if let Some(ref unwrapped) = self.active {
+            r = r.push_query("active", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref is_default) = self.is_default {
-            r = r.push_query("is_default", &is_default.to_string());
+        if let Some(ref unwrapped) = self.is_default {
+            r = r.push_query("is_default", &unwrapped.to_string());
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2460,8 +2530,10 @@ impl<'a> GetBillingPortalConfigurationsConfigurationRequest<'a> {
                     self.configuration
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2535,29 +2607,31 @@ pub struct GetChargesRequest<'a> {
 impl<'a> GetChargesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/charges");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref payment_intent) = self.payment_intent {
-            r = r.push_query("payment_intent", &payment_intent.to_string());
+        if let Some(ref unwrapped) = self.payment_intent {
+            r = r.push_query("payment_intent", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref transfer_group) = self.transfer_group {
-            r = r.push_query("transfer_group", &transfer_group.to_string());
+        if let Some(ref unwrapped) = self.transfer_group {
+            r = r.push_query("transfer_group", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2629,14 +2703,16 @@ pub struct GetChargesSearchRequest<'a> {
 impl<'a> GetChargesSearchRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/charges/search");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref page) = self.page {
-            r = r.push_query("page", &page.to_string());
+        if let Some(ref unwrapped) = self.page {
+            r = r.push_query("page", &unwrapped.to_string());
         }
         r = r.push_query("query", &self.query.to_string());
         r = self.client.authenticate(r);
@@ -2673,8 +2749,10 @@ impl<'a> GetChargesChargeRequest<'a> {
             .client
             .client
             .get(&format!("/v1/charges/{charge}", charge = self.charge));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2744,8 +2822,10 @@ impl<'a> GetChargesChargeDisputeRequest<'a> {
             .client
             .client
             .get(&format!("/v1/charges/{charge}/dispute", charge = self.charge));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2839,17 +2919,19 @@ impl<'a> GetChargesChargeRefundsRequest<'a> {
             .client
             .client
             .get(&format!("/v1/charges/{charge}/refunds", charge = self.charge));
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2916,8 +2998,10 @@ impl<'a> GetChargesChargeRefundsRefundRequest<'a> {
                     = self.refund
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -2975,29 +3059,31 @@ pub struct GetCheckoutSessionsRequest<'a> {
 impl<'a> GetCheckoutSessionsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/checkout/sessions");
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref customer_details) = self.customer_details {
-            r = r.push_query("customer_details", &customer_details.to_string());
+        if let Some(ref unwrapped) = self.customer_details {
+            r = r.push_query("customer_details", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref payment_intent) = self.payment_intent {
-            r = r.push_query("payment_intent", &payment_intent.to_string());
+        if let Some(ref unwrapped) = self.payment_intent {
+            r = r.push_query("payment_intent", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref subscription) = self.subscription {
-            r = r.push_query("subscription", &subscription.to_string());
+        if let Some(ref unwrapped) = self.subscription {
+            r = r.push_query("subscription", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3070,8 +3156,10 @@ impl<'a> GetCheckoutSessionsSessionRequest<'a> {
             .client
             .client
             .get(&format!("/v1/checkout/sessions/{session}", session = self.session));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3131,17 +3219,19 @@ impl<'a> GetCheckoutSessionsSessionLineItemsRequest<'a> {
                     "/v1/checkout/sessions/{session}/line_items", session = self.session
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3180,17 +3270,19 @@ pub struct GetCountrySpecsRequest<'a> {
 impl<'a> GetCountrySpecsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/country_specs");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3230,8 +3322,10 @@ impl<'a> GetCountrySpecsCountryRequest<'a> {
             .client
             .client
             .get(&format!("/v1/country_specs/{country}", country = self.country));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3259,20 +3353,22 @@ pub struct GetCouponsRequest<'a> {
 impl<'a> GetCouponsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/coupons");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3333,8 +3429,10 @@ impl<'a> GetCouponsCouponRequest<'a> {
             .client
             .client
             .get(&format!("/v1/coupons/{coupon}", coupon = self.coupon));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3405,23 +3503,25 @@ pub struct GetCreditNotesRequest<'a> {
 impl<'a> GetCreditNotesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/credit_notes");
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref invoice) = self.invoice {
-            r = r.push_query("invoice", &invoice.to_string());
+        if let Some(ref unwrapped) = self.invoice {
+            r = r.push_query("invoice", &unwrapped.to_string());
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3492,36 +3592,40 @@ pub struct GetCreditNotesPreviewRequest<'a> {
 impl<'a> GetCreditNotesPreviewRequest<'a> {
     pub async fn send(self) -> anyhow::Result<CreditNote> {
         let mut r = self.client.client.get("/v1/credit_notes/preview");
-        if let Some(ref amount) = self.amount {
-            r = r.push_query("amount", &amount.to_string());
+        if let Some(ref unwrapped) = self.amount {
+            r = r.push_query("amount", &unwrapped.to_string());
         }
-        if let Some(ref credit_amount) = self.credit_amount {
-            r = r.push_query("credit_amount", &credit_amount.to_string());
+        if let Some(ref unwrapped) = self.credit_amount {
+            r = r.push_query("credit_amount", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("invoice", &self.invoice.to_string());
-        if let Some(ref lines) = self.lines {
-            r = r.push_query("lines", &lines.to_string());
+        if let Some(ref unwrapped) = self.lines {
+            for item in unwrapped {
+                r = r.push_query("lines[]", &item.to_string());
+            }
         }
-        if let Some(ref memo) = self.memo {
-            r = r.push_query("memo", &memo.to_string());
+        if let Some(ref unwrapped) = self.memo {
+            r = r.push_query("memo", &unwrapped.to_string());
         }
-        if let Some(ref metadata) = self.metadata {
-            r = r.push_query("metadata", &metadata.to_string());
+        if let Some(ref unwrapped) = self.metadata {
+            r = r.push_query("metadata", &unwrapped.to_string());
         }
-        if let Some(ref out_of_band_amount) = self.out_of_band_amount {
-            r = r.push_query("out_of_band_amount", &out_of_band_amount.to_string());
+        if let Some(ref unwrapped) = self.out_of_band_amount {
+            r = r.push_query("out_of_band_amount", &unwrapped.to_string());
         }
-        if let Some(ref reason) = self.reason {
-            r = r.push_query("reason", &reason.to_string());
+        if let Some(ref unwrapped) = self.reason {
+            r = r.push_query("reason", &unwrapped.to_string());
         }
-        if let Some(ref refund) = self.refund {
-            r = r.push_query("refund", &refund.to_string());
+        if let Some(ref unwrapped) = self.refund {
+            r = r.push_query("refund", &unwrapped.to_string());
         }
-        if let Some(ref refund_amount) = self.refund_amount {
-            r = r.push_query("refund_amount", &refund_amount.to_string());
+        if let Some(ref unwrapped) = self.refund_amount {
+            r = r.push_query("refund_amount", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3594,45 +3698,49 @@ pub struct GetCreditNotesPreviewLinesRequest<'a> {
 impl<'a> GetCreditNotesPreviewLinesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/credit_notes/preview/lines");
-        if let Some(ref amount) = self.amount {
-            r = r.push_query("amount", &amount.to_string());
+        if let Some(ref unwrapped) = self.amount {
+            r = r.push_query("amount", &unwrapped.to_string());
         }
-        if let Some(ref credit_amount) = self.credit_amount {
-            r = r.push_query("credit_amount", &credit_amount.to_string());
+        if let Some(ref unwrapped) = self.credit_amount {
+            r = r.push_query("credit_amount", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("invoice", &self.invoice.to_string());
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref lines) = self.lines {
-            r = r.push_query("lines", &lines.to_string());
+        if let Some(ref unwrapped) = self.lines {
+            for item in unwrapped {
+                r = r.push_query("lines[]", &item.to_string());
+            }
         }
-        if let Some(ref memo) = self.memo {
-            r = r.push_query("memo", &memo.to_string());
+        if let Some(ref unwrapped) = self.memo {
+            r = r.push_query("memo", &unwrapped.to_string());
         }
-        if let Some(ref metadata) = self.metadata {
-            r = r.push_query("metadata", &metadata.to_string());
+        if let Some(ref unwrapped) = self.metadata {
+            r = r.push_query("metadata", &unwrapped.to_string());
         }
-        if let Some(ref out_of_band_amount) = self.out_of_band_amount {
-            r = r.push_query("out_of_band_amount", &out_of_band_amount.to_string());
+        if let Some(ref unwrapped) = self.out_of_band_amount {
+            r = r.push_query("out_of_band_amount", &unwrapped.to_string());
         }
-        if let Some(ref reason) = self.reason {
-            r = r.push_query("reason", &reason.to_string());
+        if let Some(ref unwrapped) = self.reason {
+            r = r.push_query("reason", &unwrapped.to_string());
         }
-        if let Some(ref refund) = self.refund {
-            r = r.push_query("refund", &refund.to_string());
+        if let Some(ref unwrapped) = self.refund {
+            r = r.push_query("refund", &unwrapped.to_string());
         }
-        if let Some(ref refund_amount) = self.refund_amount {
-            r = r.push_query("refund_amount", &refund_amount.to_string());
+        if let Some(ref unwrapped) = self.refund_amount {
+            r = r.push_query("refund_amount", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3716,17 +3824,19 @@ impl<'a> GetCreditNotesCreditNoteLinesRequest<'a> {
                     .credit_note
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3766,8 +3876,10 @@ impl<'a> GetCreditNotesIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/credit_notes/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3839,26 +3951,28 @@ pub struct GetCustomersRequest<'a> {
 impl<'a> GetCustomersRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/customers");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref email) = self.email {
-            r = r.push_query("email", &email.to_string());
+        if let Some(ref unwrapped) = self.email {
+            r = r.push_query("email", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref test_clock) = self.test_clock {
-            r = r.push_query("test_clock", &test_clock.to_string());
+        if let Some(ref unwrapped) = self.test_clock {
+            r = r.push_query("test_clock", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -3926,14 +4040,16 @@ pub struct GetCustomersSearchRequest<'a> {
 impl<'a> GetCustomersSearchRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/customers/search");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref page) = self.page {
-            r = r.push_query("page", &page.to_string());
+        if let Some(ref unwrapped) = self.page {
+            r = r.push_query("page", &unwrapped.to_string());
         }
         r = r.push_query("query", &self.query.to_string());
         r = self.client.authenticate(r);
@@ -3970,8 +4086,10 @@ impl<'a> GetCustomersCustomerRequest<'a> {
             .client
             .client
             .get(&format!("/v1/customers/{customer}", customer = self.customer));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4049,17 +4167,19 @@ impl<'a> GetCustomersCustomerBalanceTransactionsRequest<'a> {
                     .customer
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4131,8 +4251,10 @@ impl<'a> GetCustomersCustomerBalanceTransactionsTransactionRequest<'a> {
                     customer = self.customer, transaction = self.transaction
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4194,17 +4316,19 @@ impl<'a> GetCustomersCustomerBankAccountsRequest<'a> {
                     "/v1/customers/{customer}/bank_accounts", customer = self.customer
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4275,8 +4399,10 @@ impl<'a> GetCustomersCustomerBankAccountsIdRequest<'a> {
                     .customer, id = self.id
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4388,17 +4514,19 @@ impl<'a> GetCustomersCustomerCardsRequest<'a> {
             .client
             .client
             .get(&format!("/v1/customers/{customer}/cards", customer = self.customer));
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4465,8 +4593,10 @@ impl<'a> GetCustomersCustomerCardsIdRequest<'a> {
                     self.id
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4552,8 +4682,10 @@ impl<'a> GetCustomersCustomerCashBalanceRequest<'a> {
                     "/v1/customers/{customer}/cash_balance", customer = self.customer
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4608,8 +4740,10 @@ impl<'a> GetCustomersCustomerDiscountRequest<'a> {
             .get(
                 &format!("/v1/customers/{customer}/discount", customer = self.customer),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4694,17 +4828,19 @@ impl<'a> GetCustomersCustomerPaymentMethodsRequest<'a> {
                     "/v1/customers/{customer}/payment_methods", customer = self.customer
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = r.push_query("type", &self.type_.to_string());
         r = self.client.authenticate(r);
@@ -4751,8 +4887,10 @@ impl<'a> GetCustomersCustomerPaymentMethodsPaymentMethodRequest<'a> {
                     = self.customer, payment_method = self.payment_method
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4784,20 +4922,22 @@ impl<'a> GetCustomersCustomerSourcesRequest<'a> {
             .client
             .client
             .get(&format!("/v1/customers/{customer}/sources", customer = self.customer));
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref object) = self.object {
-            r = r.push_query("object", &object.to_string());
+        if let Some(ref unwrapped) = self.object {
+            r = r.push_query("object", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4870,8 +5010,10 @@ impl<'a> GetCustomersCustomerSourcesIdRequest<'a> {
                     = self.id
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -4987,17 +5129,19 @@ impl<'a> GetCustomersCustomerSubscriptionsRequest<'a> {
                     "/v1/customers/{customer}/subscriptions", customer = self.customer
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5069,8 +5213,10 @@ impl<'a> GetCustomersCustomerSubscriptionsSubscriptionExposedIdRequest<'a> {
                     .subscription_exposed_id
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5161,8 +5307,10 @@ impl<'a> GetCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest<'
                     .subscription_exposed_id
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5221,17 +5369,19 @@ impl<'a> GetCustomersCustomerTaxIdsRequest<'a> {
             .client
             .client
             .get(&format!("/v1/customers/{customer}/tax_ids", customer = self.customer));
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5300,8 +5450,10 @@ impl<'a> GetCustomersCustomerTaxIdsIdRequest<'a> {
                     = self.id
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5358,26 +5510,28 @@ pub struct GetDisputesRequest<'a> {
 impl<'a> GetDisputesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/disputes");
-        if let Some(ref charge) = self.charge {
-            r = r.push_query("charge", &charge.to_string());
+        if let Some(ref unwrapped) = self.charge {
+            r = r.push_query("charge", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref payment_intent) = self.payment_intent {
-            r = r.push_query("payment_intent", &payment_intent.to_string());
+        if let Some(ref unwrapped) = self.payment_intent {
+            r = r.push_query("payment_intent", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5429,8 +5583,10 @@ impl<'a> GetDisputesDisputeRequest<'a> {
             .client
             .client
             .get(&format!("/v1/disputes/{dispute}", dispute = self.dispute));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5541,29 +5697,33 @@ pub struct GetEventsRequest<'a> {
 impl<'a> GetEventsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/events");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref delivery_success) = self.delivery_success {
-            r = r.push_query("delivery_success", &delivery_success.to_string());
+        if let Some(ref unwrapped) = self.delivery_success {
+            r = r.push_query("delivery_success", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref type_) = self.type_ {
-            r = r.push_query("type", &type_.to_string());
+        if let Some(ref unwrapped) = self.type_ {
+            r = r.push_query("type", &unwrapped.to_string());
         }
-        if let Some(ref types) = self.types {
-            r = r.push_query("types", &types.to_string());
+        if let Some(ref unwrapped) = self.types {
+            for item in unwrapped {
+                r = r.push_query("types[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5616,8 +5776,10 @@ pub struct GetEventsIdRequest<'a> {
 impl<'a> GetEventsIdRequest<'a> {
     pub async fn send(self) -> anyhow::Result<Event> {
         let mut r = self.client.client.get(&format!("/v1/events/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5644,17 +5806,19 @@ pub struct GetExchangeRatesRequest<'a> {
 impl<'a> GetExchangeRatesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/exchange_rates");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5694,8 +5858,10 @@ impl<'a> GetExchangeRatesRateIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/exchange_rates/{rate_id}", rate_id = self.rate_id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5725,26 +5891,28 @@ pub struct GetFileLinksRequest<'a> {
 impl<'a> GetFileLinksRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/file_links");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref expired) = self.expired {
-            r = r.push_query("expired", &expired.to_string());
+        if let Some(ref unwrapped) = self.expired {
+            r = r.push_query("expired", &unwrapped.to_string());
         }
-        if let Some(ref file) = self.file {
-            r = r.push_query("file", &file.to_string());
+        if let Some(ref unwrapped) = self.file {
+            r = r.push_query("file", &unwrapped.to_string());
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5813,8 +5981,10 @@ impl<'a> GetFileLinksLinkRequest<'a> {
             .client
             .client
             .get(&format!("/v1/file_links/{link}", link = self.link));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5864,23 +6034,25 @@ pub struct GetFilesRequest<'a> {
 impl<'a> GetFilesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/files");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref purpose) = self.purpose {
-            r = r.push_query("purpose", &purpose.to_string());
+        if let Some(ref unwrapped) = self.purpose {
+            r = r.push_query("purpose", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5945,8 +6117,10 @@ impl<'a> GetFilesFileRequest<'a> {
             .client
             .client
             .get(&format!("/v1/files/{file}", file = self.file));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -5975,23 +6149,25 @@ pub struct GetFinancialConnectionsAccountsRequest<'a> {
 impl<'a> GetFinancialConnectionsAccountsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/financial_connections/accounts");
-        if let Some(ref account_holder) = self.account_holder {
-            r = r.push_query("account_holder", &account_holder.to_string());
+        if let Some(ref unwrapped) = self.account_holder {
+            r = r.push_query("account_holder", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref session) = self.session {
-            r = r.push_query("session", &session.to_string());
+        if let Some(ref unwrapped) = self.session {
+            r = r.push_query("session", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -6044,8 +6220,10 @@ impl<'a> GetFinancialConnectionsAccountsAccountRequest<'a> {
                     .account
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -6108,18 +6286,20 @@ impl<'a> GetFinancialConnectionsAccountsAccountOwnersRequest<'a> {
                     .account
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
         r = r.push_query("ownership", &self.ownership.to_string());
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -6207,8 +6387,10 @@ impl<'a> GetFinancialConnectionsSessionsSessionRequest<'a> {
                     .session
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -6238,26 +6420,28 @@ pub struct GetIdentityVerificationReportsRequest<'a> {
 impl<'a> GetIdentityVerificationReportsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/identity/verification_reports");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref type_) = self.type_ {
-            r = r.push_query("type", &type_.to_string());
+        if let Some(ref unwrapped) = self.type_ {
+            r = r.push_query("type", &unwrapped.to_string());
         }
-        if let Some(ref verification_session) = self.verification_session {
-            r = r.push_query("verification_session", &verification_session.to_string());
+        if let Some(ref unwrapped) = self.verification_session {
+            r = r.push_query("verification_session", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -6313,8 +6497,10 @@ impl<'a> GetIdentityVerificationReportsReportRequest<'a> {
                     "/v1/identity/verification_reports/{report}", report = self.report
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -6343,23 +6529,25 @@ pub struct GetIdentityVerificationSessionsRequest<'a> {
 impl<'a> GetIdentityVerificationSessionsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/identity/verification_sessions");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -6429,8 +6617,10 @@ impl<'a> GetIdentityVerificationSessionsSessionRequest<'a> {
                     .session
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -6539,29 +6729,31 @@ pub struct GetInvoiceitemsRequest<'a> {
 impl<'a> GetInvoiceitemsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/invoiceitems");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref invoice) = self.invoice {
-            r = r.push_query("invoice", &invoice.to_string());
+        if let Some(ref unwrapped) = self.invoice {
+            r = r.push_query("invoice", &unwrapped.to_string());
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref pending) = self.pending {
-            r = r.push_query("pending", &pending.to_string());
+        if let Some(ref unwrapped) = self.pending {
+            r = r.push_query("pending", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -6638,8 +6830,10 @@ impl<'a> GetInvoiceitemsInvoiceitemRequest<'a> {
                     "/v1/invoiceitems/{invoiceitem}", invoiceitem = self.invoiceitem
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -6722,35 +6916,37 @@ pub struct GetInvoicesRequest<'a> {
 impl<'a> GetInvoicesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/invoices");
-        if let Some(ref collection_method) = self.collection_method {
-            r = r.push_query("collection_method", &collection_method.to_string());
+        if let Some(ref unwrapped) = self.collection_method {
+            r = r.push_query("collection_method", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref due_date) = self.due_date {
-            r = r.push_query("due_date", &due_date.to_string());
+        if let Some(ref unwrapped) = self.due_date {
+            r = r.push_query("due_date", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
-        if let Some(ref subscription) = self.subscription {
-            r = r.push_query("subscription", &subscription.to_string());
+        if let Some(ref unwrapped) = self.subscription {
+            r = r.push_query("subscription", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -6830,14 +7026,16 @@ pub struct GetInvoicesSearchRequest<'a> {
 impl<'a> GetInvoicesSearchRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/invoices/search");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref page) = self.page {
-            r = r.push_query("page", &page.to_string());
+        if let Some(ref unwrapped) = self.page {
+            r = r.push_query("page", &unwrapped.to_string());
         }
         r = r.push_query("query", &self.query.to_string());
         r = self.client.authenticate(r);
@@ -6890,117 +7088,76 @@ pub struct GetInvoicesUpcomingRequest<'a> {
 impl<'a> GetInvoicesUpcomingRequest<'a> {
     pub async fn send(self) -> anyhow::Result<Invoice> {
         let mut r = self.client.client.get("/v1/invoices/upcoming");
-        if let Some(ref automatic_tax) = self.automatic_tax {
-            r = r.push_query("automatic_tax", &automatic_tax.to_string());
+        if let Some(ref unwrapped) = self.automatic_tax {
+            r = r.push_query("automatic_tax", &unwrapped.to_string());
         }
-        if let Some(ref coupon) = self.coupon {
-            r = r.push_query("coupon", &coupon.to_string());
+        if let Some(ref unwrapped) = self.coupon {
+            r = r.push_query("coupon", &unwrapped.to_string());
         }
-        if let Some(ref currency) = self.currency {
-            r = r.push_query("currency", &currency.to_string());
+        if let Some(ref unwrapped) = self.currency {
+            r = r.push_query("currency", &unwrapped.to_string());
         }
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref customer_details) = self.customer_details {
-            r = r.push_query("customer_details", &customer_details.to_string());
+        if let Some(ref unwrapped) = self.customer_details {
+            r = r.push_query("customer_details", &unwrapped.to_string());
         }
-        if let Some(ref discounts) = self.discounts {
-            r = r.push_query("discounts", &discounts.to_string());
+        if let Some(ref unwrapped) = self.discounts {
+            r = r.push_query("discounts", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref invoice_items) = self.invoice_items {
-            r = r.push_query("invoice_items", &invoice_items.to_string());
+        if let Some(ref unwrapped) = self.invoice_items {
+            for item in unwrapped {
+                r = r.push_query("invoice_items[]", &item.to_string());
+            }
         }
-        if let Some(ref schedule) = self.schedule {
-            r = r.push_query("schedule", &schedule.to_string());
+        if let Some(ref unwrapped) = self.schedule {
+            r = r.push_query("schedule", &unwrapped.to_string());
         }
-        if let Some(ref subscription) = self.subscription {
-            r = r.push_query("subscription", &subscription.to_string());
+        if let Some(ref unwrapped) = self.subscription {
+            r = r.push_query("subscription", &unwrapped.to_string());
         }
-        if let Some(ref subscription_billing_cycle_anchor)
-            = self.subscription_billing_cycle_anchor
-        {
+        if let Some(ref unwrapped) = self.subscription_billing_cycle_anchor {
             r = r
-                .push_query(
-                    "subscription_billing_cycle_anchor",
-                    &subscription_billing_cycle_anchor.to_string(),
-                );
+                .push_query("subscription_billing_cycle_anchor", &unwrapped.to_string());
         }
-        if let Some(ref subscription_cancel_at) = self.subscription_cancel_at {
+        if let Some(ref unwrapped) = self.subscription_cancel_at {
+            r = r.push_query("subscription_cancel_at", &unwrapped.to_string());
+        }
+        if let Some(ref unwrapped) = self.subscription_cancel_at_period_end {
             r = r
-                .push_query(
-                    "subscription_cancel_at",
-                    &subscription_cancel_at.to_string(),
-                );
+                .push_query("subscription_cancel_at_period_end", &unwrapped.to_string());
         }
-        if let Some(ref subscription_cancel_at_period_end)
-            = self.subscription_cancel_at_period_end
-        {
-            r = r
-                .push_query(
-                    "subscription_cancel_at_period_end",
-                    &subscription_cancel_at_period_end.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_cancel_now {
+            r = r.push_query("subscription_cancel_now", &unwrapped.to_string());
         }
-        if let Some(ref subscription_cancel_now) = self.subscription_cancel_now {
-            r = r
-                .push_query(
-                    "subscription_cancel_now",
-                    &subscription_cancel_now.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_default_tax_rates {
+            r = r.push_query("subscription_default_tax_rates", &unwrapped.to_string());
         }
-        if let Some(ref subscription_default_tax_rates)
-            = self.subscription_default_tax_rates
-        {
-            r = r
-                .push_query(
-                    "subscription_default_tax_rates",
-                    &subscription_default_tax_rates.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_items {
+            for item in unwrapped {
+                r = r.push_query("subscription_items[]", &item.to_string());
+            }
         }
-        if let Some(ref subscription_items) = self.subscription_items {
-            r = r.push_query("subscription_items", &subscription_items.to_string());
+        if let Some(ref unwrapped) = self.subscription_proration_behavior {
+            r = r.push_query("subscription_proration_behavior", &unwrapped.to_string());
         }
-        if let Some(ref subscription_proration_behavior)
-            = self.subscription_proration_behavior
-        {
-            r = r
-                .push_query(
-                    "subscription_proration_behavior",
-                    &subscription_proration_behavior.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_proration_date {
+            r = r.push_query("subscription_proration_date", &unwrapped.to_string());
         }
-        if let Some(ref subscription_proration_date) = self.subscription_proration_date {
-            r = r
-                .push_query(
-                    "subscription_proration_date",
-                    &subscription_proration_date.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_start_date {
+            r = r.push_query("subscription_start_date", &unwrapped.to_string());
         }
-        if let Some(ref subscription_start_date) = self.subscription_start_date {
-            r = r
-                .push_query(
-                    "subscription_start_date",
-                    &subscription_start_date.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_trial_end {
+            r = r.push_query("subscription_trial_end", &unwrapped.to_string());
         }
-        if let Some(ref subscription_trial_end) = self.subscription_trial_end {
-            r = r
-                .push_query(
-                    "subscription_trial_end",
-                    &subscription_trial_end.to_string(),
-                );
-        }
-        if let Some(ref subscription_trial_from_plan) = self.subscription_trial_from_plan
-        {
-            r = r
-                .push_query(
-                    "subscription_trial_from_plan",
-                    &subscription_trial_from_plan.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_trial_from_plan {
+            r = r.push_query("subscription_trial_from_plan", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -7154,126 +7311,85 @@ pub struct GetInvoicesUpcomingLinesRequest<'a> {
 impl<'a> GetInvoicesUpcomingLinesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/invoices/upcoming/lines");
-        if let Some(ref automatic_tax) = self.automatic_tax {
-            r = r.push_query("automatic_tax", &automatic_tax.to_string());
+        if let Some(ref unwrapped) = self.automatic_tax {
+            r = r.push_query("automatic_tax", &unwrapped.to_string());
         }
-        if let Some(ref coupon) = self.coupon {
-            r = r.push_query("coupon", &coupon.to_string());
+        if let Some(ref unwrapped) = self.coupon {
+            r = r.push_query("coupon", &unwrapped.to_string());
         }
-        if let Some(ref currency) = self.currency {
-            r = r.push_query("currency", &currency.to_string());
+        if let Some(ref unwrapped) = self.currency {
+            r = r.push_query("currency", &unwrapped.to_string());
         }
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref customer_details) = self.customer_details {
-            r = r.push_query("customer_details", &customer_details.to_string());
+        if let Some(ref unwrapped) = self.customer_details {
+            r = r.push_query("customer_details", &unwrapped.to_string());
         }
-        if let Some(ref discounts) = self.discounts {
-            r = r.push_query("discounts", &discounts.to_string());
+        if let Some(ref unwrapped) = self.discounts {
+            r = r.push_query("discounts", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref invoice_items) = self.invoice_items {
-            r = r.push_query("invoice_items", &invoice_items.to_string());
+        if let Some(ref unwrapped) = self.invoice_items {
+            for item in unwrapped {
+                r = r.push_query("invoice_items[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref schedule) = self.schedule {
-            r = r.push_query("schedule", &schedule.to_string());
+        if let Some(ref unwrapped) = self.schedule {
+            r = r.push_query("schedule", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref subscription) = self.subscription {
-            r = r.push_query("subscription", &subscription.to_string());
+        if let Some(ref unwrapped) = self.subscription {
+            r = r.push_query("subscription", &unwrapped.to_string());
         }
-        if let Some(ref subscription_billing_cycle_anchor)
-            = self.subscription_billing_cycle_anchor
-        {
+        if let Some(ref unwrapped) = self.subscription_billing_cycle_anchor {
             r = r
-                .push_query(
-                    "subscription_billing_cycle_anchor",
-                    &subscription_billing_cycle_anchor.to_string(),
-                );
+                .push_query("subscription_billing_cycle_anchor", &unwrapped.to_string());
         }
-        if let Some(ref subscription_cancel_at) = self.subscription_cancel_at {
+        if let Some(ref unwrapped) = self.subscription_cancel_at {
+            r = r.push_query("subscription_cancel_at", &unwrapped.to_string());
+        }
+        if let Some(ref unwrapped) = self.subscription_cancel_at_period_end {
             r = r
-                .push_query(
-                    "subscription_cancel_at",
-                    &subscription_cancel_at.to_string(),
-                );
+                .push_query("subscription_cancel_at_period_end", &unwrapped.to_string());
         }
-        if let Some(ref subscription_cancel_at_period_end)
-            = self.subscription_cancel_at_period_end
-        {
-            r = r
-                .push_query(
-                    "subscription_cancel_at_period_end",
-                    &subscription_cancel_at_period_end.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_cancel_now {
+            r = r.push_query("subscription_cancel_now", &unwrapped.to_string());
         }
-        if let Some(ref subscription_cancel_now) = self.subscription_cancel_now {
-            r = r
-                .push_query(
-                    "subscription_cancel_now",
-                    &subscription_cancel_now.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_default_tax_rates {
+            r = r.push_query("subscription_default_tax_rates", &unwrapped.to_string());
         }
-        if let Some(ref subscription_default_tax_rates)
-            = self.subscription_default_tax_rates
-        {
-            r = r
-                .push_query(
-                    "subscription_default_tax_rates",
-                    &subscription_default_tax_rates.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_items {
+            for item in unwrapped {
+                r = r.push_query("subscription_items[]", &item.to_string());
+            }
         }
-        if let Some(ref subscription_items) = self.subscription_items {
-            r = r.push_query("subscription_items", &subscription_items.to_string());
+        if let Some(ref unwrapped) = self.subscription_proration_behavior {
+            r = r.push_query("subscription_proration_behavior", &unwrapped.to_string());
         }
-        if let Some(ref subscription_proration_behavior)
-            = self.subscription_proration_behavior
-        {
-            r = r
-                .push_query(
-                    "subscription_proration_behavior",
-                    &subscription_proration_behavior.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_proration_date {
+            r = r.push_query("subscription_proration_date", &unwrapped.to_string());
         }
-        if let Some(ref subscription_proration_date) = self.subscription_proration_date {
-            r = r
-                .push_query(
-                    "subscription_proration_date",
-                    &subscription_proration_date.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_start_date {
+            r = r.push_query("subscription_start_date", &unwrapped.to_string());
         }
-        if let Some(ref subscription_start_date) = self.subscription_start_date {
-            r = r
-                .push_query(
-                    "subscription_start_date",
-                    &subscription_start_date.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_trial_end {
+            r = r.push_query("subscription_trial_end", &unwrapped.to_string());
         }
-        if let Some(ref subscription_trial_end) = self.subscription_trial_end {
-            r = r
-                .push_query(
-                    "subscription_trial_end",
-                    &subscription_trial_end.to_string(),
-                );
-        }
-        if let Some(ref subscription_trial_from_plan) = self.subscription_trial_from_plan
-        {
-            r = r
-                .push_query(
-                    "subscription_trial_from_plan",
-                    &subscription_trial_from_plan.to_string(),
-                );
+        if let Some(ref unwrapped) = self.subscription_trial_from_plan {
+            r = r.push_query("subscription_trial_from_plan", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -7420,8 +7536,10 @@ impl<'a> GetInvoicesInvoiceRequest<'a> {
             .client
             .client
             .get(&format!("/v1/invoices/{invoice}", invoice = self.invoice));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -7515,17 +7633,19 @@ impl<'a> GetInvoicesInvoiceLinesRequest<'a> {
             .client
             .client
             .get(&format!("/v1/invoices/{invoice}/lines", invoice = self.invoice));
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -7656,29 +7776,31 @@ pub struct GetIssuingAuthorizationsRequest<'a> {
 impl<'a> GetIssuingAuthorizationsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/issuing/authorizations");
-        if let Some(ref card) = self.card {
-            r = r.push_query("card", &card.to_string());
+        if let Some(ref unwrapped) = self.card {
+            r = r.push_query("card", &unwrapped.to_string());
         }
-        if let Some(ref cardholder) = self.cardholder {
-            r = r.push_query("cardholder", &cardholder.to_string());
+        if let Some(ref unwrapped) = self.cardholder {
+            r = r.push_query("cardholder", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -7739,8 +7861,10 @@ impl<'a> GetIssuingAuthorizationsAuthorizationRequest<'a> {
                     .authorization
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -7850,32 +7974,34 @@ pub struct GetIssuingCardholdersRequest<'a> {
 impl<'a> GetIssuingCardholdersRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/issuing/cardholders");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref email) = self.email {
-            r = r.push_query("email", &email.to_string());
+        if let Some(ref unwrapped) = self.email {
+            r = r.push_query("email", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref phone_number) = self.phone_number {
-            r = r.push_query("phone_number", &phone_number.to_string());
+        if let Some(ref unwrapped) = self.phone_number {
+            r = r.push_query("phone_number", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
-        if let Some(ref type_) = self.type_ {
-            r = r.push_query("type", &type_.to_string());
+        if let Some(ref unwrapped) = self.type_ {
+            r = r.push_query("type", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -7956,8 +8082,10 @@ impl<'a> GetIssuingCardholdersCardholderRequest<'a> {
                     "/v1/issuing/cardholders/{cardholder}", cardholder = self.cardholder
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8016,38 +8144,40 @@ pub struct GetIssuingCardsRequest<'a> {
 impl<'a> GetIssuingCardsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/issuing/cards");
-        if let Some(ref cardholder) = self.cardholder {
-            r = r.push_query("cardholder", &cardholder.to_string());
+        if let Some(ref unwrapped) = self.cardholder {
+            r = r.push_query("cardholder", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref exp_month) = self.exp_month {
-            r = r.push_query("exp_month", &exp_month.to_string());
+        if let Some(ref unwrapped) = self.exp_month {
+            r = r.push_query("exp_month", &unwrapped.to_string());
         }
-        if let Some(ref exp_year) = self.exp_year {
-            r = r.push_query("exp_year", &exp_year.to_string());
+        if let Some(ref unwrapped) = self.exp_year {
+            r = r.push_query("exp_year", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref last4) = self.last4 {
-            r = r.push_query("last4", &last4.to_string());
+        if let Some(ref unwrapped) = self.last4 {
+            r = r.push_query("last4", &unwrapped.to_string());
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
-        if let Some(ref type_) = self.type_ {
-            r = r.push_query("type", &type_.to_string());
+        if let Some(ref unwrapped) = self.type_ {
+            r = r.push_query("type", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8132,8 +8262,10 @@ impl<'a> GetIssuingCardsCardRequest<'a> {
             .client
             .client
             .get(&format!("/v1/issuing/cards/{card}", card = self.card));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8184,26 +8316,28 @@ pub struct GetIssuingDisputesRequest<'a> {
 impl<'a> GetIssuingDisputesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/issuing/disputes");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
-        if let Some(ref transaction) = self.transaction {
-            r = r.push_query("transaction", &transaction.to_string());
+        if let Some(ref unwrapped) = self.transaction {
+            r = r.push_query("transaction", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8272,8 +8406,10 @@ impl<'a> GetIssuingDisputesDisputeRequest<'a> {
             .client
             .client
             .get(&format!("/v1/issuing/disputes/{dispute}", dispute = self.dispute));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8345,20 +8481,22 @@ pub struct GetIssuingSettlementsRequest<'a> {
 impl<'a> GetIssuingSettlementsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/issuing/settlements");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8406,8 +8544,10 @@ impl<'a> GetIssuingSettlementsSettlementRequest<'a> {
                     "/v1/issuing/settlements/{settlement}", settlement = self.settlement
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8463,29 +8603,31 @@ pub struct GetIssuingTransactionsRequest<'a> {
 impl<'a> GetIssuingTransactionsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/issuing/transactions");
-        if let Some(ref card) = self.card {
-            r = r.push_query("card", &card.to_string());
+        if let Some(ref unwrapped) = self.card {
+            r = r.push_query("card", &unwrapped.to_string());
         }
-        if let Some(ref cardholder) = self.cardholder {
-            r = r.push_query("cardholder", &cardholder.to_string());
+        if let Some(ref unwrapped) = self.cardholder {
+            r = r.push_query("cardholder", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref type_) = self.type_ {
-            r = r.push_query("type", &type_.to_string());
+        if let Some(ref unwrapped) = self.type_ {
+            r = r.push_query("type", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8546,8 +8688,10 @@ impl<'a> GetIssuingTransactionsTransactionRequest<'a> {
                     .transaction
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8620,8 +8764,10 @@ impl<'a> GetLinkAccountSessionsSessionRequest<'a> {
             .get(
                 &format!("/v1/link_account_sessions/{session}", session = self.session),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8650,23 +8796,25 @@ pub struct GetLinkedAccountsRequest<'a> {
 impl<'a> GetLinkedAccountsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/linked_accounts");
-        if let Some(ref account_holder) = self.account_holder {
-            r = r.push_query("account_holder", &account_holder.to_string());
+        if let Some(ref unwrapped) = self.account_holder {
+            r = r.push_query("account_holder", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref session) = self.session {
-            r = r.push_query("session", &session.to_string());
+        if let Some(ref unwrapped) = self.session {
+            r = r.push_query("session", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8714,8 +8862,10 @@ impl<'a> GetLinkedAccountsAccountRequest<'a> {
             .client
             .client
             .get(&format!("/v1/linked_accounts/{account}", account = self.account));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8774,18 +8924,20 @@ impl<'a> GetLinkedAccountsAccountOwnersRequest<'a> {
             .get(
                 &format!("/v1/linked_accounts/{account}/owners", account = self.account),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
         r = r.push_query("ownership", &self.ownership.to_string());
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8848,8 +9000,10 @@ impl<'a> GetMandatesMandateRequest<'a> {
             .client
             .client
             .get(&format!("/v1/mandates/{mandate}", mandate = self.mandate));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8877,20 +9031,22 @@ pub struct GetOrdersRequest<'a> {
 impl<'a> GetOrdersRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/orders");
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -8948,8 +9104,10 @@ pub struct GetOrdersIdRequest<'a> {
 impl<'a> GetOrdersIdRequest<'a> {
     pub async fn send(self) -> anyhow::Result<Order> {
         let mut r = self.client.client.get(&format!("/v1/orders/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -9019,17 +9177,19 @@ impl<'a> GetOrdersIdLineItemsRequest<'a> {
             .client
             .client
             .get(&format!("/v1/orders/{id}/line_items", id = self.id));
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -9112,23 +9272,25 @@ pub struct GetPaymentIntentsRequest<'a> {
 impl<'a> GetPaymentIntentsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/payment_intents");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -9192,14 +9354,16 @@ pub struct GetPaymentIntentsSearchRequest<'a> {
 impl<'a> GetPaymentIntentsSearchRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/payment_intents/search");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref page) = self.page {
-            r = r.push_query("page", &page.to_string());
+        if let Some(ref unwrapped) = self.page {
+            r = r.push_query("page", &unwrapped.to_string());
         }
         r = r.push_query("query", &self.query.to_string());
         r = self.client.authenticate(r);
@@ -9237,11 +9401,13 @@ impl<'a> GetPaymentIntentsIntentRequest<'a> {
             .client
             .client
             .get(&format!("/v1/payment_intents/{intent}", intent = self.intent));
-        if let Some(ref client_secret) = self.client_secret {
-            r = r.push_query("client_secret", &client_secret.to_string());
+        if let Some(ref unwrapped) = self.client_secret {
+            r = r.push_query("client_secret", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -9439,20 +9605,22 @@ pub struct GetPaymentLinksRequest<'a> {
 impl<'a> GetPaymentLinksRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/payment_links");
-        if let Some(ref active) = self.active {
-            r = r.push_query("active", &active.to_string());
+        if let Some(ref unwrapped) = self.active {
+            r = r.push_query("active", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -9517,8 +9685,10 @@ impl<'a> GetPaymentLinksPaymentLinkRequest<'a> {
                     "/v1/payment_links/{payment_link}", payment_link = self.payment_link
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -9579,17 +9749,19 @@ impl<'a> GetPaymentLinksPaymentLinkLineItemsRequest<'a> {
                     .payment_link
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -9630,20 +9802,22 @@ pub struct GetPaymentMethodsRequest<'a> {
 impl<'a> GetPaymentMethodsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/payment_methods");
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = r.push_query("type", &self.type_.to_string());
         r = self.client.authenticate(r);
@@ -9710,8 +9884,10 @@ impl<'a> GetPaymentMethodsPaymentMethodRequest<'a> {
                     .payment_method
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -9820,29 +9996,31 @@ pub struct GetPayoutsRequest<'a> {
 impl<'a> GetPayoutsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/payouts");
-        if let Some(ref arrival_date) = self.arrival_date {
-            r = r.push_query("arrival_date", &arrival_date.to_string());
+        if let Some(ref unwrapped) = self.arrival_date {
+            r = r.push_query("arrival_date", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref destination) = self.destination {
-            r = r.push_query("destination", &destination.to_string());
+        if let Some(ref unwrapped) = self.destination {
+            r = r.push_query("destination", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -9915,8 +10093,10 @@ impl<'a> GetPayoutsPayoutRequest<'a> {
             .client
             .client
             .get(&format!("/v1/payouts/{payout}", payout = self.payout));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -10009,26 +10189,28 @@ pub struct GetPlansRequest<'a> {
 impl<'a> GetPlansRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/plans");
-        if let Some(ref active) = self.active {
-            r = r.push_query("active", &active.to_string());
+        if let Some(ref unwrapped) = self.active {
+            r = r.push_query("active", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref product) = self.product {
-            r = r.push_query("product", &product.to_string());
+        if let Some(ref unwrapped) = self.product {
+            r = r.push_query("product", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -10097,8 +10279,10 @@ impl<'a> GetPlansPlanRequest<'a> {
             .client
             .client
             .get(&format!("/v1/plans/{plan}", plan = self.plan));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -10174,38 +10358,42 @@ pub struct GetPricesRequest<'a> {
 impl<'a> GetPricesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/prices");
-        if let Some(ref active) = self.active {
-            r = r.push_query("active", &active.to_string());
+        if let Some(ref unwrapped) = self.active {
+            r = r.push_query("active", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref currency) = self.currency {
-            r = r.push_query("currency", &currency.to_string());
+        if let Some(ref unwrapped) = self.currency {
+            r = r.push_query("currency", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref lookup_keys) = self.lookup_keys {
-            r = r.push_query("lookup_keys", &lookup_keys.to_string());
+        if let Some(ref unwrapped) = self.lookup_keys {
+            for item in unwrapped {
+                r = r.push_query("lookup_keys[]", &item.to_string());
+            }
         }
-        if let Some(ref product) = self.product {
-            r = r.push_query("product", &product.to_string());
+        if let Some(ref unwrapped) = self.product {
+            r = r.push_query("product", &unwrapped.to_string());
         }
-        if let Some(ref recurring) = self.recurring {
-            r = r.push_query("recurring", &recurring.to_string());
+        if let Some(ref unwrapped) = self.recurring {
+            r = r.push_query("recurring", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref type_) = self.type_ {
-            r = r.push_query("type", &type_.to_string());
+        if let Some(ref unwrapped) = self.type_ {
+            r = r.push_query("type", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -10289,14 +10477,16 @@ pub struct GetPricesSearchRequest<'a> {
 impl<'a> GetPricesSearchRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/prices/search");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref page) = self.page {
-            r = r.push_query("page", &page.to_string());
+        if let Some(ref unwrapped) = self.page {
+            r = r.push_query("page", &unwrapped.to_string());
         }
         r = r.push_query("query", &self.query.to_string());
         r = self.client.authenticate(r);
@@ -10333,8 +10523,10 @@ impl<'a> GetPricesPriceRequest<'a> {
             .client
             .client
             .get(&format!("/v1/prices/{price}", price = self.price));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -10387,32 +10579,36 @@ pub struct GetProductsRequest<'a> {
 impl<'a> GetProductsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/products");
-        if let Some(ref active) = self.active {
-            r = r.push_query("active", &active.to_string());
+        if let Some(ref unwrapped) = self.active {
+            r = r.push_query("active", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref ids) = self.ids {
-            r = r.push_query("ids", &ids.to_string());
+        if let Some(ref unwrapped) = self.ids {
+            for item in unwrapped {
+                r = r.push_query("ids[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref shippable) = self.shippable {
-            r = r.push_query("shippable", &shippable.to_string());
+        if let Some(ref unwrapped) = self.shippable {
+            r = r.push_query("shippable", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref url) = self.url {
-            r = r.push_query("url", &url.to_string());
+        if let Some(ref unwrapped) = self.url {
+            r = r.push_query("url", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -10488,14 +10684,16 @@ pub struct GetProductsSearchRequest<'a> {
 impl<'a> GetProductsSearchRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/products/search");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref page) = self.page {
-            r = r.push_query("page", &page.to_string());
+        if let Some(ref unwrapped) = self.page {
+            r = r.push_query("page", &unwrapped.to_string());
         }
         r = r.push_query("query", &self.query.to_string());
         r = self.client.authenticate(r);
@@ -10529,8 +10727,10 @@ pub struct GetProductsIdRequest<'a> {
 impl<'a> GetProductsIdRequest<'a> {
     pub async fn send(self) -> anyhow::Result<Product> {
         let mut r = self.client.client.get(&format!("/v1/products/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -10601,32 +10801,34 @@ pub struct GetPromotionCodesRequest<'a> {
 impl<'a> GetPromotionCodesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/promotion_codes");
-        if let Some(ref active) = self.active {
-            r = r.push_query("active", &active.to_string());
+        if let Some(ref unwrapped) = self.active {
+            r = r.push_query("active", &unwrapped.to_string());
         }
-        if let Some(ref code) = self.code {
-            r = r.push_query("code", &code.to_string());
+        if let Some(ref unwrapped) = self.code {
+            r = r.push_query("code", &unwrapped.to_string());
         }
-        if let Some(ref coupon) = self.coupon {
-            r = r.push_query("coupon", &coupon.to_string());
+        if let Some(ref unwrapped) = self.coupon {
+            r = r.push_query("coupon", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -10708,8 +10910,10 @@ impl<'a> GetPromotionCodesPromotionCodeRequest<'a> {
                     .promotion_code
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -10765,26 +10969,28 @@ pub struct GetQuotesRequest<'a> {
 impl<'a> GetQuotesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/quotes");
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
-        if let Some(ref test_clock) = self.test_clock {
-            r = r.push_query("test_clock", &test_clock.to_string());
+        if let Some(ref unwrapped) = self.test_clock {
+            r = r.push_query("test_clock", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -10853,8 +11059,10 @@ impl<'a> GetQuotesQuoteRequest<'a> {
             .client
             .client
             .get(&format!("/v1/quotes/{quote}", quote = self.quote));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -10952,17 +11160,19 @@ impl<'a> GetQuotesQuoteComputedUpfrontLineItemsRequest<'a> {
                     "/v1/quotes/{quote}/computed_upfront_line_items", quote = self.quote
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11026,17 +11236,19 @@ impl<'a> GetQuotesQuoteLineItemsRequest<'a> {
             .client
             .client
             .get(&format!("/v1/quotes/{quote}/line_items", quote = self.quote));
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11077,23 +11289,25 @@ pub struct GetRadarEarlyFraudWarningsRequest<'a> {
 impl<'a> GetRadarEarlyFraudWarningsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/radar/early_fraud_warnings");
-        if let Some(ref charge) = self.charge {
-            r = r.push_query("charge", &charge.to_string());
+        if let Some(ref unwrapped) = self.charge {
+            r = r.push_query("charge", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref payment_intent) = self.payment_intent {
-            r = r.push_query("payment_intent", &payment_intent.to_string());
+        if let Some(ref unwrapped) = self.payment_intent {
+            r = r.push_query("payment_intent", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11146,8 +11360,10 @@ impl<'a> GetRadarEarlyFraudWarningsEarlyFraudWarningRequest<'a> {
                     early_fraud_warning = self.early_fraud_warning
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11177,23 +11393,25 @@ pub struct GetRadarValueListItemsRequest<'a> {
 impl<'a> GetRadarValueListItemsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/radar/value_list_items");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref value) = self.value {
-            r = r.push_query("value", &value.to_string());
+        if let Some(ref unwrapped) = self.value {
+            r = r.push_query("value", &unwrapped.to_string());
         }
         r = r.push_query("value_list", &self.value_list.to_string());
         r = self.client.authenticate(r);
@@ -11259,8 +11477,10 @@ impl<'a> GetRadarValueListItemsItemRequest<'a> {
             .client
             .client
             .get(&format!("/v1/radar/value_list_items/{item}", item = self.item));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11311,26 +11531,28 @@ pub struct GetRadarValueListsRequest<'a> {
 impl<'a> GetRadarValueListsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/radar/value_lists");
-        if let Some(ref alias) = self.alias {
-            r = r.push_query("alias", &alias.to_string());
+        if let Some(ref unwrapped) = self.alias {
+            r = r.push_query("alias", &unwrapped.to_string());
         }
-        if let Some(ref contains) = self.contains {
-            r = r.push_query("contains", &contains.to_string());
+        if let Some(ref unwrapped) = self.contains {
+            r = r.push_query("contains", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11403,8 +11625,10 @@ impl<'a> GetRadarValueListsValueListRequest<'a> {
                     "/v1/radar/value_lists/{value_list}", value_list = self.value_list
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11484,26 +11708,28 @@ pub struct GetRefundsRequest<'a> {
 impl<'a> GetRefundsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/refunds");
-        if let Some(ref charge) = self.charge {
-            r = r.push_query("charge", &charge.to_string());
+        if let Some(ref unwrapped) = self.charge {
+            r = r.push_query("charge", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref payment_intent) = self.payment_intent {
-            r = r.push_query("payment_intent", &payment_intent.to_string());
+        if let Some(ref unwrapped) = self.payment_intent {
+            r = r.push_query("payment_intent", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11572,8 +11798,10 @@ impl<'a> GetRefundsRefundRequest<'a> {
             .client
             .client
             .get(&format!("/v1/refunds/{refund}", refund = self.refund));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11643,20 +11871,22 @@ pub struct GetReportingReportRunsRequest<'a> {
 impl<'a> GetReportingReportRunsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/reporting/report_runs");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11722,8 +11952,10 @@ impl<'a> GetReportingReportRunsReportRunRequest<'a> {
                     .report_run
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11747,8 +11979,10 @@ pub struct GetReportingReportTypesRequest<'a> {
 impl<'a> GetReportingReportTypesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/reporting/report_types");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11781,8 +12015,10 @@ impl<'a> GetReportingReportTypesReportTypeRequest<'a> {
                     .report_type
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11810,20 +12046,22 @@ pub struct GetReviewsRequest<'a> {
 impl<'a> GetReviewsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/reviews");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11867,8 +12105,10 @@ impl<'a> GetReviewsReviewRequest<'a> {
             .client
             .client
             .get(&format!("/v1/reviews/{review}", review = self.review));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11918,21 +12158,23 @@ pub struct GetSetupAttemptsRequest<'a> {
 impl<'a> GetSetupAttemptsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/setup_attempts");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
         r = r.push_query("setup_intent", &self.setup_intent.to_string());
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -11979,29 +12221,31 @@ pub struct GetSetupIntentsRequest<'a> {
 impl<'a> GetSetupIntentsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/setup_intents");
-        if let Some(ref attach_to_self) = self.attach_to_self {
-            r = r.push_query("attach_to_self", &attach_to_self.to_string());
+        if let Some(ref unwrapped) = self.attach_to_self {
+            r = r.push_query("attach_to_self", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref payment_method) = self.payment_method {
-            r = r.push_query("payment_method", &payment_method.to_string());
+        if let Some(ref unwrapped) = self.payment_method {
+            r = r.push_query("payment_method", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12075,11 +12319,13 @@ impl<'a> GetSetupIntentsIntentRequest<'a> {
             .client
             .client
             .get(&format!("/v1/setup_intents/{intent}", intent = self.intent));
-        if let Some(ref client_secret) = self.client_secret {
-            r = r.push_query("client_secret", &client_secret.to_string());
+        if let Some(ref unwrapped) = self.client_secret {
+            r = r.push_query("client_secret", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12202,26 +12448,28 @@ pub struct GetShippingRatesRequest<'a> {
 impl<'a> GetShippingRatesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/shipping_rates");
-        if let Some(ref active) = self.active {
-            r = r.push_query("active", &active.to_string());
+        if let Some(ref unwrapped) = self.active {
+            r = r.push_query("active", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref currency) = self.currency {
-            r = r.push_query("currency", &currency.to_string());
+        if let Some(ref unwrapped) = self.currency {
+            r = r.push_query("currency", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12295,8 +12543,10 @@ impl<'a> GetShippingRatesShippingRateTokenRequest<'a> {
                     self.shipping_rate_token
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12349,17 +12599,19 @@ pub struct GetSigmaScheduledQueryRunsRequest<'a> {
 impl<'a> GetSigmaScheduledQueryRunsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/sigma/scheduled_query_runs");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12404,8 +12656,10 @@ impl<'a> GetSigmaScheduledQueryRunsScheduledQueryRunRequest<'a> {
                     scheduled_query_run = self.scheduled_query_run
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12437,32 +12691,36 @@ pub struct GetSkusRequest<'a> {
 impl<'a> GetSkusRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/skus");
-        if let Some(ref active) = self.active {
-            r = r.push_query("active", &active.to_string());
+        if let Some(ref unwrapped) = self.active {
+            r = r.push_query("active", &unwrapped.to_string());
         }
-        if let Some(ref attributes) = self.attributes {
-            r = r.push_query("attributes", &attributes.to_string());
+        if let Some(ref unwrapped) = self.attributes {
+            r = r.push_query("attributes", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref ids) = self.ids {
-            r = r.push_query("ids", &ids.to_string());
+        if let Some(ref unwrapped) = self.ids {
+            for item in unwrapped {
+                r = r.push_query("ids[]", &item.to_string());
+            }
         }
-        if let Some(ref in_stock) = self.in_stock {
-            r = r.push_query("in_stock", &in_stock.to_string());
+        if let Some(ref unwrapped) = self.in_stock {
+            r = r.push_query("in_stock", &unwrapped.to_string());
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref product) = self.product {
-            r = r.push_query("product", &product.to_string());
+        if let Some(ref unwrapped) = self.product {
+            r = r.push_query("product", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12536,8 +12794,10 @@ pub struct GetSkusIdRequest<'a> {
 impl<'a> GetSkusIdRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get(&format!("/v1/skus/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12619,11 +12879,13 @@ impl<'a> GetSourcesSourceRequest<'a> {
             .client
             .client
             .get(&format!("/v1/sources/{source}", source = self.source));
-        if let Some(ref client_secret) = self.client_secret {
-            r = r.push_query("client_secret", &client_secret.to_string());
+        if let Some(ref unwrapped) = self.client_secret {
+            r = r.push_query("client_secret", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12683,8 +12945,10 @@ impl<'a> GetSourcesSourceMandateNotificationsMandateNotificationRequest<'a> {
                     .source
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12719,17 +12983,19 @@ impl<'a> GetSourcesSourceSourceTransactionsRequest<'a> {
                     "/v1/sources/{source}/source_transactions", source = self.source
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12775,8 +13041,10 @@ impl<'a> GetSourcesSourceSourceTransactionsSourceTransactionRequest<'a> {
                     source = self.source, source_transaction = self.source_transaction
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12825,17 +13093,19 @@ pub struct GetSubscriptionItemsRequest<'a> {
 impl<'a> GetSubscriptionItemsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/subscription_items");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = r.push_query("subscription", &self.subscription.to_string());
         r = self.client.authenticate(r);
@@ -12893,8 +13163,10 @@ impl<'a> GetSubscriptionItemsItemRequest<'a> {
             .client
             .client
             .get(&format!("/v1/subscription_items/{item}", item = self.item));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -12972,17 +13244,19 @@ impl<'a> GetSubscriptionItemsSubscriptionItemUsageRecordSummariesRequest<'a> {
                     subscription_item = self.subscription_item
                 ),
             );
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -13053,35 +13327,37 @@ pub struct GetSubscriptionSchedulesRequest<'a> {
 impl<'a> GetSubscriptionSchedulesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/subscription_schedules");
-        if let Some(ref canceled_at) = self.canceled_at {
-            r = r.push_query("canceled_at", &canceled_at.to_string());
+        if let Some(ref unwrapped) = self.canceled_at {
+            r = r.push_query("canceled_at", &unwrapped.to_string());
         }
-        if let Some(ref completed_at) = self.completed_at {
-            r = r.push_query("completed_at", &completed_at.to_string());
+        if let Some(ref unwrapped) = self.completed_at {
+            r = r.push_query("completed_at", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref released_at) = self.released_at {
-            r = r.push_query("released_at", &released_at.to_string());
+        if let Some(ref unwrapped) = self.released_at {
+            r = r.push_query("released_at", &unwrapped.to_string());
         }
-        if let Some(ref scheduled) = self.scheduled {
-            r = r.push_query("scheduled", &scheduled.to_string());
+        if let Some(ref unwrapped) = self.scheduled {
+            r = r.push_query("scheduled", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -13166,8 +13442,10 @@ impl<'a> GetSubscriptionSchedulesScheduleRequest<'a> {
                     "/v1/subscription_schedules/{schedule}", schedule = self.schedule
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -13279,41 +13557,43 @@ pub struct GetSubscriptionsRequest<'a> {
 impl<'a> GetSubscriptionsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/subscriptions");
-        if let Some(ref collection_method) = self.collection_method {
-            r = r.push_query("collection_method", &collection_method.to_string());
+        if let Some(ref unwrapped) = self.collection_method {
+            r = r.push_query("collection_method", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref current_period_end) = self.current_period_end {
-            r = r.push_query("current_period_end", &current_period_end.to_string());
+        if let Some(ref unwrapped) = self.current_period_end {
+            r = r.push_query("current_period_end", &unwrapped.to_string());
         }
-        if let Some(ref current_period_start) = self.current_period_start {
-            r = r.push_query("current_period_start", &current_period_start.to_string());
+        if let Some(ref unwrapped) = self.current_period_start {
+            r = r.push_query("current_period_start", &unwrapped.to_string());
         }
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref price) = self.price {
-            r = r.push_query("price", &price.to_string());
+        if let Some(ref unwrapped) = self.price {
+            r = r.push_query("price", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
-        if let Some(ref test_clock) = self.test_clock {
-            r = r.push_query("test_clock", &test_clock.to_string());
+        if let Some(ref unwrapped) = self.test_clock {
+            r = r.push_query("test_clock", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -13404,14 +13684,16 @@ pub struct GetSubscriptionsSearchRequest<'a> {
 impl<'a> GetSubscriptionsSearchRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/subscriptions/search");
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref page) = self.page {
-            r = r.push_query("page", &page.to_string());
+        if let Some(ref unwrapped) = self.page {
+            r = r.push_query("page", &unwrapped.to_string());
         }
         r = r.push_query("query", &self.query.to_string());
         r = self.client.authenticate(r);
@@ -13453,8 +13735,10 @@ impl<'a> GetSubscriptionsSubscriptionExposedIdRequest<'a> {
                     subscription_exposed_id = self.subscription_exposed_id
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -13559,17 +13843,19 @@ pub struct GetTaxCodesRequest<'a> {
 impl<'a> GetTaxCodesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/tax_codes");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -13606,8 +13892,10 @@ pub struct GetTaxCodesIdRequest<'a> {
 impl<'a> GetTaxCodesIdRequest<'a> {
     pub async fn send(self) -> anyhow::Result<TaxCode> {
         let mut r = self.client.client.get(&format!("/v1/tax_codes/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -13637,26 +13925,28 @@ pub struct GetTaxRatesRequest<'a> {
 impl<'a> GetTaxRatesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/tax_rates");
-        if let Some(ref active) = self.active {
-            r = r.push_query("active", &active.to_string());
+        if let Some(ref unwrapped) = self.active {
+            r = r.push_query("active", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref inclusive) = self.inclusive {
-            r = r.push_query("inclusive", &inclusive.to_string());
+        if let Some(ref unwrapped) = self.inclusive {
+            r = r.push_query("inclusive", &unwrapped.to_string());
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -13725,8 +14015,10 @@ impl<'a> GetTaxRatesTaxRateRequest<'a> {
             .client
             .client
             .get(&format!("/v1/tax_rates/{tax_rate}", tax_rate = self.tax_rate));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -13775,20 +14067,22 @@ pub struct GetTerminalConfigurationsRequest<'a> {
 impl<'a> GetTerminalConfigurationsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/terminal/configurations");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref is_account_default) = self.is_account_default {
-            r = r.push_query("is_account_default", &is_account_default.to_string());
+        if let Some(ref unwrapped) = self.is_account_default {
+            r = r.push_query("is_account_default", &unwrapped.to_string());
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -13854,8 +14148,10 @@ impl<'a> GetTerminalConfigurationsConfigurationRequest<'a> {
                     .configuration
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -13951,17 +14247,19 @@ pub struct GetTerminalLocationsRequest<'a> {
 impl<'a> GetTerminalLocationsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/terminal/locations");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -14020,8 +14318,10 @@ impl<'a> GetTerminalLocationsLocationRequest<'a> {
             .get(
                 &format!("/v1/terminal/locations/{location}", location = self.location),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -14097,26 +14397,28 @@ pub struct GetTerminalReadersRequest<'a> {
 impl<'a> GetTerminalReadersRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/terminal/readers");
-        if let Some(ref device_type) = self.device_type {
-            r = r.push_query("device_type", &device_type.to_string());
+        if let Some(ref unwrapped) = self.device_type {
+            r = r.push_query("device_type", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref location) = self.location {
-            r = r.push_query("location", &location.to_string());
+        if let Some(ref unwrapped) = self.location {
+            r = r.push_query("location", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -14185,8 +14487,10 @@ impl<'a> GetTerminalReadersReaderRequest<'a> {
             .client
             .client
             .get(&format!("/v1/terminal/readers/{reader}", reader = self.reader));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -14539,17 +14843,19 @@ pub struct GetTestHelpersTestClocksRequest<'a> {
 impl<'a> GetTestHelpersTestClocksRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/test_helpers/test_clocks");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -14611,8 +14917,10 @@ impl<'a> GetTestHelpersTestClocksTestClockRequest<'a> {
                     .test_clock
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -14977,8 +15285,10 @@ impl<'a> GetTokensTokenRequest<'a> {
             .client
             .client
             .get(&format!("/v1/tokens/{token}", token = self.token));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15008,26 +15318,28 @@ pub struct GetTopupsRequest<'a> {
 impl<'a> GetTopupsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/topups");
-        if let Some(ref amount) = self.amount {
-            r = r.push_query("amount", &amount.to_string());
+        if let Some(ref unwrapped) = self.amount {
+            r = r.push_query("amount", &unwrapped.to_string());
         }
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15096,8 +15408,10 @@ impl<'a> GetTopupsTopupRequest<'a> {
             .client
             .client
             .get(&format!("/v1/topups/{topup}", topup = self.topup));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15169,26 +15483,28 @@ pub struct GetTransfersRequest<'a> {
 impl<'a> GetTransfersRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/transfers");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref destination) = self.destination {
-            r = r.push_query("destination", &destination.to_string());
+        if let Some(ref unwrapped) = self.destination {
+            r = r.push_query("destination", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref transfer_group) = self.transfer_group {
-            r = r.push_query("transfer_group", &transfer_group.to_string());
+        if let Some(ref unwrapped) = self.transfer_group {
+            r = r.push_query("transfer_group", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15260,17 +15576,19 @@ impl<'a> GetTransfersIdReversalsRequest<'a> {
             .client
             .client
             .get(&format!("/v1/transfers/{id}/reversals", id = self.id));
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15331,8 +15649,10 @@ impl<'a> GetTransfersTransferRequest<'a> {
             .client
             .client
             .get(&format!("/v1/transfers/{transfer}", transfer = self.transfer));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15387,8 +15707,10 @@ impl<'a> GetTransfersTransferReversalsIdRequest<'a> {
                     self.transfer
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15445,24 +15767,26 @@ pub struct GetTreasuryCreditReversalsRequest<'a> {
 impl<'a> GetTreasuryCreditReversalsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/treasury/credit_reversals");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("financial_account", &self.financial_account.to_string());
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref received_credit) = self.received_credit {
-            r = r.push_query("received_credit", &received_credit.to_string());
+        if let Some(ref unwrapped) = self.received_credit {
+            r = r.push_query("received_credit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15532,8 +15856,10 @@ impl<'a> GetTreasuryCreditReversalsCreditReversalRequest<'a> {
                     self.credit_reversal
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15564,27 +15890,29 @@ pub struct GetTreasuryDebitReversalsRequest<'a> {
 impl<'a> GetTreasuryDebitReversalsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/treasury/debit_reversals");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("financial_account", &self.financial_account.to_string());
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref received_debit) = self.received_debit {
-            r = r.push_query("received_debit", &received_debit.to_string());
+        if let Some(ref unwrapped) = self.received_debit {
+            r = r.push_query("received_debit", &unwrapped.to_string());
         }
-        if let Some(ref resolution) = self.resolution {
-            r = r.push_query("resolution", &resolution.to_string());
+        if let Some(ref unwrapped) = self.resolution {
+            r = r.push_query("resolution", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15658,8 +15986,10 @@ impl<'a> GetTreasuryDebitReversalsDebitReversalRequest<'a> {
                     self.debit_reversal
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15687,20 +16017,22 @@ pub struct GetTreasuryFinancialAccountsRequest<'a> {
 impl<'a> GetTreasuryFinancialAccountsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/treasury/financial_accounts");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15766,8 +16098,10 @@ impl<'a> GetTreasuryFinancialAccountsFinancialAccountRequest<'a> {
                     financial_account = self.financial_account
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15826,8 +16160,10 @@ impl<'a> GetTreasuryFinancialAccountsFinancialAccountFeaturesRequest<'a> {
                     financial_account = self.financial_account
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15882,21 +16218,23 @@ pub struct GetTreasuryInboundTransfersRequest<'a> {
 impl<'a> GetTreasuryInboundTransfersRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/treasury/inbound_transfers");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("financial_account", &self.financial_account.to_string());
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -15957,8 +16295,10 @@ impl<'a> GetTreasuryInboundTransfersIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/treasury/inbound_transfers/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16014,24 +16354,26 @@ pub struct GetTreasuryOutboundPaymentsRequest<'a> {
 impl<'a> GetTreasuryOutboundPaymentsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/treasury/outbound_payments");
-        if let Some(ref customer) = self.customer {
-            r = r.push_query("customer", &customer.to_string());
+        if let Some(ref unwrapped) = self.customer {
+            r = r.push_query("customer", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("financial_account", &self.financial_account.to_string());
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16096,8 +16438,10 @@ impl<'a> GetTreasuryOutboundPaymentsIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/treasury/outbound_payments/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16147,21 +16491,23 @@ pub struct GetTreasuryOutboundTransfersRequest<'a> {
 impl<'a> GetTreasuryOutboundTransfersRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/treasury/outbound_transfers");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("financial_account", &self.financial_account.to_string());
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16227,8 +16573,10 @@ impl<'a> GetTreasuryOutboundTransfersOutboundTransferRequest<'a> {
                     outbound_transfer = self.outbound_transfer
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16284,24 +16632,26 @@ pub struct GetTreasuryReceivedCreditsRequest<'a> {
 impl<'a> GetTreasuryReceivedCreditsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/treasury/received_credits");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("financial_account", &self.financial_account.to_string());
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref linked_flows) = self.linked_flows {
-            r = r.push_query("linked_flows", &linked_flows.to_string());
+        if let Some(ref unwrapped) = self.linked_flows {
+            r = r.push_query("linked_flows", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16349,8 +16699,10 @@ impl<'a> GetTreasuryReceivedCreditsIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/treasury/received_credits/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16379,21 +16731,23 @@ pub struct GetTreasuryReceivedDebitsRequest<'a> {
 impl<'a> GetTreasuryReceivedDebitsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/treasury/received_debits");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("financial_account", &self.financial_account.to_string());
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16437,8 +16791,10 @@ impl<'a> GetTreasuryReceivedDebitsIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/treasury/received_debits/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16470,30 +16826,32 @@ pub struct GetTreasuryTransactionEntriesRequest<'a> {
 impl<'a> GetTreasuryTransactionEntriesRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/treasury/transaction_entries");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref effective_at) = self.effective_at {
-            r = r.push_query("effective_at", &effective_at.to_string());
+        if let Some(ref unwrapped) = self.effective_at {
+            r = r.push_query("effective_at", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("financial_account", &self.financial_account.to_string());
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref order_by) = self.order_by {
-            r = r.push_query("order_by", &order_by.to_string());
+        if let Some(ref unwrapped) = self.order_by {
+            r = r.push_query("order_by", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref transaction) = self.transaction {
-            r = r.push_query("transaction", &transaction.to_string());
+        if let Some(ref unwrapped) = self.transaction {
+            r = r.push_query("transaction", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16549,8 +16907,10 @@ impl<'a> GetTreasuryTransactionEntriesIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/treasury/transaction_entries/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16582,30 +16942,32 @@ pub struct GetTreasuryTransactionsRequest<'a> {
 impl<'a> GetTreasuryTransactionsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/treasury/transactions");
-        if let Some(ref created) = self.created {
-            r = r.push_query("created", &created.to_string());
+        if let Some(ref unwrapped) = self.created {
+            r = r.push_query("created", &unwrapped.to_string());
         }
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = r.push_query("financial_account", &self.financial_account.to_string());
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref order_by) = self.order_by {
-            r = r.push_query("order_by", &order_by.to_string());
+        if let Some(ref unwrapped) = self.order_by {
+            r = r.push_query("order_by", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
-        if let Some(ref status) = self.status {
-            r = r.push_query("status", &status.to_string());
+        if let Some(ref unwrapped) = self.status {
+            r = r.push_query("status", &unwrapped.to_string());
         }
-        if let Some(ref status_transitions) = self.status_transitions {
-            r = r.push_query("status_transitions", &status_transitions.to_string());
+        if let Some(ref unwrapped) = self.status_transitions {
+            r = r.push_query("status_transitions", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16661,8 +17023,10 @@ impl<'a> GetTreasuryTransactionsIdRequest<'a> {
             .client
             .client
             .get(&format!("/v1/treasury/transactions/{id}", id = self.id));
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16689,17 +17053,19 @@ pub struct GetWebhookEndpointsRequest<'a> {
 impl<'a> GetWebhookEndpointsRequest<'a> {
     pub async fn send(self) -> anyhow::Result<serde_json::Value> {
         let mut r = self.client.client.get("/v1/webhook_endpoints");
-        if let Some(ref ending_before) = self.ending_before {
-            r = r.push_query("ending_before", &ending_before.to_string());
+        if let Some(ref unwrapped) = self.ending_before {
+            r = r.push_query("ending_before", &unwrapped.to_string());
         }
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
-        if let Some(ref limit) = self.limit {
-            r = r.push_query("limit", &limit.to_string());
+        if let Some(ref unwrapped) = self.limit {
+            r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref starting_after) = self.starting_after {
-            r = r.push_query("starting_after", &starting_after.to_string());
+        if let Some(ref unwrapped) = self.starting_after {
+            r = r.push_query("starting_after", &unwrapped.to_string());
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
@@ -16761,8 +17127,10 @@ impl<'a> GetWebhookEndpointsWebhookEndpointRequest<'a> {
                     .webhook_endpoint
                 ),
             );
-        if let Some(ref expand) = self.expand {
-            r = r.push_query("expand", &expand.to_string());
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
         }
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
