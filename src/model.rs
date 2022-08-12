@@ -8594,6 +8594,9 @@ pub struct PaymentLink {
     #[serde(rename = "consent_collection")]
     ///When set, provides configuration to gather active consent from customers.
     pub consent_collection: Option<serde_json::Value>,
+    #[serde(rename = "currency")]
+    ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    pub currency: String,
     #[serde(rename = "customer_creation")]
     ///Configuration for Customer creation during checkout.
     pub customer_creation: String,
@@ -14497,7 +14500,7 @@ pub struct Subscription {
     pub created: i64,
     #[serde(rename = "currency")]
     ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-    pub currency: Option<String>,
+    pub currency: String,
     #[serde(rename = "current_period_end")]
     ///End of the current period that the subscription has been invoiced for. At the end of this period, a new invoice will be created.
     pub current_period_end: i64,
