@@ -2843,6 +2843,92 @@ impl std::fmt::Display for CustomerBalanceCustomerBalanceSettings {
     }
 }
 #[derive(Debug, Serialize, Deserialize)]
+pub struct CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransaction {
+    #[serde(rename = "payment_intent")]
+    ///The [Payment Intent](https://stripe.com/docs/api/payment_intents/object) that funds were applied to.
+    pub payment_intent: serde_json::Value,
+}
+impl std::fmt::Display
+for CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransaction {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction {
+    #[serde(rename = "bank_transfer")]
+    ///
+    pub bank_transfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer,
+}
+impl std::fmt::Display
+for CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer {
+    #[serde(rename = "eu_bank_transfer")]
+    ///
+    pub eu_bank_transfer: Option<
+        CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer,
+    >,
+    #[serde(rename = "reference")]
+    ///The user-supplied reference field on the bank transfer.
+    pub reference: Option<String>,
+    #[serde(rename = "type")]
+    ///The funding method type used to fund the customer balance. Permitted values include: `eu_bank_transfer`, `gb_bank_transfer`, `jp_bank_transfer`, or `mx_bank_transfer`.
+    pub type_: String,
+}
+impl std::fmt::Display
+for CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer {
+    #[serde(rename = "bic")]
+    ///The BIC of the bank of the sender of the funding.
+    pub bic: Option<String>,
+    #[serde(rename = "iban_last4")]
+    ///The last 4 digits of the IBAN of the sender of the funding.
+    pub iban_last4: Option<String>,
+    #[serde(rename = "sender_name")]
+    ///The full name of the sender, as supplied by the sending bank.
+    pub sender_name: Option<String>,
+}
+impl std::fmt::Display
+for CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction {
+    #[serde(rename = "refund")]
+    ///The [Refund](https://stripe.com/docs/api/refunds/object) that moved these funds into the customer's cash balance.
+    pub refund: serde_json::Value,
+}
+impl std::fmt::Display
+for CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransaction {
+    #[serde(rename = "payment_intent")]
+    ///The [Payment Intent](https://stripe.com/docs/api/payment_intents/object) that funds were unapplied from.
+    pub payment_intent: serde_json::Value,
+}
+impl std::fmt::Display
+for CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransaction {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize)]
 pub struct CustomerBalanceTransaction {
     #[serde(rename = "amount")]
     ///The amount of the transaction. A negative value is a credit for the customer's balance, and a positive value is a debit to the customer's `balance`.
@@ -2885,6 +2971,61 @@ pub struct CustomerBalanceTransaction {
     pub type_: String,
 }
 impl std::fmt::Display for CustomerBalanceTransaction {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CustomerCashBalanceTransaction {
+    #[serde(rename = "applied_to_payment")]
+    ///
+    pub applied_to_payment: Option<
+        CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransaction,
+    >,
+    #[serde(rename = "created")]
+    ///Time at which the object was created. Measured in seconds since the Unix epoch.
+    pub created: i64,
+    #[serde(rename = "currency")]
+    ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    pub currency: String,
+    #[serde(rename = "customer")]
+    ///The customer whose available cash balance changed as a result of this transaction.
+    pub customer: serde_json::Value,
+    #[serde(rename = "ending_balance")]
+    ///The total available cash balance for the specified currency after this transaction was applied. Represented in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
+    pub ending_balance: i64,
+    #[serde(rename = "funded")]
+    ///
+    pub funded: Option<
+        CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction,
+    >,
+    #[serde(rename = "id")]
+    ///Unique identifier for the object.
+    pub id: String,
+    #[serde(rename = "livemode")]
+    ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    pub livemode: bool,
+    #[serde(rename = "net_amount")]
+    ///The amount by which the cash balance changed, represented in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). A positive value represents funds being added to the cash balance, a negative value represents funds being removed from the cash balance.
+    pub net_amount: i64,
+    #[serde(rename = "object")]
+    ///String representing the object's type. Objects of the same type share the same value.
+    pub object: String,
+    #[serde(rename = "refunded_from_payment")]
+    ///
+    pub refunded_from_payment: Option<
+        CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction,
+    >,
+    #[serde(rename = "type")]
+    ///The type of the cash balance transaction. One of `applied_to_payment`, `unapplied_from_payment`, `refunded_from_payment`, `funded`, `return_initiated`, or `return_canceled`. New types may be added in future. See [Customer Balance](https://stripe.com/docs/payments/customer-balance#types) to learn more about these types.
+    pub type_: String,
+    #[serde(rename = "unapplied_from_payment")]
+    ///
+    pub unapplied_from_payment: Option<
+        CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransaction,
+    >,
+}
+impl std::fmt::Display for CustomerCashBalanceTransaction {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
@@ -14683,6 +14824,9 @@ pub struct SubscriptionPaymentMethodOptionsCard {
     #[serde(rename = "mandate_options")]
     ///
     pub mandate_options: Option<InvoiceMandateOptionsCard>,
+    #[serde(rename = "network")]
+    ///Selected network to process this Subscription on. Depends on the available networks of the card attached to the Subscription. Can be only set confirm-time.
+    pub network: Option<String>,
     #[serde(rename = "request_three_d_secure")]
     ///We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://stripe.com/docs/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Read our guide on [manually requesting 3D Secure](https://stripe.com/docs/payments/3d-secure#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
     pub request_three_d_secure: Option<String>,

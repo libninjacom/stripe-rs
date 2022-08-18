@@ -1642,6 +1642,33 @@ To change the default, you should <a href="/docs/api#update_customer">update the
             customer,
         }
     }
+    ///<p>Returns a list of transactions that modified the customer’s <a href="/docs/payments/customer-balance">cash balance</a>.</p>
+    pub fn get_customers_customer_cash_balance_transactions(
+        &self,
+        customer: String,
+    ) -> request_model::GetCustomersCustomerCashBalanceTransactionsRequest {
+        request_model::GetCustomersCustomerCashBalanceTransactionsRequest {
+            client: &self,
+            customer,
+            ending_before: None,
+            expand: None,
+            limit: None,
+            starting_after: None,
+        }
+    }
+    ///<p>Retrieves a specific cash balance transaction, which updated the customer’s <a href="/docs/payments/customer-balance">cash balance</a>.</p>
+    pub fn get_customers_customer_cash_balance_transactions_transaction(
+        &self,
+        customer: String,
+        transaction: String,
+    ) -> request_model::GetCustomersCustomerCashBalanceTransactionsTransactionRequest {
+        request_model::GetCustomersCustomerCashBalanceTransactionsTransactionRequest {
+            client: &self,
+            customer,
+            expand: None,
+            transaction,
+        }
+    }
     ///
     pub fn get_customers_customer_discount(
         &self,
