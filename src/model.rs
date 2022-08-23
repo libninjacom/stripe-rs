@@ -7291,6 +7291,9 @@ pub struct Order {
     #[serde(rename = "billing_details")]
     ///Customer billing details associated with the order.
     pub billing_details: Option<serde_json::Value>,
+    #[serde(rename = "client_permissions")]
+    ///The fields on the Order that can be updated from the client
+    pub client_permissions: Option<serde_json::Value>,
     #[serde(rename = "client_secret")]
     /**The client secret of this Order. Used for client-side retrieval using a publishable key.
 
@@ -7439,6 +7442,23 @@ If `setup_future_usage` is already set and you are performing a request using a 
     pub setup_future_usage: Option<String>,
 }
 impl std::fmt::Display for OrdersV2ResourceCardPaymentMethodOptions {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct OrdersV2ResourceClientPermissions {
+    #[serde(rename = "billing_details")]
+    ///Allows or disallows billing details to be set on an Order with a publishable key and Order client_secret
+    pub billing_details: Option<String>,
+    #[serde(rename = "promotion_codes")]
+    ///Allows or disallows promotion codes to be set on an Order with a publishable key and Order client_secret
+    pub promotion_codes: Option<String>,
+    #[serde(rename = "shipping_details")]
+    ///Allows or disallows shipping details to be set on an Order with a publishable key and Order client_secret
+    pub shipping_details: Option<String>,
+}
+impl std::fmt::Display for OrdersV2ResourceClientPermissions {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
@@ -15575,6 +15595,7 @@ impl std::fmt::Display for TerminalReaderReaderResourceProcessPaymentIntentActio
 #[derive(Debug, Serialize, Deserialize)]
 pub struct TerminalReaderReaderResourceProcessSetupIntentAction {
     #[serde(rename = "generated_card")]
+    ///ID of a card PaymentMethod generated from the card_present PaymentMethod that may be attached to a Customer for future transactions. Only present if it was possible to generate a card PaymentMethod.
     pub generated_card: Option<String>,
     #[serde(rename = "setup_intent")]
     ///Most recent SetupIntent processed by the reader.
@@ -16305,7 +16326,7 @@ pub struct TreasuryOutboundTransfer {
     pub description: Option<String>,
     #[serde(rename = "destination_payment_method")]
     ///The PaymentMethod used as the payment instrument for an OutboundTransfer.
-    pub destination_payment_method: String,
+    pub destination_payment_method: Option<String>,
     #[serde(rename = "destination_payment_method_details")]
     ///
     pub destination_payment_method_details: OutboundTransfersPaymentMethodDetails,

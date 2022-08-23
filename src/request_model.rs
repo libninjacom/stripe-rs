@@ -14754,7 +14754,7 @@ pub struct PostTestHelpersCustomersCustomerFundCashBalanceRequest<'a> {
     pub customer: String,
 }
 impl<'a> PostTestHelpersCustomersCustomerFundCashBalanceRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<CustomerBalanceTransaction> {
+    pub async fn send(self) -> anyhow::Result<CustomerCashBalanceTransaction> {
         let mut r = self
             .client
             .client
