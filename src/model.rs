@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Account {
     #[serde(rename = "business_profile")]
     ///Business information about the account.
@@ -78,7 +78,7 @@ impl std::fmt::Display for Account {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountBacsDebitPaymentsSettings {
     #[serde(rename = "display_name")]
     ///The Bacs Direct Debit Display Name for this account. For payments made with Bacs Direct Debit, this will appear on the mandate, and as the statement descriptor.
@@ -89,7 +89,7 @@ impl std::fmt::Display for AccountBacsDebitPaymentsSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountBrandingSettings {
     #[serde(rename = "icon")]
     ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) An icon for the account. Must be square and at least 128px x 128px.
@@ -109,7 +109,7 @@ impl std::fmt::Display for AccountBrandingSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountBusinessProfile {
     #[serde(rename = "mcc")]
     ///[The merchant category code for the account](https://stripe.com/docs/connect/setting-mcc). MCCs are used to classify businesses based on the goods or services they provide.
@@ -141,7 +141,7 @@ impl std::fmt::Display for AccountBusinessProfile {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountCapabilities {
     #[serde(rename = "acss_debit_payments")]
     ///The status of the Canadian pre-authorized debits payments capability of the account, or whether the account can directly process Canadian pre-authorized debits charges.
@@ -248,7 +248,7 @@ impl std::fmt::Display for AccountCapabilities {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountCapabilityFutureRequirements {
     #[serde(rename = "alternatives")]
     ///Fields that are due and can be satisfied by providing the corresponding alternative fields instead.
@@ -280,7 +280,7 @@ impl std::fmt::Display for AccountCapabilityFutureRequirements {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountCapabilityRequirements {
     #[serde(rename = "alternatives")]
     ///Fields that are due and can be satisfied by providing the corresponding alternative fields instead.
@@ -318,7 +318,7 @@ impl std::fmt::Display for AccountCapabilityRequirements {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountCardIssuingSettings {
     #[serde(rename = "tos_acceptance")]
     ///
@@ -329,7 +329,7 @@ impl std::fmt::Display for AccountCardIssuingSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountCardPaymentsSettings {
     #[serde(rename = "decline_on")]
     ///
@@ -349,7 +349,7 @@ impl std::fmt::Display for AccountCardPaymentsSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountDashboardSettings {
     #[serde(rename = "display_name")]
     ///The display name for this account. This is used on the Stripe Dashboard to differentiate between accounts.
@@ -363,7 +363,7 @@ impl std::fmt::Display for AccountDashboardSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountDeclineChargeOn {
     #[serde(rename = "avs_failure")]
     ///Whether Stripe automatically declines charges with an incorrect ZIP or postal code. This setting only applies when a ZIP or postal code is provided and they fail bank verification.
@@ -377,7 +377,7 @@ impl std::fmt::Display for AccountDeclineChargeOn {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountFutureRequirements {
     #[serde(rename = "alternatives")]
     ///Fields that are due and can be satisfied by providing the corresponding alternative fields instead.
@@ -409,7 +409,7 @@ impl std::fmt::Display for AccountFutureRequirements {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountLink {
     #[serde(rename = "created")]
     ///Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -429,7 +429,7 @@ impl std::fmt::Display for AccountLink {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountPaymentsSettings {
     #[serde(rename = "statement_descriptor")]
     ///The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge.
@@ -469,7 +469,7 @@ impl std::fmt::Display for AccountPayoutSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountRequirements {
     #[serde(rename = "alternatives")]
     ///Fields that are due and can be satisfied by providing the corresponding alternative fields instead.
@@ -501,7 +501,7 @@ impl std::fmt::Display for AccountRequirements {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountRequirementsAlternative {
     #[serde(rename = "alternative_fields_due")]
     ///Fields that can be provided to satisfy all fields in `original_fields_due`.
@@ -515,7 +515,7 @@ impl std::fmt::Display for AccountRequirementsAlternative {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountRequirementsError {
     #[serde(rename = "code")]
     ///The code for the type of error.
@@ -532,7 +532,7 @@ impl std::fmt::Display for AccountRequirementsError {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountSepaDebitPaymentsSettings {
     #[serde(rename = "creditor_id")]
     ///SEPA creditor identifier that identifies the company making the payment.
@@ -578,7 +578,7 @@ impl std::fmt::Display for AccountSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountTermsOfService {
     #[serde(rename = "date")]
     ///The Unix timestamp marking when the account representative accepted the service agreement.
@@ -595,7 +595,7 @@ impl std::fmt::Display for AccountTermsOfService {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountTosAcceptance {
     #[serde(rename = "date")]
     ///The Unix timestamp marking when the account representative accepted their service agreement
@@ -615,7 +615,7 @@ impl std::fmt::Display for AccountTosAcceptance {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountTreasurySettings {
     #[serde(rename = "tos_acceptance")]
     ///
@@ -626,7 +626,7 @@ impl std::fmt::Display for AccountTreasurySettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AccountUnificationAccountController {
     #[serde(rename = "is_controller")]
     ///`true` if the Connect application retrieving the resource controls the account and can therefore exercise [platform controls](https://stripe.com/docs/connect/platform-controls-for-standard-accounts). Otherwise, this field is null.
@@ -640,7 +640,7 @@ impl std::fmt::Display for AccountUnificationAccountController {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Address {
     #[serde(rename = "city")]
     ///City, district, suburb, town, or village.
@@ -666,7 +666,7 @@ impl std::fmt::Display for Address {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ApiErrors {
     #[serde(rename = "charge")]
     ///For card errors, the ID of the failed charge.
@@ -745,7 +745,7 @@ impl std::fmt::Display for ApiErrors {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ApplePayDomain {
     #[serde(rename = "created")]
     ///Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -767,7 +767,7 @@ impl std::fmt::Display for ApplePayDomain {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Application {
     #[serde(rename = "id")]
     ///Unique identifier for the object.
@@ -869,7 +869,7 @@ impl std::fmt::Display for AppsSecret {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AutomaticTax {
     #[serde(rename = "enabled")]
     ///Whether Stripe automatically computes tax on this invoice. Note that incompatible invoice items (invoice items with manually specified [tax rates](https://stripe.com/docs/api/tax_rates), negative amounts, or `tax_behavior=unspecified`) cannot be added to automatic tax invoices.
@@ -883,7 +883,7 @@ impl std::fmt::Display for AutomaticTax {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Balance {
     #[serde(rename = "available")]
     ///Funds that are available to be transferred or paid out, whether automatically by Stripe or explicitly via the [Transfers API](https://stripe.com/docs/api#transfers) or [Payouts API](https://stripe.com/docs/api#payouts). The available balance for each currency and payment type can be found in the `source_types` property.
@@ -912,7 +912,7 @@ impl std::fmt::Display for Balance {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BalanceAmount {
     #[serde(rename = "amount")]
     ///Balance amount.
@@ -929,7 +929,7 @@ impl std::fmt::Display for BalanceAmount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BalanceAmountBySourceType {
     #[serde(rename = "bank_account")]
     ///Amount for bank account.
@@ -946,7 +946,7 @@ impl std::fmt::Display for BalanceAmountBySourceType {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BalanceDetail {
     #[serde(rename = "available")]
     ///Funds that are available for use.
@@ -957,7 +957,7 @@ impl std::fmt::Display for BalanceDetail {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BalanceTransaction {
     #[serde(rename = "amount")]
     ///Gross amount of the transaction, in %s.
@@ -1010,7 +1010,7 @@ impl std::fmt::Display for BalanceTransaction {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BankAccount {
     #[serde(rename = "account")]
     ///The ID of the account that the bank account is associated with.
@@ -1071,7 +1071,7 @@ impl std::fmt::Display for BankAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BankConnectionsResourceAccountholder {
     #[serde(rename = "account")]
     ///The ID of the Stripe account this account belongs to. Should only be present if `account_holder.type` is `account`.
@@ -1115,7 +1115,7 @@ impl std::fmt::Display for BankConnectionsResourceBalance {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BankConnectionsResourceBalanceApiResourceCashBalance {
     #[serde(rename = "available")]
     /**The funds available to the account holder. Typically this is the current balance less any holds.
@@ -1130,7 +1130,7 @@ impl std::fmt::Display for BankConnectionsResourceBalanceApiResourceCashBalance 
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BankConnectionsResourceBalanceApiResourceCreditBalance {
     #[serde(rename = "used")]
     /**The credit that has been used by the account holder.
@@ -1145,7 +1145,7 @@ impl std::fmt::Display for BankConnectionsResourceBalanceApiResourceCreditBalanc
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BankConnectionsResourceBalanceRefresh {
     #[serde(rename = "last_attempted_at")]
     ///The time at which the last refresh attempt was initiated. Measured in seconds since the Unix epoch.
@@ -1159,7 +1159,7 @@ impl std::fmt::Display for BankConnectionsResourceBalanceRefresh {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BankConnectionsResourceLinkAccountSessionFilters {
     #[serde(rename = "countries")]
     ///List of countries from which to filter accounts.
@@ -1170,7 +1170,7 @@ impl std::fmt::Display for BankConnectionsResourceLinkAccountSessionFilters {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BankConnectionsResourceOwnershipRefresh {
     #[serde(rename = "last_attempted_at")]
     ///The time at which the last refresh attempt was initiated. Measured in seconds since the Unix epoch.
@@ -1184,7 +1184,7 @@ impl std::fmt::Display for BankConnectionsResourceOwnershipRefresh {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct BillingDetails {
     #[serde(rename = "address")]
     ///Billing address.
@@ -1318,7 +1318,7 @@ impl std::fmt::Display for Capability {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Card {
     #[serde(rename = "account")]
     ///The account this card belongs to. This attribute will not be in the card object if the card belongs to a customer or recipient instead.
@@ -1415,7 +1415,7 @@ impl std::fmt::Display for Card {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CardGeneratedFromPaymentMethodDetails {
     #[serde(rename = "card_present")]
     ///
@@ -1429,7 +1429,7 @@ impl std::fmt::Display for CardGeneratedFromPaymentMethodDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CardIssuingAccountTermsOfService {
     #[serde(rename = "date")]
     ///The Unix timestamp marking when the account representative accepted the service agreement.
@@ -1446,7 +1446,7 @@ impl std::fmt::Display for CardIssuingAccountTermsOfService {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CardMandatePaymentMethodDetails {}
 impl std::fmt::Display for CardMandatePaymentMethodDetails {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
@@ -1619,7 +1619,7 @@ impl std::fmt::Display for Charge {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ChargeFraudDetails {
     #[serde(rename = "stripe_report")]
     ///Assessments from Stripe. If set, the value is `fraudulent`.
@@ -1633,7 +1633,7 @@ impl std::fmt::Display for ChargeFraudDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ChargeOutcome {
     #[serde(rename = "network_status")]
     ///Possible values are `approved_by_network`, `declined_by_network`, `not_sent_to_network`, and `reversed_after_approval`. The value `reversed_after_approval` indicates the payment was [blocked by Stripe](https://stripe.com/docs/declines#blocked-payments) after bank authorization, and may temporarily appear as "pending" on a cardholder's statement.
@@ -1832,7 +1832,7 @@ impl std::fmt::Display for CheckoutSession {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutAcssDebitMandateOptions {
     #[serde(rename = "custom_mandate_url")]
     ///A URL for custom mandate text
@@ -1855,7 +1855,7 @@ impl std::fmt::Display for CheckoutAcssDebitMandateOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutAcssDebitPaymentMethodOptions {
     #[serde(rename = "currency")]
     ///Currency supported by the bank account. Returned when the Session is in `setup` mode.
@@ -1879,7 +1879,7 @@ impl std::fmt::Display for CheckoutAcssDebitPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutAffirmPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -1894,7 +1894,7 @@ impl std::fmt::Display for CheckoutAffirmPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutAfterpayClearpayPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -1909,7 +1909,7 @@ impl std::fmt::Display for CheckoutAfterpayClearpayPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutAlipayPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -1924,7 +1924,7 @@ impl std::fmt::Display for CheckoutAlipayPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutAuBecsDebitPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -1939,7 +1939,7 @@ impl std::fmt::Display for CheckoutAuBecsDebitPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutBacsDebitPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -1954,7 +1954,7 @@ impl std::fmt::Display for CheckoutBacsDebitPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutBancontactPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -1969,7 +1969,7 @@ impl std::fmt::Display for CheckoutBancontactPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutBoletoPaymentMethodOptions {
     #[serde(rename = "expires_after_days")]
     ///The number of calendar days before a Boleto voucher expires. For example, if you create a Boleto voucher on Monday and you set expires_after_days to 2, the Boleto voucher will expire on Wednesday at 23:59 America/Sao_Paulo time.
@@ -1987,7 +1987,7 @@ impl std::fmt::Display for CheckoutBoletoPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutCardInstallmentsOptions {
     #[serde(rename = "enabled")]
     ///Indicates if installments are enabled
@@ -1998,7 +1998,7 @@ impl std::fmt::Display for CheckoutCardInstallmentsOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutCardPaymentMethodOptions {
     #[serde(rename = "installments")]
     ///
@@ -2022,7 +2022,7 @@ impl std::fmt::Display for CheckoutCardPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutCustomerBalanceBankTransferPaymentMethodOptions {
     #[serde(rename = "eu_bank_transfer")]
     ///
@@ -2041,7 +2041,7 @@ impl std::fmt::Display for CheckoutCustomerBalanceBankTransferPaymentMethodOptio
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutCustomerBalancePaymentMethodOptions {
     #[serde(rename = "bank_transfer")]
     ///
@@ -2062,7 +2062,7 @@ impl std::fmt::Display for CheckoutCustomerBalancePaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutEpsPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2077,7 +2077,7 @@ impl std::fmt::Display for CheckoutEpsPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutFpxPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2092,7 +2092,7 @@ impl std::fmt::Display for CheckoutFpxPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutGiropayPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2107,7 +2107,7 @@ impl std::fmt::Display for CheckoutGiropayPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutGrabPayPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2122,7 +2122,7 @@ impl std::fmt::Display for CheckoutGrabPayPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutIdealPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2137,7 +2137,7 @@ impl std::fmt::Display for CheckoutIdealPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutKlarnaPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2152,7 +2152,7 @@ impl std::fmt::Display for CheckoutKlarnaPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutKonbiniPaymentMethodOptions {
     #[serde(rename = "expires_after_days")]
     ///The number of calendar days (between 1 and 60) after which Konbini payment instructions will expire. For example, if a PaymentIntent is confirmed with Konbini and `expires_after_days` set to 2 on Monday JST, the instructions will expire on Wednesday 23:59:59 JST.
@@ -2170,7 +2170,7 @@ impl std::fmt::Display for CheckoutKonbiniPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutOxxoPaymentMethodOptions {
     #[serde(rename = "expires_after_days")]
     ///The number of calendar days before an OXXO invoice expires. For example, if you create an OXXO invoice on Monday and you set expires_after_days to 2, the OXXO invoice will expire on Wednesday at 23:59 America/Mexico_City time.
@@ -2188,7 +2188,7 @@ impl std::fmt::Display for CheckoutOxxoPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutP24PaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2203,7 +2203,7 @@ impl std::fmt::Display for CheckoutP24PaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutPaynowPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2218,7 +2218,7 @@ impl std::fmt::Display for CheckoutPaynowPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutSepaDebitPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2233,7 +2233,7 @@ impl std::fmt::Display for CheckoutSepaDebitPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutSessionPaymentMethodOptions {
     #[serde(rename = "acss_debit")]
     ///
@@ -2310,7 +2310,7 @@ impl std::fmt::Display for CheckoutSessionPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutSofortPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2325,7 +2325,7 @@ impl std::fmt::Display for CheckoutSofortPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutUsBankAccountPaymentMethodOptions {
     #[serde(rename = "financial_connections")]
     ///
@@ -2404,7 +2404,7 @@ impl std::fmt::Display for CountrySpec {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CountrySpecVerificationFieldDetails {
     #[serde(rename = "additional")]
     ///Additional fields which are only required for some users.
@@ -2432,7 +2432,7 @@ impl std::fmt::Display for CountrySpecVerificationFields {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Coupon {
     #[serde(rename = "amount_off")]
     ///Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer.
@@ -2491,7 +2491,7 @@ impl std::fmt::Display for Coupon {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CouponAppliesTo {
     #[serde(rename = "products")]
     ///A list of product IDs this coupon applies to
@@ -2502,7 +2502,7 @@ impl std::fmt::Display for CouponAppliesTo {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CouponCurrencyOption {
     #[serde(rename = "amount_off")]
     ///Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer.
@@ -2602,7 +2602,7 @@ impl std::fmt::Display for CreditNote {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CreditNoteLineItem {
     #[serde(rename = "amount")]
     ///The integer amount in %s representing the gross amount being credited for this line item, excluding (exclusive) tax and discounts.
@@ -2675,7 +2675,7 @@ impl std::fmt::Display for CreditNoteTaxAmount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CurrencyOption {
     #[serde(rename = "custom_unit_amount")]
     ///When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
@@ -2698,7 +2698,7 @@ impl std::fmt::Display for CurrencyOption {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CustomUnitAmount {
     #[serde(rename = "maximum")]
     ///The maximum unit amount the customer can specify for this item.
@@ -2715,7 +2715,7 @@ impl std::fmt::Display for CustomUnitAmount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Customer {
     #[serde(rename = "address")]
     ///The customer's address.
@@ -2811,7 +2811,7 @@ impl std::fmt::Display for Customer {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CustomerAcceptance {
     #[serde(rename = "accepted_at")]
     ///The time at which the customer accepted the Mandate.
@@ -2831,7 +2831,7 @@ impl std::fmt::Display for CustomerAcceptance {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CustomerBalanceCustomerBalanceSettings {
     #[serde(rename = "reconciliation_mode")]
     ///The configuration for how funds that land in the customer cash balance are reconciled.
@@ -2866,7 +2866,7 @@ for CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer {
     #[serde(rename = "eu_bank_transfer")]
     ///
@@ -2886,7 +2886,7 @@ for CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResour
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer {
     #[serde(rename = "bic")]
     ///The BIC of the bank of the sender of the funding.
@@ -3030,7 +3030,7 @@ impl std::fmt::Display for CustomerCashBalanceTransaction {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CustomerTax {
     #[serde(rename = "automatic_tax")]
     ///Surfaces if automatic tax computation is possible given the current customer location information.
@@ -3047,7 +3047,7 @@ impl std::fmt::Display for CustomerTax {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CustomerTaxLocation {
     #[serde(rename = "country")]
     ///The customer's country as identified by Stripe Tax.
@@ -3064,7 +3064,7 @@ impl std::fmt::Display for CustomerTaxLocation {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedAccount {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3081,7 +3081,7 @@ impl std::fmt::Display for DeletedAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedApplePayDomain {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3098,7 +3098,7 @@ impl std::fmt::Display for DeletedApplePayDomain {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedApplication {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3118,7 +3118,7 @@ impl std::fmt::Display for DeletedApplication {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedBankAccount {
     #[serde(rename = "currency")]
     ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
@@ -3138,7 +3138,7 @@ impl std::fmt::Display for DeletedBankAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedCard {
     #[serde(rename = "currency")]
     ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
@@ -3158,7 +3158,7 @@ impl std::fmt::Display for DeletedCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedCoupon {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3175,7 +3175,7 @@ impl std::fmt::Display for DeletedCoupon {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedCustomer {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3237,7 +3237,7 @@ impl std::fmt::Display for DeletedDiscount {
 }
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DeletedExternalAccount(pub serde_json::Value);
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedInvoice {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3254,7 +3254,7 @@ impl std::fmt::Display for DeletedInvoice {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedInvoiceitem {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3273,7 +3273,7 @@ impl std::fmt::Display for DeletedInvoiceitem {
 }
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DeletedPaymentSource(pub serde_json::Value);
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedPerson {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3290,7 +3290,7 @@ impl std::fmt::Display for DeletedPerson {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedPlan {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3307,7 +3307,7 @@ impl std::fmt::Display for DeletedPlan {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedPrice {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3324,7 +3324,7 @@ impl std::fmt::Display for DeletedPrice {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedProduct {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3341,7 +3341,7 @@ impl std::fmt::Display for DeletedProduct {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedRadarValueList {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3358,7 +3358,7 @@ impl std::fmt::Display for DeletedRadarValueList {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedRadarValueListItem {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3375,7 +3375,7 @@ impl std::fmt::Display for DeletedRadarValueListItem {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedSku {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3392,7 +3392,7 @@ impl std::fmt::Display for DeletedSku {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedSubscriptionItem {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3409,7 +3409,7 @@ impl std::fmt::Display for DeletedSubscriptionItem {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedTaxId {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3426,7 +3426,7 @@ impl std::fmt::Display for DeletedTaxId {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedTerminalConfiguration {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3443,7 +3443,7 @@ impl std::fmt::Display for DeletedTerminalConfiguration {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedTerminalLocation {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3460,7 +3460,7 @@ impl std::fmt::Display for DeletedTerminalLocation {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedTerminalReader {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3477,7 +3477,7 @@ impl std::fmt::Display for DeletedTerminalReader {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedTestHelpersTestClock {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3494,7 +3494,7 @@ impl std::fmt::Display for DeletedTestHelpersTestClock {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DeletedWebhookEndpoint {
     #[serde(rename = "deleted")]
     ///Always true for a deleted object
@@ -3621,7 +3621,7 @@ impl std::fmt::Display for Dispute {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DisputeEvidence {
     #[serde(rename = "access_activity_log")]
     ///Any server or activity logs showing proof that the customer accessed or downloaded the purchased digital product. This information should include IP addresses, corresponding timestamps, and any detailed recorded activity.
@@ -3710,7 +3710,7 @@ impl std::fmt::Display for DisputeEvidence {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct DisputeEvidenceDetails {
     #[serde(rename = "due_by")]
     ///Date by which evidence must be submitted in order to successfully challenge dispute. Will be null if the customer's bank or credit card company doesn't allow a response for this particular dispute.
@@ -3730,7 +3730,7 @@ impl std::fmt::Display for DisputeEvidenceDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct EmailSent {
     #[serde(rename = "email_sent_at")]
     ///The timestamp when the email was sent.
@@ -3744,7 +3744,7 @@ impl std::fmt::Display for EmailSent {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct EphemeralKey {
     #[serde(rename = "created")]
     ///Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -3838,7 +3838,7 @@ impl std::fmt::Display for ExchangeRate {
 }
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ExternalAccount(pub serde_json::Value);
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Fee {
     #[serde(rename = "amount")]
     ///Amount of the fee, in cents.
@@ -3893,7 +3893,7 @@ impl std::fmt::Display for FeeRefund {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct File {
     #[serde(rename = "created")]
     ///Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -3969,7 +3969,7 @@ impl std::fmt::Display for FileLink {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct FinancialConnectionsAccount {
     #[serde(rename = "account_holder")]
     ///The account holder that this account belongs to.
@@ -4041,7 +4041,7 @@ impl std::fmt::Display for FinancialConnectionsAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct FinancialConnectionsAccountOwner {
     #[serde(rename = "email")]
     ///The email address of the owner.
@@ -4128,7 +4128,7 @@ impl std::fmt::Display for FinancialConnectionsSession {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct FinancialReportingFinanceReportRunRunParameters {
     #[serde(rename = "columns")]
     ///The set of output columns requested for inclusion in the report run.
@@ -4183,7 +4183,7 @@ impl std::fmt::Display for FundingInstructions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct FundingInstructionsBankTransfer {
     #[serde(rename = "country")]
     ///The country of the bank account to fund
@@ -4200,7 +4200,7 @@ impl std::fmt::Display for FundingInstructionsBankTransfer {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct FundingInstructionsBankTransferFinancialAddress {
     #[serde(rename = "iban")]
     ///Iban Records contain E.U. bank account details per the SEPA format.
@@ -4226,7 +4226,7 @@ impl std::fmt::Display for FundingInstructionsBankTransferFinancialAddress {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct FundingInstructionsBankTransferIbanRecord {
     #[serde(rename = "account_holder_name")]
     ///The name of the person or business that owns the bank account
@@ -4246,7 +4246,7 @@ impl std::fmt::Display for FundingInstructionsBankTransferIbanRecord {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct FundingInstructionsBankTransferSortCodeRecord {
     #[serde(rename = "account_holder_name")]
     ///The name of the person or business that owns the bank account
@@ -4263,7 +4263,7 @@ impl std::fmt::Display for FundingInstructionsBankTransferSortCodeRecord {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct FundingInstructionsBankTransferSpeiRecord {
     #[serde(rename = "bank_code")]
     ///The three-digit bank code
@@ -4280,7 +4280,7 @@ impl std::fmt::Display for FundingInstructionsBankTransferSpeiRecord {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct FundingInstructionsBankTransferZenginRecord {
     #[serde(rename = "account_holder_name")]
     ///The account holder name
@@ -4309,7 +4309,7 @@ impl std::fmt::Display for FundingInstructionsBankTransferZenginRecord {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoDataDocumentReportDateOfBirth {
     #[serde(rename = "day")]
     ///Numerical day between 1 and 31.
@@ -4326,7 +4326,7 @@ impl std::fmt::Display for GelatoDataDocumentReportDateOfBirth {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoDataDocumentReportExpirationDate {
     #[serde(rename = "day")]
     ///Numerical day between 1 and 31.
@@ -4343,7 +4343,7 @@ impl std::fmt::Display for GelatoDataDocumentReportExpirationDate {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoDataDocumentReportIssuedDate {
     #[serde(rename = "day")]
     ///Numerical day between 1 and 31.
@@ -4360,7 +4360,7 @@ impl std::fmt::Display for GelatoDataDocumentReportIssuedDate {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoDataIdNumberReportDate {
     #[serde(rename = "day")]
     ///Numerical day between 1 and 31.
@@ -4377,7 +4377,7 @@ impl std::fmt::Display for GelatoDataIdNumberReportDate {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoDataVerifiedOutputsDate {
     #[serde(rename = "day")]
     ///Numerical day between 1 and 31.
@@ -4394,7 +4394,7 @@ impl std::fmt::Display for GelatoDataVerifiedOutputsDate {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoDocumentReport {
     #[serde(rename = "address")]
     ///Address as it appears in the document.
@@ -4438,7 +4438,7 @@ impl std::fmt::Display for GelatoDocumentReport {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoDocumentReportError {
     #[serde(rename = "code")]
     ///A short machine-readable string giving the reason for the verification failure.
@@ -4452,7 +4452,7 @@ impl std::fmt::Display for GelatoDocumentReportError {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoIdNumberReport {
     #[serde(rename = "dob")]
     ///Date of birth.
@@ -4481,7 +4481,7 @@ impl std::fmt::Display for GelatoIdNumberReport {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoIdNumberReportError {
     #[serde(rename = "code")]
     ///A short machine-readable string giving the reason for the verification failure.
@@ -4495,7 +4495,7 @@ impl std::fmt::Display for GelatoIdNumberReportError {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoReportDocumentOptions {
     #[serde(rename = "allowed_types")]
     ///Array of strings of allowed identity document types. If the provided identity document isn’t one of the allowed types, the verification check will fail with a document_type_not_allowed error code.
@@ -4515,14 +4515,14 @@ impl std::fmt::Display for GelatoReportDocumentOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoReportIdNumberOptions {}
 impl std::fmt::Display for GelatoReportIdNumberOptions {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoSelfieReport {
     #[serde(rename = "document")]
     ///ID of the [File](https://stripe.com/docs/api/files) holding the image of the identity document used in this check.
@@ -4542,7 +4542,7 @@ impl std::fmt::Display for GelatoSelfieReport {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoSelfieReportError {
     #[serde(rename = "code")]
     ///A short machine-readable string giving the reason for the verification failure.
@@ -4556,7 +4556,7 @@ impl std::fmt::Display for GelatoSelfieReportError {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoSessionDocumentOptions {
     #[serde(rename = "allowed_types")]
     ///Array of strings of allowed identity document types. If the provided identity document isn’t one of the allowed types, the verification check will fail with a document_type_not_allowed error code.
@@ -4576,14 +4576,14 @@ impl std::fmt::Display for GelatoSessionDocumentOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoSessionIdNumberOptions {}
 impl std::fmt::Display for GelatoSessionIdNumberOptions {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoSessionLastError {
     #[serde(rename = "code")]
     ///A short machine-readable string giving the reason for the verification or user-session failure.
@@ -4597,7 +4597,7 @@ impl std::fmt::Display for GelatoSessionLastError {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoVerificationReportOptions {
     #[serde(rename = "document")]
     ///
@@ -4611,7 +4611,7 @@ impl std::fmt::Display for GelatoVerificationReportOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoVerificationSessionOptions {
     #[serde(rename = "document")]
     ///
@@ -4625,7 +4625,7 @@ impl std::fmt::Display for GelatoVerificationSessionOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct GelatoVerifiedOutputs {
     #[serde(rename = "address")]
     ///The user's verified address.
@@ -4756,7 +4756,7 @@ impl std::fmt::Display for InboundTransfers {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InboundTransfersPaymentMethodDetailsUsBankAccount {
     #[serde(rename = "account_holder_type")]
     ///Account holder type: individual or company.
@@ -5015,7 +5015,7 @@ impl std::fmt::Display for Invoice {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoiceInstallmentsCard {
     #[serde(rename = "enabled")]
     ///Whether Installments are enabled for this Invoice.
@@ -5026,7 +5026,7 @@ impl std::fmt::Display for InvoiceInstallmentsCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoiceItemThresholdReason {
     #[serde(rename = "line_item_ids")]
     ///The IDs of the line items that triggered the threshold invoice.
@@ -5040,7 +5040,7 @@ impl std::fmt::Display for InvoiceItemThresholdReason {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoiceLineItemPeriod {
     #[serde(rename = "end")]
     ///The end of the period, which must be greater than or equal to the start.
@@ -5054,7 +5054,7 @@ impl std::fmt::Display for InvoiceLineItemPeriod {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoiceMandateOptionsCard {
     #[serde(rename = "amount")]
     ///Amount to be charged for future payments.
@@ -5071,7 +5071,7 @@ impl std::fmt::Display for InvoiceMandateOptionsCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicePaymentMethodOptionsAcssDebit {
     #[serde(rename = "mandate_options")]
     ///
@@ -5085,7 +5085,7 @@ impl std::fmt::Display for InvoicePaymentMethodOptionsAcssDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicePaymentMethodOptionsAcssDebitMandateOptions {
     #[serde(rename = "transaction_type")]
     ///Transaction type of the mandate.
@@ -5096,7 +5096,7 @@ impl std::fmt::Display for InvoicePaymentMethodOptionsAcssDebitMandateOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicePaymentMethodOptionsBancontact {
     #[serde(rename = "preferred_language")]
     ///Preferred language of the Bancontact authorization page that the customer is redirected to.
@@ -5107,7 +5107,7 @@ impl std::fmt::Display for InvoicePaymentMethodOptionsBancontact {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicePaymentMethodOptionsCard {
     #[serde(rename = "installments")]
     ///
@@ -5121,7 +5121,7 @@ impl std::fmt::Display for InvoicePaymentMethodOptionsCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicePaymentMethodOptionsCustomerBalance {
     #[serde(rename = "bank_transfer")]
     ///
@@ -5135,7 +5135,7 @@ impl std::fmt::Display for InvoicePaymentMethodOptionsCustomerBalance {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicePaymentMethodOptionsCustomerBalanceBankTransfer {
     #[serde(rename = "eu_bank_transfer")]
     ///
@@ -5151,7 +5151,7 @@ impl std::fmt::Display for InvoicePaymentMethodOptionsCustomerBalanceBankTransfe
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer {
     #[serde(rename = "country")]
     ///The desired country code of the bank account information. Permitted values include: `DE`, `ES`, `FR`, `IE`, or `NL`.
@@ -5163,14 +5163,14 @@ for InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicePaymentMethodOptionsKonbini {}
 impl std::fmt::Display for InvoicePaymentMethodOptionsKonbini {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicePaymentMethodOptionsUsBankAccount {
     #[serde(rename = "financial_connections")]
     ///
@@ -5186,7 +5186,7 @@ impl std::fmt::Display for InvoicePaymentMethodOptionsUsBankAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions {
     #[serde(rename = "permissions")]
     ///The list of permissions to request. The `payment_method` permission must be included.
@@ -5197,7 +5197,7 @@ impl std::fmt::Display for InvoicePaymentMethodOptionsUsBankAccountLinkedAccount
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoiceSettingCustomField {
     #[serde(rename = "name")]
     ///The name of the custom field.
@@ -5211,7 +5211,7 @@ impl std::fmt::Display for InvoiceSettingCustomField {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoiceSettingCustomerSetting {
     #[serde(rename = "custom_fields")]
     ///Default custom fields to be displayed on invoices for this customer.
@@ -5231,7 +5231,7 @@ impl std::fmt::Display for InvoiceSettingCustomerSetting {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoiceSettingQuoteSetting {
     #[serde(rename = "days_until_due")]
     ///Number of days within which a customer must pay invoices generated by this quote. This value will be `null` for quotes where `collection_method=charge_automatically`.
@@ -5242,7 +5242,7 @@ impl std::fmt::Display for InvoiceSettingQuoteSetting {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoiceSettingRenderingOptions {
     #[serde(rename = "amount_tax_display")]
     ///How line-item prices and amounts will be displayed with respect to tax on invoice PDFs.
@@ -5253,7 +5253,7 @@ impl std::fmt::Display for InvoiceSettingRenderingOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoiceSettingSubscriptionScheduleSetting {
     #[serde(rename = "days_until_due")]
     ///Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.
@@ -5281,7 +5281,7 @@ impl std::fmt::Display for InvoiceTaxAmount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoiceThresholdReason {
     #[serde(rename = "amount_gte")]
     ///The total invoice amount threshold boundary if it triggered the threshold invoice.
@@ -5383,7 +5383,7 @@ impl std::fmt::Display for Invoiceitem {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicesLineItemsCreditedItems {
     #[serde(rename = "invoice")]
     ///Invoice containing the credited invoice line items
@@ -5397,7 +5397,7 @@ impl std::fmt::Display for InvoicesLineItemsCreditedItems {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicesLineItemsProrationDetails {
     #[serde(rename = "credited_items")]
     ///For a credit proration `line_item`, the original debit line_items to which the credit proration applies.
@@ -5408,7 +5408,7 @@ impl std::fmt::Display for InvoicesLineItemsProrationDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicesPaymentMethodOptions {
     #[serde(rename = "acss_debit")]
     ///If paying by `acss_debit`, this sub-hash contains details about the Canadian pre-authorized debit payment method options to pass to the invoice’s PaymentIntent.
@@ -5434,7 +5434,7 @@ impl std::fmt::Display for InvoicesPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicesPaymentSettings {
     #[serde(rename = "default_mandate")]
     ///ID of the mandate to be used for this invoice. It must correspond to the payment method used to pay the invoice, including the invoice's default_payment_method or default_source, if set.
@@ -5451,7 +5451,7 @@ impl std::fmt::Display for InvoicesPaymentSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicesResourceInvoiceTaxId {
     #[serde(rename = "type")]
     ///The type of the tax ID, one of `eu_vat`, `br_cnpj`, `br_cpf`, `eu_oss_vat`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `li_uid`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, or `unknown`
@@ -5465,7 +5465,7 @@ impl std::fmt::Display for InvoicesResourceInvoiceTaxId {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct InvoicesStatusTransitions {
     #[serde(rename = "finalized_at")]
     ///The time that the invoice draft was finalized.
@@ -5862,7 +5862,7 @@ impl std::fmt::Display for IssuingTransaction {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingAuthorizationAmountDetails {
     #[serde(rename = "atm_fee")]
     ///The fee charged by the ATM for the cash withdrawal.
@@ -5873,7 +5873,7 @@ impl std::fmt::Display for IssuingAuthorizationAmountDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingAuthorizationMerchantData {
     #[serde(rename = "category")]
     ///A categorization of the seller's type of business. See our [merchant categories guide](https://stripe.com/docs/issuing/merchant-categories) for a list of possible values.
@@ -5905,7 +5905,7 @@ impl std::fmt::Display for IssuingAuthorizationMerchantData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingAuthorizationPendingRequest {
     #[serde(rename = "amount")]
     ///The additional amount Stripe will hold if the authorization is approved, in the card's [currency](https://stripe.com/docs/api#issuing_authorization_object-pending-request-currency) and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
@@ -5931,7 +5931,7 @@ impl std::fmt::Display for IssuingAuthorizationPendingRequest {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingAuthorizationRequest {
     #[serde(rename = "amount")]
     ///The `pending_request.amount` at the time of the request, presented in your card's currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). Stripe held this amount from your account to fund the authorization if the request was approved.
@@ -5963,7 +5963,7 @@ impl std::fmt::Display for IssuingAuthorizationRequest {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingAuthorizationTreasury {
     #[serde(rename = "received_credits")]
     ///The array of [ReceivedCredits](https://stripe.com/docs/api/treasury/received_credits) associated with this authorization
@@ -5980,7 +5980,7 @@ impl std::fmt::Display for IssuingAuthorizationTreasury {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingAuthorizationVerificationData {
     #[serde(rename = "address_line1_check")]
     ///Whether the cardholder provided an address first line and if it matched the cardholder’s `billing.address.line1`.
@@ -6000,7 +6000,7 @@ impl std::fmt::Display for IssuingAuthorizationVerificationData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardApplePay {
     #[serde(rename = "eligible")]
     ///Apple Pay Eligibility
@@ -6014,7 +6014,7 @@ impl std::fmt::Display for IssuingCardApplePay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardAuthorizationControls {
     #[serde(rename = "allowed_categories")]
     ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
@@ -6034,7 +6034,7 @@ impl std::fmt::Display for IssuingCardAuthorizationControls {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardGooglePay {
     #[serde(rename = "eligible")]
     ///Google Pay Eligibility
@@ -6056,12 +6056,18 @@ pub struct IssuingCardShipping {
     #[serde(rename = "carrier")]
     ///The delivery company that shipped a card.
     pub carrier: Option<String>,
+    #[serde(rename = "customs")]
+    ///Additional information that may be required for clearing customs.
+    pub customs: Option<serde_json::Value>,
     #[serde(rename = "eta")]
     ///A unix timestamp representing a best estimate of when the card will be delivered.
     pub eta: Option<i64>,
     #[serde(rename = "name")]
     ///Recipient name.
     pub name: String,
+    #[serde(rename = "phone_number")]
+    ///The phone number of the receiver of the bulk shipment. This phone number will be provided to the shipping company, who might use it to contact the receiver in case of delivery issues.
+    pub phone_number: Option<String>,
     #[serde(rename = "service")]
     ///Shipment service, such as `standard` or `express`.
     pub service: String,
@@ -6083,7 +6089,18 @@ impl std::fmt::Display for IssuingCardShipping {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
+pub struct IssuingCardShippingCustoms {
+    #[serde(rename = "eori_number")]
+    ///A registration number used for customs in Europe. See https://www.gov.uk/eori and https://ec.europa.eu/taxation_customs/business/customs-procedures-import-and-export/customs-procedures/economic-operators-registration-and-identification-number-eori_en.
+    pub eori_number: Option<String>,
+}
+impl std::fmt::Display for IssuingCardShippingCustoms {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardSpendingLimit {
     #[serde(rename = "amount")]
     ///Maximum amount allowed to spend per interval. This amount is in the card's currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
@@ -6128,7 +6145,7 @@ impl std::fmt::Display for IssuingCardholderAddress {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardholderAuthorizationControls {
     #[serde(rename = "allowed_categories")]
     ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
@@ -6148,7 +6165,7 @@ impl std::fmt::Display for IssuingCardholderAuthorizationControls {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardholderCompany {
     #[serde(rename = "tax_id_provided")]
     ///Whether the company's business ID number was provided.
@@ -6159,7 +6176,7 @@ impl std::fmt::Display for IssuingCardholderCompany {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardholderIdDocument {
     #[serde(rename = "back")]
     ///The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
@@ -6173,7 +6190,7 @@ impl std::fmt::Display for IssuingCardholderIdDocument {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardholderIndividual {
     #[serde(rename = "dob")]
     ///The date of birth of this cardholder.
@@ -6193,7 +6210,7 @@ impl std::fmt::Display for IssuingCardholderIndividual {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardholderIndividualDob {
     #[serde(rename = "day")]
     ///The day of birth, between 1 and 31.
@@ -6210,7 +6227,7 @@ impl std::fmt::Display for IssuingCardholderIndividualDob {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardholderRequirements {
     #[serde(rename = "disabled_reason")]
     ///If `disabled_reason` is present, all cards will decline authorizations with `cardholder_verification_required` reason.
@@ -6224,7 +6241,7 @@ impl std::fmt::Display for IssuingCardholderRequirements {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardholderSpendingLimit {
     #[serde(rename = "amount")]
     ///Maximum amount allowed to spend per interval. This amount is in the card's currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
@@ -6241,7 +6258,7 @@ impl std::fmt::Display for IssuingCardholderSpendingLimit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingCardholderVerification {
     #[serde(rename = "document")]
     ///An identifying document, either a passport or local ID card.
@@ -6252,7 +6269,7 @@ impl std::fmt::Display for IssuingCardholderVerification {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingDisputeCanceledEvidence {
     #[serde(rename = "additional_documentation")]
     ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6290,7 +6307,7 @@ impl std::fmt::Display for IssuingDisputeCanceledEvidence {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingDisputeDuplicateEvidence {
     #[serde(rename = "additional_documentation")]
     ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6316,7 +6333,7 @@ impl std::fmt::Display for IssuingDisputeDuplicateEvidence {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingDisputeEvidence {
     #[serde(rename = "canceled")]
     ///
@@ -6350,7 +6367,7 @@ impl std::fmt::Display for IssuingDisputeEvidence {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingDisputeFraudulentEvidence {
     #[serde(rename = "additional_documentation")]
     ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6364,7 +6381,7 @@ impl std::fmt::Display for IssuingDisputeFraudulentEvidence {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingDisputeMerchandiseNotAsDescribedEvidence {
     #[serde(rename = "additional_documentation")]
     ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6390,7 +6407,7 @@ impl std::fmt::Display for IssuingDisputeMerchandiseNotAsDescribedEvidence {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingDisputeNotReceivedEvidence {
     #[serde(rename = "additional_documentation")]
     ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6413,7 +6430,7 @@ impl std::fmt::Display for IssuingDisputeNotReceivedEvidence {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingDisputeOtherEvidence {
     #[serde(rename = "additional_documentation")]
     ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6433,7 +6450,7 @@ impl std::fmt::Display for IssuingDisputeOtherEvidence {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingDisputeServiceNotAsDescribedEvidence {
     #[serde(rename = "additional_documentation")]
     ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6456,7 +6473,7 @@ impl std::fmt::Display for IssuingDisputeServiceNotAsDescribedEvidence {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingDisputeTreasury {
     #[serde(rename = "debit_reversal")]
     ///The Treasury [DebitReversal](https://stripe.com/docs/api/treasury/debit_reversals) representing this Issuing dispute
@@ -6470,7 +6487,7 @@ impl std::fmt::Display for IssuingDisputeTreasury {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingTransactionAmountDetails {
     #[serde(rename = "atm_fee")]
     ///The fee charged by the ATM for the cash withdrawal.
@@ -6481,7 +6498,7 @@ impl std::fmt::Display for IssuingTransactionAmountDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingTransactionFlightData {
     #[serde(rename = "departure_at")]
     ///The time that the flight departed.
@@ -6504,7 +6521,7 @@ impl std::fmt::Display for IssuingTransactionFlightData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingTransactionFlightDataLeg {
     #[serde(rename = "arrival_airport_code")]
     ///The three-letter IATA airport code of the flight's destination.
@@ -6530,7 +6547,7 @@ impl std::fmt::Display for IssuingTransactionFlightDataLeg {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingTransactionFuelData {
     #[serde(rename = "type")]
     ///The type of fuel that was purchased. One of `diesel`, `unleaded_plus`, `unleaded_regular`, `unleaded_super`, or `other`.
@@ -6550,7 +6567,7 @@ impl std::fmt::Display for IssuingTransactionFuelData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingTransactionLodgingData {
     #[serde(rename = "check_in_at")]
     ///The time of checking into the lodging.
@@ -6564,7 +6581,7 @@ impl std::fmt::Display for IssuingTransactionLodgingData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingTransactionPurchaseDetails {
     #[serde(rename = "flight")]
     ///Information about the flight that was purchased with this transaction.
@@ -6587,7 +6604,7 @@ impl std::fmt::Display for IssuingTransactionPurchaseDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingTransactionReceiptData {
     #[serde(rename = "description")]
     ///The description of the item. The maximum length of this field is 26 characters.
@@ -6607,7 +6624,7 @@ impl std::fmt::Display for IssuingTransactionReceiptData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct IssuingTransactionTreasury {
     #[serde(rename = "received_credit")]
     ///The Treasury [ReceivedCredit](https://stripe.com/docs/api/treasury/received_debits) representing this Issuing transaction if it is a refund
@@ -6621,7 +6638,7 @@ impl std::fmt::Display for IssuingTransactionTreasury {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Item {
     #[serde(rename = "amount_discount")]
     ///Total discount amount applied. If no discounts were applied, defaults to 0.
@@ -6670,7 +6687,7 @@ impl std::fmt::Display for Item {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct LegalEntityCompany {
     #[serde(rename = "address")]
     ///
@@ -6737,7 +6754,7 @@ impl std::fmt::Display for LegalEntityCompanyVerification {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct LegalEntityCompanyVerificationDocument {
     #[serde(rename = "back")]
     ///The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`.
@@ -6757,7 +6774,7 @@ impl std::fmt::Display for LegalEntityCompanyVerificationDocument {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct LegalEntityDob {
     #[serde(rename = "day")]
     ///The day of birth, between 1 and 31.
@@ -6774,7 +6791,7 @@ impl std::fmt::Display for LegalEntityDob {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct LegalEntityJapanAddress {
     #[serde(rename = "city")]
     ///City/Ward.
@@ -6803,7 +6820,7 @@ impl std::fmt::Display for LegalEntityJapanAddress {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct LegalEntityPersonVerification {
     #[serde(rename = "additional_document")]
     ///A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
@@ -6826,7 +6843,7 @@ impl std::fmt::Display for LegalEntityPersonVerification {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct LegalEntityPersonVerificationDocument {
     #[serde(rename = "back")]
     ///The back of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
@@ -6846,7 +6863,7 @@ impl std::fmt::Display for LegalEntityPersonVerificationDocument {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct LegalEntityUboDeclaration {
     #[serde(rename = "date")]
     ///The Unix timestamp marking when the beneficial owner attestation was made.
@@ -6973,7 +6990,7 @@ impl std::fmt::Display for LineItemsTaxAmount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct LinkedAccountOptionsUsBankAccount {
     #[serde(rename = "permissions")]
     ///The list of permissions to request. The `payment_method` permission must be included.
@@ -6987,7 +7004,7 @@ impl std::fmt::Display for LinkedAccountOptionsUsBankAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct LoginLink {
     #[serde(rename = "created")]
     ///Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -7042,7 +7059,7 @@ impl std::fmt::Display for Mandate {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MandateAcssDebit {
     #[serde(rename = "default_for")]
     ///List of Stripe products where this mandate can be selected automatically.
@@ -7062,7 +7079,7 @@ impl std::fmt::Display for MandateAcssDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MandateAuBecsDebit {
     #[serde(rename = "url")]
     ///The URL of the mandate. This URL generally contains sensitive information about the customer and should be shared with them exclusively.
@@ -7073,7 +7090,7 @@ impl std::fmt::Display for MandateAuBecsDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MandateBacsDebit {
     #[serde(rename = "network_status")]
     ///The status of the mandate on the Bacs network. Can be one of `pending`, `revoked`, `refused`, or `accepted`.
@@ -7090,7 +7107,7 @@ impl std::fmt::Display for MandateBacsDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MandateBlik {
     #[serde(rename = "expires_after")]
     ///Date at which the mandate expires.
@@ -7107,21 +7124,21 @@ impl std::fmt::Display for MandateBlik {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MandateLink {}
 impl std::fmt::Display for MandateLink {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MandateMultiUse {}
 impl std::fmt::Display for MandateMultiUse {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MandateOptionsOffSessionDetailsBlik {
     #[serde(rename = "amount")]
     ///Amount of each recurring payment.
@@ -7141,7 +7158,7 @@ impl std::fmt::Display for MandateOptionsOffSessionDetailsBlik {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MandatePaymentMethodDetails {
     #[serde(rename = "acss_debit")]
     ///
@@ -7176,7 +7193,7 @@ impl std::fmt::Display for MandatePaymentMethodDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MandateSepaDebit {
     #[serde(rename = "reference")]
     ///The unique reference of the mandate.
@@ -7190,7 +7207,7 @@ impl std::fmt::Display for MandateSepaDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MandateSingleUse {
     #[serde(rename = "amount")]
     ///On a single use mandate, the amount of the payment.
@@ -7204,14 +7221,14 @@ impl std::fmt::Display for MandateSingleUse {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MandateUsBankAccount {}
 impl std::fmt::Display for MandateUsBankAccount {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Networks {
     #[serde(rename = "available")]
     ///All available networks for the card.
@@ -7239,7 +7256,7 @@ impl std::fmt::Display for NotificationEventData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct NotificationEventRequest {
     #[serde(rename = "id")]
     ///ID of the API request that caused the event. If null, the event was automatic (e.g., Stripe's automatic subscription handling). Request logs are available in the [dashboard](https://dashboard.stripe.com/logs), but currently not in the API.
@@ -7253,14 +7270,14 @@ impl std::fmt::Display for NotificationEventRequest {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OfflineAcceptance {}
 impl std::fmt::Display for OfflineAcceptance {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OnlineAcceptance {
     #[serde(rename = "ip_address")]
     ///The IP address from which the Mandate was accepted by the customer.
@@ -7358,7 +7375,7 @@ impl std::fmt::Display for Order {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersPaymentMethodOptionsAfterpayClearpay {
     #[serde(rename = "capture_method")]
     ///Controls when the funds will be captured from the customer's account.
@@ -7381,7 +7398,7 @@ impl std::fmt::Display for OrdersPaymentMethodOptionsAfterpayClearpay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourceAutomaticPaymentMethods {
     #[serde(rename = "enabled")]
     ///Whether this Order has been opted into managing payment method types via the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
@@ -7392,7 +7409,7 @@ impl std::fmt::Display for OrdersV2ResourceAutomaticPaymentMethods {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourceAutomaticTax {
     #[serde(rename = "enabled")]
     ///Whether Stripe automatically computes tax on this Order.
@@ -7406,7 +7423,7 @@ impl std::fmt::Display for OrdersV2ResourceAutomaticTax {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourceBillingDetails {
     #[serde(rename = "address")]
     ///Billing address for the order.
@@ -7426,7 +7443,7 @@ impl std::fmt::Display for OrdersV2ResourceBillingDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourceCardPaymentMethodOptions {
     #[serde(rename = "capture_method")]
     ///Controls when the funds will be captured from the customer's account.
@@ -7446,7 +7463,7 @@ impl std::fmt::Display for OrdersV2ResourceCardPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourceClientPermissions {
     #[serde(rename = "billing_details")]
     ///Allows or disallows billing details to be set on an Order with a publishable key and Order client_secret
@@ -7463,7 +7480,7 @@ impl std::fmt::Display for OrdersV2ResourceClientPermissions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourcePayment {
     #[serde(rename = "payment_intent")]
     ///ID of the payment intent associated with this order. Null when the order is `open`.
@@ -7480,7 +7497,7 @@ impl std::fmt::Display for OrdersV2ResourcePayment {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourcePaymentMethodOptions {
     #[serde(rename = "acss_debit")]
     ///
@@ -7533,7 +7550,7 @@ impl std::fmt::Display for OrdersV2ResourcePaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourcePaymentSettings {
     #[serde(rename = "application_fee_amount")]
     ///The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account.
@@ -7565,7 +7582,7 @@ impl std::fmt::Display for OrdersV2ResourcePaymentSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourceShippingCost {
     #[serde(rename = "amount_subtotal")]
     ///Total shipping cost before any discounts or taxes are applied.
@@ -7588,7 +7605,7 @@ impl std::fmt::Display for OrdersV2ResourceShippingCost {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourceShippingDetails {
     #[serde(rename = "address")]
     ///Recipient shipping address. Required if the order includes products that are shippable.
@@ -7605,7 +7622,7 @@ impl std::fmt::Display for OrdersV2ResourceShippingDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourceTaxDetails {
     #[serde(rename = "tax_exempt")]
     ///Describes the purchaser's tax exemption status. One of `none`, `exempt`, or `reverse`.
@@ -7619,7 +7636,7 @@ impl std::fmt::Display for OrdersV2ResourceTaxDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourceTaxDetailsResourceTaxId {
     #[serde(rename = "type")]
     ///The type of the tax ID, one of `eu_vat`, `br_cnpj`, `br_cpf`, `eu_oss_vat`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `li_uid`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, or `unknown`
@@ -7633,7 +7650,7 @@ impl std::fmt::Display for OrdersV2ResourceTaxDetailsResourceTaxId {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourceTotalDetails {
     #[serde(rename = "amount_discount")]
     ///This is the sum of all the discounts.
@@ -7653,7 +7670,7 @@ impl std::fmt::Display for OrdersV2ResourceTotalDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OrdersV2ResourceTotalDetailsApiResourceBreakdown {
     #[serde(rename = "discounts")]
     ///The aggregated discounts.
@@ -7701,7 +7718,7 @@ impl std::fmt::Display for OutboundPaymentsPaymentMethodDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OutboundPaymentsPaymentMethodDetailsFinancialAccount {
     #[serde(rename = "id")]
     ///Token of the FinancialAccount.
@@ -7715,7 +7732,7 @@ impl std::fmt::Display for OutboundPaymentsPaymentMethodDetailsFinancialAccount 
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OutboundPaymentsPaymentMethodDetailsUsBankAccount {
     #[serde(rename = "account_holder_type")]
     ///Account holder type: individual or company.
@@ -7761,7 +7778,7 @@ impl std::fmt::Display for OutboundTransfersPaymentMethodDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct OutboundTransfersPaymentMethodDetailsUsBankAccount {
     #[serde(rename = "account_holder_type")]
     ///Account holder type: individual or company.
@@ -7790,7 +7807,7 @@ impl std::fmt::Display for OutboundTransfersPaymentMethodDetailsUsBankAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PackageDimensions {
     #[serde(rename = "height")]
     ///Height, in inches.
@@ -7810,7 +7827,7 @@ impl std::fmt::Display for PackageDimensions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentFlowsAmountDetails {
     #[serde(rename = "tip")]
     ///
@@ -7821,7 +7838,7 @@ impl std::fmt::Display for PaymentFlowsAmountDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentFlowsAmountDetailsResourceTip {
     #[serde(rename = "amount")]
     ///Portion of the amount that corresponds to a tip.
@@ -7832,7 +7849,7 @@ impl std::fmt::Display for PaymentFlowsAmountDetailsResourceTip {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentFlowsAutomaticPaymentMethodsPaymentIntent {
     #[serde(rename = "enabled")]
     ///Automatically calculates compatible payment methods
@@ -7843,7 +7860,7 @@ impl std::fmt::Display for PaymentFlowsAutomaticPaymentMethodsPaymentIntent {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentFlowsInstallmentOptions {
     #[serde(rename = "enabled")]
     pub enabled: bool,
@@ -7856,14 +7873,14 @@ impl std::fmt::Display for PaymentFlowsInstallmentOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentFlowsPrivatePaymentMethodsAlipay {}
 impl std::fmt::Display for PaymentFlowsPrivatePaymentMethodsAlipay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentFlowsPrivatePaymentMethodsAlipayDetails {
     #[serde(rename = "buyer_id")]
     ///Uniquely identifies this particular Alipay account. You can use this attribute to check whether two Alipay accounts are the same.
@@ -7880,7 +7897,7 @@ impl std::fmt::Display for PaymentFlowsPrivatePaymentMethodsAlipayDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentFlowsPrivatePaymentMethodsKlarnaDob {
     #[serde(rename = "day")]
     ///The day of birth, between 1 and 31.
@@ -7897,7 +7914,7 @@ impl std::fmt::Display for PaymentFlowsPrivatePaymentMethodsKlarnaDob {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntent {
     #[serde(rename = "amount")]
     ///Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
@@ -8030,7 +8047,7 @@ impl std::fmt::Display for PaymentIntent {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentCardProcessing {
     #[serde(rename = "customer_notification")]
     ///
@@ -8041,7 +8058,7 @@ impl std::fmt::Display for PaymentIntentCardProcessing {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextAction {
     #[serde(rename = "alipay_handle_redirect")]
     ///
@@ -8104,7 +8121,7 @@ impl std::fmt::Display for PaymentIntentNextAction {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionAlipayHandleRedirect {
     #[serde(rename = "native_data")]
     ///The native data to be used with Alipay SDK you must redirect your customer to in order to authenticate the payment in an Android App.
@@ -8124,7 +8141,7 @@ impl std::fmt::Display for PaymentIntentNextActionAlipayHandleRedirect {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionBoleto {
     #[serde(rename = "expires_at")]
     ///The timestamp after which the boleto expires.
@@ -8144,7 +8161,7 @@ impl std::fmt::Display for PaymentIntentNextActionBoleto {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionCardAwaitNotification {
     #[serde(rename = "charge_attempt_at")]
     ///The time that payment will be attempted. If customer approval is required, they need to provide approval before this time.
@@ -8158,7 +8175,7 @@ impl std::fmt::Display for PaymentIntentNextActionCardAwaitNotification {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionDisplayBankTransferInstructions {
     #[serde(rename = "amount_remaining")]
     ///The remaining amount that needs to be transferred to complete the payment.
@@ -8186,7 +8203,7 @@ impl std::fmt::Display for PaymentIntentNextActionDisplayBankTransferInstruction
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionDisplayOxxoDetails {
     #[serde(rename = "expires_after")]
     ///The timestamp after which the OXXO voucher expires.
@@ -8220,7 +8237,7 @@ impl std::fmt::Display for PaymentIntentNextActionKonbini {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionKonbiniFamilymart {
     #[serde(rename = "confirmation_number")]
     ///The confirmation number.
@@ -8234,7 +8251,7 @@ impl std::fmt::Display for PaymentIntentNextActionKonbiniFamilymart {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionKonbiniLawson {
     #[serde(rename = "confirmation_number")]
     ///The confirmation number.
@@ -8248,7 +8265,7 @@ impl std::fmt::Display for PaymentIntentNextActionKonbiniLawson {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionKonbiniMinistop {
     #[serde(rename = "confirmation_number")]
     ///The confirmation number.
@@ -8262,7 +8279,7 @@ impl std::fmt::Display for PaymentIntentNextActionKonbiniMinistop {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionKonbiniSeicomart {
     #[serde(rename = "confirmation_number")]
     ///The confirmation number.
@@ -8276,7 +8293,7 @@ impl std::fmt::Display for PaymentIntentNextActionKonbiniSeicomart {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionKonbiniStores {
     #[serde(rename = "familymart")]
     ///FamilyMart instruction details.
@@ -8296,7 +8313,7 @@ impl std::fmt::Display for PaymentIntentNextActionKonbiniStores {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionPaynowDisplayQrCode {
     #[serde(rename = "data")]
     ///The raw data string used to generate QR code, it should be used together with QR code library.
@@ -8313,7 +8330,7 @@ impl std::fmt::Display for PaymentIntentNextActionPaynowDisplayQrCode {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionPromptpayDisplayQrCode {
     #[serde(rename = "data")]
     ///The raw data string used to generate QR code, it should be used together with QR code library.
@@ -8333,7 +8350,7 @@ impl std::fmt::Display for PaymentIntentNextActionPromptpayDisplayQrCode {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionRedirectToUrl {
     #[serde(rename = "return_url")]
     ///If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion.
@@ -8347,7 +8364,7 @@ impl std::fmt::Display for PaymentIntentNextActionRedirectToUrl {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionVerifyWithMicrodeposits {
     #[serde(rename = "arrival_date")]
     ///The timestamp when the microdeposits are expected to land.
@@ -8364,7 +8381,7 @@ impl std::fmt::Display for PaymentIntentNextActionVerifyWithMicrodeposits {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionWechatPayDisplayQrCode {
     #[serde(rename = "data")]
     ///The data being used to generate QR code
@@ -8384,7 +8401,7 @@ impl std::fmt::Display for PaymentIntentNextActionWechatPayDisplayQrCode {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionWechatPayRedirectToAndroidApp {
     #[serde(rename = "app_id")]
     ///app_id is the APP ID registered on WeChat open platform
@@ -8413,7 +8430,7 @@ impl std::fmt::Display for PaymentIntentNextActionWechatPayRedirectToAndroidApp 
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionWechatPayRedirectToIosApp {
     #[serde(rename = "native_url")]
     ///An universal link that redirect to WeChat Pay app
@@ -8424,7 +8441,7 @@ impl std::fmt::Display for PaymentIntentNextActionWechatPayRedirectToIosApp {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentPaymentMethodOptions {
     #[serde(rename = "acss_debit")]
     pub acss_debit: Option<serde_json::Value>,
@@ -8490,7 +8507,7 @@ impl std::fmt::Display for PaymentIntentPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentPaymentMethodOptionsAcssDebit {
     #[serde(rename = "mandate_options")]
     ///
@@ -8513,7 +8530,7 @@ impl std::fmt::Display for PaymentIntentPaymentMethodOptionsAcssDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentPaymentMethodOptionsAuBecsDebit {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -8528,14 +8545,14 @@ impl std::fmt::Display for PaymentIntentPaymentMethodOptionsAuBecsDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentPaymentMethodOptionsBlik {}
 impl std::fmt::Display for PaymentIntentPaymentMethodOptionsBlik {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentPaymentMethodOptionsCard {
     #[serde(rename = "capture_method")]
     ///Controls when the funds will be captured from the customer's account.
@@ -8573,7 +8590,7 @@ impl std::fmt::Display for PaymentIntentPaymentMethodOptionsCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentPaymentMethodOptionsEps {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -8588,7 +8605,7 @@ impl std::fmt::Display for PaymentIntentPaymentMethodOptionsEps {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentPaymentMethodOptionsLink {
     #[serde(rename = "capture_method")]
     ///Controls when the funds will be captured from the customer's account.
@@ -8609,7 +8626,7 @@ impl std::fmt::Display for PaymentIntentPaymentMethodOptionsLink {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit {
     #[serde(rename = "custom_mandate_url")]
     ///A URL for custom mandate text
@@ -8629,14 +8646,14 @@ impl std::fmt::Display for PaymentIntentPaymentMethodOptionsMandateOptionsAcssDe
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit {}
 impl std::fmt::Display for PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentPaymentMethodOptionsSepaDebit {
     #[serde(rename = "mandate_options")]
     ///
@@ -8656,7 +8673,7 @@ impl std::fmt::Display for PaymentIntentPaymentMethodOptionsSepaDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentPaymentMethodOptionsUsBankAccount {
     #[serde(rename = "financial_connections")]
     ///
@@ -8677,7 +8694,7 @@ impl std::fmt::Display for PaymentIntentPaymentMethodOptionsUsBankAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentProcessing {
     #[serde(rename = "card")]
     ///
@@ -8691,7 +8708,7 @@ impl std::fmt::Display for PaymentIntentProcessing {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentProcessingCustomerNotification {
     #[serde(rename = "approval_requested")]
     ///Whether customer approval has been requested for this payment. For payments greater than INR 15000 or mandate amount, the customer must provide explicit approval of the payment with their bank.
@@ -8705,7 +8722,7 @@ impl std::fmt::Display for PaymentIntentProcessingCustomerNotification {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentTypeSpecificPaymentMethodOptionsClient {
     #[serde(rename = "capture_method")]
     ///Controls when the funds will be captured from the customer's account.
@@ -8818,7 +8835,7 @@ impl std::fmt::Display for PaymentLink {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourceAfterCompletion {
     #[serde(rename = "hosted_confirmation")]
     ///
@@ -8837,7 +8854,7 @@ impl std::fmt::Display for PaymentLinksResourceAfterCompletion {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourceAutomaticTax {
     #[serde(rename = "enabled")]
     ///If `true`, tax will be calculated automatically using the customer's location.
@@ -8848,7 +8865,7 @@ impl std::fmt::Display for PaymentLinksResourceAutomaticTax {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourceCompletionBehaviorConfirmationPage {
     #[serde(rename = "custom_message")]
     ///The custom message that is displayed to the customer after the purchase is complete.
@@ -8859,7 +8876,7 @@ impl std::fmt::Display for PaymentLinksResourceCompletionBehaviorConfirmationPag
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourceCompletionBehaviorRedirect {
     #[serde(rename = "url")]
     ///The URL the customer will be redirected to after the purchase is complete.
@@ -8870,7 +8887,7 @@ impl std::fmt::Display for PaymentLinksResourceCompletionBehaviorRedirect {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourceConsentCollection {
     #[serde(rename = "promotions")]
     ///If set to `auto`, enables the collection of customer consent for promotional communications.
@@ -8881,7 +8898,7 @@ impl std::fmt::Display for PaymentLinksResourceConsentCollection {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourcePaymentIntentData {
     #[serde(rename = "capture_method")]
     ///Indicates when the funds will be captured from the customer's account.
@@ -8895,7 +8912,7 @@ impl std::fmt::Display for PaymentLinksResourcePaymentIntentData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourcePhoneNumberCollection {
     #[serde(rename = "enabled")]
     ///If `true`, a phone number will be collected during checkout.
@@ -8906,7 +8923,7 @@ impl std::fmt::Display for PaymentLinksResourcePhoneNumberCollection {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourceShippingAddressCollection {
     #[serde(rename = "allowed_countries")]
     ///An array of two-letter ISO country codes representing which countries Checkout should provide as options for shipping locations. Unsupported country codes: `AS, CX, CC, CU, HM, IR, KP, MH, FM, NF, MP, PW, SD, SY, UM, VI`.
@@ -8931,7 +8948,7 @@ impl std::fmt::Display for PaymentLinksResourceShippingOption {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourceSubscriptionData {
     #[serde(rename = "trial_period_days")]
     ///Integer representing the number of trial period days before the customer is charged for the first time.
@@ -8942,7 +8959,7 @@ impl std::fmt::Display for PaymentLinksResourceSubscriptionData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourceTaxIdCollection {
     #[serde(rename = "enabled")]
     ///Indicates whether tax ID collection is enabled for the session.
@@ -9089,7 +9106,7 @@ impl std::fmt::Display for PaymentMethod {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodAcssDebit {
     #[serde(rename = "bank_name")]
     ///Name of the bank associated with the bank account.
@@ -9112,21 +9129,21 @@ impl std::fmt::Display for PaymentMethodAcssDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodAffirm {}
 impl std::fmt::Display for PaymentMethodAffirm {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodAfterpayClearpay {}
 impl std::fmt::Display for PaymentMethodAfterpayClearpay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodAuBecsDebit {
     #[serde(rename = "bsb_number")]
     ///Six-digit number identifying bank and branch associated with this bank account.
@@ -9143,7 +9160,7 @@ impl std::fmt::Display for PaymentMethodAuBecsDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodBacsDebit {
     #[serde(rename = "fingerprint")]
     ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
@@ -9160,21 +9177,21 @@ impl std::fmt::Display for PaymentMethodBacsDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodBancontact {}
 impl std::fmt::Display for PaymentMethodBancontact {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodBlik {}
 impl std::fmt::Display for PaymentMethodBlik {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodBoleto {
     #[serde(rename = "tax_id")]
     ///Uniquely identifies the customer tax id (CNPJ or CPF)
@@ -9185,7 +9202,7 @@ impl std::fmt::Display for PaymentMethodBoleto {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCard {
     #[serde(rename = "brand")]
     ///Card brand. Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
@@ -9231,7 +9248,7 @@ impl std::fmt::Display for PaymentMethodCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCardChecks {
     #[serde(rename = "address_line1_check")]
     ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
@@ -9248,7 +9265,7 @@ impl std::fmt::Display for PaymentMethodCardChecks {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCardGeneratedCard {
     #[serde(rename = "charge")]
     ///The charge that created this object.
@@ -9265,14 +9282,14 @@ impl std::fmt::Display for PaymentMethodCardGeneratedCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCardPresent {}
 impl std::fmt::Display for PaymentMethodCardPresent {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCardWallet {
     #[serde(rename = "amex_express_checkout")]
     ///
@@ -9304,28 +9321,28 @@ impl std::fmt::Display for PaymentMethodCardWallet {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCardWalletAmexExpressCheckout {}
 impl std::fmt::Display for PaymentMethodCardWalletAmexExpressCheckout {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCardWalletApplePay {}
 impl std::fmt::Display for PaymentMethodCardWalletApplePay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCardWalletGooglePay {}
 impl std::fmt::Display for PaymentMethodCardWalletGooglePay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCardWalletMasterpass {
     #[serde(rename = "billing_address")]
     ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
@@ -9345,14 +9362,14 @@ impl std::fmt::Display for PaymentMethodCardWalletMasterpass {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCardWalletSamsungPay {}
 impl std::fmt::Display for PaymentMethodCardWalletSamsungPay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCardWalletVisaCheckout {
     #[serde(rename = "billing_address")]
     ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
@@ -9372,14 +9389,14 @@ impl std::fmt::Display for PaymentMethodCardWalletVisaCheckout {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodCustomerBalance {}
 impl std::fmt::Display for PaymentMethodCustomerBalance {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetails {
     #[serde(rename = "ach_credit_transfer")]
     ///
@@ -9494,7 +9511,7 @@ impl std::fmt::Display for PaymentMethodDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsAchCreditTransfer {
     #[serde(rename = "account_number")]
     ///Account number to transfer funds to.
@@ -9514,7 +9531,7 @@ impl std::fmt::Display for PaymentMethodDetailsAchCreditTransfer {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsAchDebit {
     #[serde(rename = "account_holder_type")]
     ///Type of entity that holds the account. This can be either `individual` or `company`.
@@ -9540,7 +9557,7 @@ impl std::fmt::Display for PaymentMethodDetailsAchDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsAcssDebit {
     #[serde(rename = "bank_name")]
     ///Name of the bank associated with the bank account.
@@ -9566,14 +9583,14 @@ impl std::fmt::Display for PaymentMethodDetailsAcssDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsAffirm {}
 impl std::fmt::Display for PaymentMethodDetailsAffirm {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsAfterpayClearpay {
     #[serde(rename = "reference")]
     ///Order identifier shown to the merchant in Afterpay’s online portal.
@@ -9584,7 +9601,7 @@ impl std::fmt::Display for PaymentMethodDetailsAfterpayClearpay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsAuBecsDebit {
     #[serde(rename = "bsb_number")]
     ///Bank-State-Branch number of the bank account.
@@ -9604,7 +9621,7 @@ impl std::fmt::Display for PaymentMethodDetailsAuBecsDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsBacsDebit {
     #[serde(rename = "fingerprint")]
     ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
@@ -9624,7 +9641,7 @@ impl std::fmt::Display for PaymentMethodDetailsBacsDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsBancontact {
     #[serde(rename = "bank_code")]
     ///Bank code of bank associated with the bank account.
@@ -9658,14 +9675,14 @@ impl std::fmt::Display for PaymentMethodDetailsBancontact {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsBlik {}
 impl std::fmt::Display for PaymentMethodDetailsBlik {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsBoleto {
     #[serde(rename = "tax_id")]
     ///The tax ID of the customer (CPF for individuals consumers or CNPJ for businesses consumers)
@@ -9676,7 +9693,7 @@ impl std::fmt::Display for PaymentMethodDetailsBoleto {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCard {
     #[serde(rename = "brand")]
     ///Card brand. Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
@@ -9727,7 +9744,7 @@ impl std::fmt::Display for PaymentMethodDetailsCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardChecks {
     #[serde(rename = "address_line1_check")]
     ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
@@ -9744,7 +9761,7 @@ impl std::fmt::Display for PaymentMethodDetailsCardChecks {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardInstallments {
     #[serde(rename = "plan")]
     ///Installment plan selected for the payment.
@@ -9755,7 +9772,7 @@ impl std::fmt::Display for PaymentMethodDetailsCardInstallments {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardInstallmentsPlan {
     #[serde(rename = "count")]
     ///For `fixed_count` installment plans, this is the number of installment payments your customer will make to their credit card.
@@ -9773,7 +9790,7 @@ impl std::fmt::Display for PaymentMethodDetailsCardInstallmentsPlan {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardPresent {
     #[serde(rename = "amount_authorized")]
     ///The authorized amount
@@ -9834,7 +9851,7 @@ impl std::fmt::Display for PaymentMethodDetailsCardPresent {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardPresentReceipt {
     #[serde(rename = "account_type")]
     ///The type of account being debited or credited
@@ -9869,7 +9886,7 @@ impl std::fmt::Display for PaymentMethodDetailsCardPresentReceipt {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardWallet {
     #[serde(rename = "amex_express_checkout")]
     ///
@@ -9901,28 +9918,28 @@ impl std::fmt::Display for PaymentMethodDetailsCardWallet {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardWalletAmexExpressCheckout {}
 impl std::fmt::Display for PaymentMethodDetailsCardWalletAmexExpressCheckout {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardWalletApplePay {}
 impl std::fmt::Display for PaymentMethodDetailsCardWalletApplePay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardWalletGooglePay {}
 impl std::fmt::Display for PaymentMethodDetailsCardWalletGooglePay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardWalletMasterpass {
     #[serde(rename = "billing_address")]
     ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
@@ -9942,14 +9959,14 @@ impl std::fmt::Display for PaymentMethodDetailsCardWalletMasterpass {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardWalletSamsungPay {}
 impl std::fmt::Display for PaymentMethodDetailsCardWalletSamsungPay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCardWalletVisaCheckout {
     #[serde(rename = "billing_address")]
     ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
@@ -9969,14 +9986,14 @@ impl std::fmt::Display for PaymentMethodDetailsCardWalletVisaCheckout {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsCustomerBalance {}
 impl std::fmt::Display for PaymentMethodDetailsCustomerBalance {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsEps {
     #[serde(rename = "bank")]
     ///The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
@@ -9992,7 +10009,7 @@ impl std::fmt::Display for PaymentMethodDetailsEps {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsFpx {
     #[serde(rename = "bank")]
     ///The customer's bank. Can be one of `affin_bank`, `agrobank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bank_rakyat`, `bsn`, `cimb`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, or `pb_enterprise`.
@@ -10006,7 +10023,7 @@ impl std::fmt::Display for PaymentMethodDetailsFpx {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsGiropay {
     #[serde(rename = "bank_code")]
     ///Bank code of bank associated with the bank account.
@@ -10028,7 +10045,7 @@ impl std::fmt::Display for PaymentMethodDetailsGiropay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsGrabpay {
     #[serde(rename = "transaction_id")]
     ///Unique transaction id generated by GrabPay
@@ -10039,7 +10056,7 @@ impl std::fmt::Display for PaymentMethodDetailsGrabpay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsIdeal {
     #[serde(rename = "bank")]
     ///The customer's bank. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `revolut`, `sns_bank`, `triodos_bank`, or `van_lanschot`.
@@ -10066,7 +10083,7 @@ impl std::fmt::Display for PaymentMethodDetailsIdeal {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsInteracPresent {
     #[serde(rename = "brand")]
     ///Card brand. Can be `interac`, `mastercard` or `visa`.
@@ -10118,7 +10135,7 @@ impl std::fmt::Display for PaymentMethodDetailsInteracPresent {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsInteracPresentReceipt {
     #[serde(rename = "account_type")]
     ///The type of account being debited or credited
@@ -10153,7 +10170,7 @@ impl std::fmt::Display for PaymentMethodDetailsInteracPresentReceipt {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsKlarna {
     #[serde(rename = "payment_method_category")]
     /**The Klarna payment method used for this transaction.
@@ -10169,7 +10186,7 @@ impl std::fmt::Display for PaymentMethodDetailsKlarna {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsKonbini {
     #[serde(rename = "store")]
     ///If the payment succeeded, this contains the details of the convenience store where the payment was completed.
@@ -10180,7 +10197,7 @@ impl std::fmt::Display for PaymentMethodDetailsKonbini {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsKonbiniStore {
     #[serde(rename = "chain")]
     ///The name of the convenience store chain where the payment was completed.
@@ -10191,14 +10208,14 @@ impl std::fmt::Display for PaymentMethodDetailsKonbiniStore {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsLink {}
 impl std::fmt::Display for PaymentMethodDetailsLink {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsMultibanco {
     #[serde(rename = "entity")]
     ///Entity number associated with this Multibanco payment.
@@ -10212,7 +10229,7 @@ impl std::fmt::Display for PaymentMethodDetailsMultibanco {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsOxxo {
     #[serde(rename = "number")]
     ///OXXO reference number
@@ -10223,7 +10240,7 @@ impl std::fmt::Display for PaymentMethodDetailsOxxo {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsP24 {
     #[serde(rename = "bank")]
     ///The customer's bank. Can be one of `ing`, `citi_handlowy`, `tmobile_usbugi_bankowe`, `plus_bank`, `etransfer_pocztowy24`, `banki_spbdzielcze`, `bank_nowy_bfg_sa`, `getin_bank`, `blik`, `noble_pay`, `ideabank`, `envelobank`, `santander_przelew24`, `nest_przelew`, `mbank_mtransfer`, `inteligo`, `pbac_z_ipko`, `bnp_paribas`, `credit_agricole`, `toyota_bank`, `bank_pekao_sa`, `volkswagen_bank`, `bank_millennium`, `alior_bank`, or `boz`.
@@ -10242,7 +10259,7 @@ impl std::fmt::Display for PaymentMethodDetailsP24 {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsPaynow {
     #[serde(rename = "reference")]
     ///Reference number associated with this PayNow payment
@@ -10253,7 +10270,7 @@ impl std::fmt::Display for PaymentMethodDetailsPaynow {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsPromptpay {
     #[serde(rename = "reference")]
     ///Bill reference generated by PromptPay
@@ -10264,7 +10281,7 @@ impl std::fmt::Display for PaymentMethodDetailsPromptpay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsSepaDebit {
     #[serde(rename = "bank_code")]
     ///Bank code of bank associated with the bank account.
@@ -10290,7 +10307,7 @@ impl std::fmt::Display for PaymentMethodDetailsSepaDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsSofort {
     #[serde(rename = "bank_code")]
     ///Bank code of bank associated with the bank account.
@@ -10327,14 +10344,14 @@ impl std::fmt::Display for PaymentMethodDetailsSofort {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsStripeAccount {}
 impl std::fmt::Display for PaymentMethodDetailsStripeAccount {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsUsBankAccount {
     #[serde(rename = "account_holder_type")]
     ///Account holder type: individual or company.
@@ -10360,14 +10377,14 @@ impl std::fmt::Display for PaymentMethodDetailsUsBankAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsWechat {}
 impl std::fmt::Display for PaymentMethodDetailsWechat {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsWechatPay {
     #[serde(rename = "fingerprint")]
     ///Uniquely identifies this particular WeChat Pay account. You can use this attribute to check whether two WeChat accounts are the same.
@@ -10381,7 +10398,7 @@ impl std::fmt::Display for PaymentMethodDetailsWechatPay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodEps {
     #[serde(rename = "bank")]
     ///The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
@@ -10392,7 +10409,7 @@ impl std::fmt::Display for PaymentMethodEps {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodFpx {
     #[serde(rename = "bank")]
     ///The customer's bank, if provided. Can be one of `affin_bank`, `agrobank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bank_rakyat`, `bsn`, `cimb`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, or `pb_enterprise`.
@@ -10403,21 +10420,21 @@ impl std::fmt::Display for PaymentMethodFpx {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodGiropay {}
 impl std::fmt::Display for PaymentMethodGiropay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodGrabpay {}
 impl std::fmt::Display for PaymentMethodGrabpay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodIdeal {
     #[serde(rename = "bank")]
     ///The customer's bank, if provided. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `revolut`, `sns_bank`, `triodos_bank`, or `van_lanschot`.
@@ -10431,14 +10448,14 @@ impl std::fmt::Display for PaymentMethodIdeal {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodInteracPresent {}
 impl std::fmt::Display for PaymentMethodInteracPresent {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodKlarna {
     #[serde(rename = "dob")]
     ///The customer's date of birth, if provided.
@@ -10449,14 +10466,14 @@ impl std::fmt::Display for PaymentMethodKlarna {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodKonbini {}
 impl std::fmt::Display for PaymentMethodKonbini {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodLink {
     #[serde(rename = "email")]
     ///Account owner's email address.
@@ -10470,7 +10487,7 @@ impl std::fmt::Display for PaymentMethodLink {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsAffirm {
     #[serde(rename = "capture_method")]
     ///Controls when the funds will be captured from the customer's account.
@@ -10488,7 +10505,7 @@ impl std::fmt::Display for PaymentMethodOptionsAffirm {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsAfterpayClearpay {
     #[serde(rename = "capture_method")]
     ///Controls when the funds will be captured from the customer's account.
@@ -10510,7 +10527,7 @@ impl std::fmt::Display for PaymentMethodOptionsAfterpayClearpay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsAlipay {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -10525,7 +10542,7 @@ impl std::fmt::Display for PaymentMethodOptionsAlipay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsBacsDebit {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -10540,7 +10557,7 @@ impl std::fmt::Display for PaymentMethodOptionsBacsDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsBancontact {
     #[serde(rename = "preferred_language")]
     ///Preferred language of the Bancontact authorization page that the customer is redirected to.
@@ -10558,7 +10575,7 @@ impl std::fmt::Display for PaymentMethodOptionsBancontact {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsBoleto {
     #[serde(rename = "expires_after_days")]
     ///The number of calendar days before a Boleto voucher expires. For example, if you create a Boleto voucher on Monday and you set expires_after_days to 2, the Boleto voucher will expire on Wednesday at 23:59 America/Sao_Paulo time.
@@ -10576,7 +10593,7 @@ impl std::fmt::Display for PaymentMethodOptionsBoleto {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsCardInstallments {
     #[serde(rename = "available_plans")]
     ///Installment plans that may be selected for this PaymentIntent.
@@ -10593,7 +10610,7 @@ impl std::fmt::Display for PaymentMethodOptionsCardInstallments {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsCardMandateOptions {
     #[serde(rename = "amount")]
     ///Amount to be charged for future payments.
@@ -10628,7 +10645,7 @@ impl std::fmt::Display for PaymentMethodOptionsCardMandateOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsCardPresent {
     #[serde(rename = "request_extended_authorization")]
     ///Request ability to capture this payment beyond the standard [authorization validity window](https://stripe.com/docs/terminal/features/extended-authorizations#authorization-validity)
@@ -10642,7 +10659,7 @@ impl std::fmt::Display for PaymentMethodOptionsCardPresent {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsCustomerBalance {
     #[serde(rename = "bank_transfer")]
     ///
@@ -10663,7 +10680,7 @@ impl std::fmt::Display for PaymentMethodOptionsCustomerBalance {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsCustomerBalanceBankTransfer {
     #[serde(rename = "eu_bank_transfer")]
     ///
@@ -10682,7 +10699,7 @@ impl std::fmt::Display for PaymentMethodOptionsCustomerBalanceBankTransfer {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsCustomerBalanceEuBankAccount {
     #[serde(rename = "country")]
     ///The desired country code of the bank account information. Permitted values include: `DE`, `ES`, `FR`, `IE`, or `NL`.
@@ -10693,7 +10710,7 @@ impl std::fmt::Display for PaymentMethodOptionsCustomerBalanceEuBankAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsFpx {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -10708,7 +10725,7 @@ impl std::fmt::Display for PaymentMethodOptionsFpx {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsGiropay {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -10723,7 +10740,7 @@ impl std::fmt::Display for PaymentMethodOptionsGiropay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsGrabpay {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -10738,7 +10755,7 @@ impl std::fmt::Display for PaymentMethodOptionsGrabpay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsIdeal {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -10753,14 +10770,14 @@ impl std::fmt::Display for PaymentMethodOptionsIdeal {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsInteracPresent {}
 impl std::fmt::Display for PaymentMethodOptionsInteracPresent {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsKlarna {
     #[serde(rename = "capture_method")]
     ///Controls when the funds will be captured from the customer's account.
@@ -10781,7 +10798,7 @@ impl std::fmt::Display for PaymentMethodOptionsKlarna {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsKonbini {
     #[serde(rename = "confirmation_number")]
     ///An optional 10 to 11 digit numeric-only string determining the confirmation code at applicable convenience stores.
@@ -10808,7 +10825,7 @@ impl std::fmt::Display for PaymentMethodOptionsKonbini {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsOxxo {
     #[serde(rename = "expires_after_days")]
     ///The number of calendar days before an OXXO invoice expires. For example, if you create an OXXO invoice on Monday and you set expires_after_days to 2, the OXXO invoice will expire on Wednesday at 23:59 America/Mexico_City time.
@@ -10826,7 +10843,7 @@ impl std::fmt::Display for PaymentMethodOptionsOxxo {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsP24 {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -10841,7 +10858,7 @@ impl std::fmt::Display for PaymentMethodOptionsP24 {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsPaynow {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -10856,7 +10873,7 @@ impl std::fmt::Display for PaymentMethodOptionsPaynow {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsPaypal {
     #[serde(rename = "capture_method")]
     ///Controls when the funds will be captured from the customer's account.
@@ -10870,7 +10887,7 @@ impl std::fmt::Display for PaymentMethodOptionsPaypal {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsPromptpay {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -10885,7 +10902,7 @@ impl std::fmt::Display for PaymentMethodOptionsPromptpay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsSofort {
     #[serde(rename = "preferred_language")]
     ///Preferred language of the SOFORT authorization page that the customer is redirected to.
@@ -10903,7 +10920,7 @@ impl std::fmt::Display for PaymentMethodOptionsSofort {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsWechatPay {
     #[serde(rename = "app_id")]
     ///The app ID registered with WeChat Pay. Only required when client is ios or android.
@@ -10924,14 +10941,14 @@ impl std::fmt::Display for PaymentMethodOptionsWechatPay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOxxo {}
 impl std::fmt::Display for PaymentMethodOxxo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodP24 {
     #[serde(rename = "bank")]
     ///The customer's bank, if provided.
@@ -10942,21 +10959,21 @@ impl std::fmt::Display for PaymentMethodP24 {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodPaynow {}
 impl std::fmt::Display for PaymentMethodPaynow {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodPromptpay {}
 impl std::fmt::Display for PaymentMethodPromptpay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodSepaDebit {
     #[serde(rename = "bank_code")]
     ///Bank code of bank associated with the bank account.
@@ -10982,7 +10999,7 @@ impl std::fmt::Display for PaymentMethodSepaDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodSofort {
     #[serde(rename = "country")]
     ///Two-letter ISO code representing the country the bank account is located in.
@@ -10993,7 +11010,7 @@ impl std::fmt::Display for PaymentMethodSofort {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodUsBankAccount {
     #[serde(rename = "account_holder_type")]
     ///Account holder type: individual or company.
@@ -11025,14 +11042,14 @@ impl std::fmt::Display for PaymentMethodUsBankAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodWechatPay {}
 impl std::fmt::Display for PaymentMethodWechatPay {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionAfterExpiration {
     #[serde(rename = "recovery")]
     ///When set, configuration used to recover the Checkout Session on expiry.
@@ -11043,7 +11060,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionAfterExpiration {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionAfterExpirationRecovery {
     #[serde(rename = "allow_promotion_codes")]
     ///Enables user redeemable promotion codes on the recovered Checkout Sessions. Defaults to `false`
@@ -11065,7 +11082,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionAfterExpirationRecovery {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionAutomaticTax {
     #[serde(rename = "enabled")]
     ///Indicates whether automatic tax is enabled for the session
@@ -11079,7 +11096,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionAutomaticTax {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionConsent {
     #[serde(rename = "promotions")]
     /**If `opt_in`, the customer consents to receiving promotional communications
@@ -11091,7 +11108,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionConsent {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionConsentCollection {
     #[serde(rename = "promotions")]
     /**If set to `auto`, enables the collection of customer consent for promotional communications. The Checkout
@@ -11104,7 +11121,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionConsentCollection {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionCustomerDetails {
     #[serde(rename = "address")]
     ///The customer's address after a completed Checkout Session. Note: This property is populated only for sessions on or after March 30, 2022.
@@ -11131,7 +11148,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionCustomerDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionPhoneNumberCollection {
     #[serde(rename = "enabled")]
     ///Indicates whether phone number collection is enabled for the session
@@ -11142,7 +11159,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionPhoneNumberCollection {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionShippingAddressCollection {
     #[serde(rename = "allowed_countries")]
     /**An array of two-letter ISO country codes representing which countries Checkout should provide as options for
@@ -11154,7 +11171,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionShippingAddressCollection 
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionShippingCost {
     #[serde(rename = "amount_subtotal")]
     ///Total shipping cost before any discounts or taxes are applied.
@@ -11191,7 +11208,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionShippingOption {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionTaxId {
     #[serde(rename = "type")]
     ///The type of the tax ID, one of `eu_vat`, `br_cnpj`, `br_cpf`, `eu_oss_vat`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `li_uid`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, or `unknown`
@@ -11205,7 +11222,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionTaxId {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionTaxIdCollection {
     #[serde(rename = "enabled")]
     ///Indicates whether tax ID collection is enabled for the session
@@ -11216,7 +11233,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionTaxIdCollection {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionTotalDetails {
     #[serde(rename = "amount_discount")]
     ///This is the sum of all the discounts.
@@ -11236,7 +11253,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionTotalDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown {
     #[serde(rename = "discounts")]
     ///The aggregated discounts.
@@ -11252,7 +11269,7 @@ impl std::fmt::Display for PaymentPagesCheckoutSessionTotalDetailsResourceBreakd
 }
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PaymentSource(pub serde_json::Value);
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Payout {
     #[serde(rename = "amount")]
     ///Amount (in %s) to be transferred to your bank account or debit card.
@@ -11326,7 +11343,7 @@ impl std::fmt::Display for Payout {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Period {
     #[serde(rename = "end")]
     ///The end date of this usage period. All usage up to and including this point in time is included.
@@ -11340,7 +11357,7 @@ impl std::fmt::Display for Period {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Person {
     #[serde(rename = "account")]
     ///The account the person is associated with.
@@ -11434,7 +11451,7 @@ impl std::fmt::Display for Person {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PersonFutureRequirements {
     #[serde(rename = "alternatives")]
     ///Fields that are due and can be satisfied by providing the corresponding alternative fields instead.
@@ -11460,7 +11477,7 @@ impl std::fmt::Display for PersonFutureRequirements {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PersonRelationship {
     #[serde(rename = "director")]
     ///Whether the person is a director of the account's legal entity. Directors are typically members of the governing board of the company, or responsible for ensuring the company meets its regulatory obligations.
@@ -11486,7 +11503,7 @@ impl std::fmt::Display for PersonRelationship {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PersonRequirements {
     #[serde(rename = "alternatives")]
     ///Fields that are due and can be satisfied by providing the corresponding alternative fields instead.
@@ -11512,7 +11529,7 @@ impl std::fmt::Display for PersonRequirements {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Plan {
     #[serde(rename = "active")]
     ///Whether the plan can be used for new purchases.
@@ -11580,7 +11597,7 @@ impl std::fmt::Display for Plan {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PlanTier {
     #[serde(rename = "flat_amount")]
     ///Price for the entire tier.
@@ -11603,7 +11620,7 @@ impl std::fmt::Display for PlanTier {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PlatformTaxFee {
     #[serde(rename = "account")]
     ///The Connected account that incurred this charge.
@@ -11626,7 +11643,7 @@ impl std::fmt::Display for PlatformTaxFee {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PortalBusinessProfile {
     #[serde(rename = "headline")]
     ///The messaging shown to customers in the portal.
@@ -11643,7 +11660,7 @@ impl std::fmt::Display for PortalBusinessProfile {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PortalCustomerUpdate {
     #[serde(rename = "allowed_updates")]
     ///The types of customer updates that are supported. When empty, customers are not updateable.
@@ -11683,7 +11700,7 @@ impl std::fmt::Display for PortalFeatures {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PortalInvoiceList {
     #[serde(rename = "enabled")]
     ///Whether the feature is enabled.
@@ -11694,7 +11711,7 @@ impl std::fmt::Display for PortalInvoiceList {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PortalPaymentMethodUpdate {
     #[serde(rename = "enabled")]
     ///Whether the feature is enabled.
@@ -11725,7 +11742,7 @@ impl std::fmt::Display for PortalSubscriptionCancel {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PortalSubscriptionCancellationReason {
     #[serde(rename = "enabled")]
     ///Whether the feature is enabled.
@@ -11739,7 +11756,7 @@ impl std::fmt::Display for PortalSubscriptionCancellationReason {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PortalSubscriptionPause {
     #[serde(rename = "enabled")]
     ///Whether the feature is enabled.
@@ -11750,7 +11767,7 @@ impl std::fmt::Display for PortalSubscriptionPause {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PortalSubscriptionUpdate {
     #[serde(rename = "default_allowed_updates")]
     ///The types of subscription updates that are supported for items listed in the `products` attribute. When empty, subscriptions are not updateable.
@@ -11770,7 +11787,7 @@ impl std::fmt::Display for PortalSubscriptionUpdate {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PortalSubscriptionUpdateProduct {
     #[serde(rename = "prices")]
     ///The list of price IDs which, when subscribed to, a subscription can be updated.
@@ -11855,7 +11872,7 @@ impl std::fmt::Display for Price {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PriceTier {
     #[serde(rename = "flat_amount")]
     ///Price for the entire tier.
@@ -11986,7 +12003,7 @@ impl std::fmt::Display for PromotionCode {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PromotionCodeCurrencyOption {
     #[serde(rename = "minimum_amount")]
     ///Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work).
@@ -11997,7 +12014,7 @@ impl std::fmt::Display for PromotionCodeCurrencyOption {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PromotionCodesResourceRestrictions {
     #[serde(rename = "currency_options")]
     ///Promotion code restrictions defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
@@ -12130,7 +12147,7 @@ impl std::fmt::Display for Quote {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct QuotesResourceAutomaticTax {
     #[serde(rename = "enabled")]
     ///Automatically calculate taxes
@@ -12195,7 +12212,7 @@ impl std::fmt::Display for QuotesResourceRecurring {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct QuotesResourceStatusTransitions {
     #[serde(rename = "accepted_at")]
     ///The time that the quote was accepted. Measured in seconds since Unix epoch.
@@ -12212,7 +12229,7 @@ impl std::fmt::Display for QuotesResourceStatusTransitions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct QuotesResourceSubscriptionData {
     #[serde(rename = "effective_date")]
     ///When creating a new subscription, the date of which the subscription schedule will start after the quote is accepted. This date is ignored if it is in the past when the quote is accepted. Measured in seconds since the Unix epoch.
@@ -12226,7 +12243,7 @@ impl std::fmt::Display for QuotesResourceSubscriptionData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct QuotesResourceTotalDetails {
     #[serde(rename = "amount_discount")]
     ///This is the sum of all the discounts.
@@ -12246,7 +12263,7 @@ impl std::fmt::Display for QuotesResourceTotalDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct QuotesResourceTotalDetailsResourceBreakdown {
     #[serde(rename = "discounts")]
     ///The aggregated discounts.
@@ -12367,7 +12384,7 @@ impl std::fmt::Display for RadarValueList {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct RadarValueListItem {
     #[serde(rename = "created")]
     ///Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -12396,7 +12413,7 @@ impl std::fmt::Display for RadarValueListItem {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct RadarRadarOptions {
     #[serde(rename = "session")]
     ///A [Radar Session](https://stripe.com/docs/radar/radar-session) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
@@ -12407,7 +12424,7 @@ impl std::fmt::Display for RadarRadarOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct RadarReviewResourceLocation {
     #[serde(rename = "city")]
     ///The city where the payment originated.
@@ -12430,7 +12447,7 @@ impl std::fmt::Display for RadarReviewResourceLocation {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct RadarReviewResourceSession {
     #[serde(rename = "browser")]
     ///The browser used in this browser session (e.g., `Chrome`).
@@ -12450,7 +12467,7 @@ impl std::fmt::Display for RadarReviewResourceSession {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ReceivedPaymentMethodDetailsFinancialAccount {
     #[serde(rename = "id")]
     ///The FinancialAccount ID.
@@ -12512,7 +12529,7 @@ impl std::fmt::Display for Recipient {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Recurring {
     #[serde(rename = "aggregate_usage")]
     ///Specifies a usage aggregation strategy for prices of `usage_type=metered`. Allowed values are `sum` for summing up all usage during a period, `last_during_period` for using the last usage record reported within a period, `last_ever` for using the last usage record ever (across period bounds) or `max` which uses the usage record with the maximum reported usage during a period. Defaults to `sum`.
@@ -12532,7 +12549,7 @@ impl std::fmt::Display for Recurring {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Refund {
     #[serde(rename = "amount")]
     ///Amount, in %s.
@@ -12597,7 +12614,7 @@ impl std::fmt::Display for Refund {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct RefundNextAction {
     #[serde(rename = "display_details")]
     ///Contains the refund details.
@@ -12668,7 +12685,7 @@ impl std::fmt::Display for ReportingReportRun {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ReportingReportType {
     #[serde(rename = "data_available_end")]
     ///Most recent time for which this Report Type is available. Measured in seconds since the Unix epoch.
@@ -12703,7 +12720,7 @@ impl std::fmt::Display for ReportingReportType {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ReserveTransaction {
     #[serde(rename = "amount")]
     pub amount: i64,
@@ -12725,7 +12742,7 @@ impl std::fmt::Display for ReserveTransaction {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Review {
     #[serde(rename = "billing_zip")]
     ///The ZIP or postal code of the card used, if applicable.
@@ -12775,7 +12792,7 @@ impl std::fmt::Display for Review {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Rule {
     #[serde(rename = "action")]
     ///The action taken on the payment.
@@ -12792,7 +12809,7 @@ impl std::fmt::Display for Rule {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ScheduledQueryRun {
     #[serde(rename = "created")]
     ///Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -12833,7 +12850,7 @@ impl std::fmt::Display for ScheduledQueryRun {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SchedulesPhaseAutomaticTax {
     #[serde(rename = "enabled")]
     ///Whether Stripe automatically computes tax on invoices created during this phase.
@@ -12844,7 +12861,7 @@ impl std::fmt::Display for SchedulesPhaseAutomaticTax {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SecretServiceResourceScope {
     #[serde(rename = "type")]
     ///The secret scope type.
@@ -12858,7 +12875,7 @@ impl std::fmt::Display for SecretServiceResourceScope {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SepaDebitGeneratedFrom {
     #[serde(rename = "charge")]
     ///The ID of the Charge that generated this PaymentMethod, if any.
@@ -12929,7 +12946,7 @@ impl std::fmt::Display for SetupAttempt {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetails {
     #[serde(rename = "acss_debit")]
     ///
@@ -12979,28 +12996,28 @@ impl std::fmt::Display for SetupAttemptPaymentMethodDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsAcssDebit {}
 impl std::fmt::Display for SetupAttemptPaymentMethodDetailsAcssDebit {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsAuBecsDebit {}
 impl std::fmt::Display for SetupAttemptPaymentMethodDetailsAuBecsDebit {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsBacsDebit {}
 impl std::fmt::Display for SetupAttemptPaymentMethodDetailsBacsDebit {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsBancontact {
     #[serde(rename = "bank_code")]
     ///Bank code of bank associated with the bank account.
@@ -13034,21 +13051,21 @@ impl std::fmt::Display for SetupAttemptPaymentMethodDetailsBancontact {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsBlik {}
 impl std::fmt::Display for SetupAttemptPaymentMethodDetailsBlik {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsBoleto {}
 impl std::fmt::Display for SetupAttemptPaymentMethodDetailsBoleto {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsCard {
     #[serde(rename = "three_d_secure")]
     ///Populated if this authorization used 3D Secure authentication.
@@ -13059,7 +13076,7 @@ impl std::fmt::Display for SetupAttemptPaymentMethodDetailsCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsCardPresent {
     #[serde(rename = "generated_card")]
     ///The ID of the Card PaymentMethod which was generated by this SetupAttempt.
@@ -13070,7 +13087,7 @@ impl std::fmt::Display for SetupAttemptPaymentMethodDetailsCardPresent {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsIdeal {
     #[serde(rename = "bank")]
     ///The customer's bank. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `revolut`, `sns_bank`, `triodos_bank`, or `van_lanschot`.
@@ -13097,21 +13114,21 @@ impl std::fmt::Display for SetupAttemptPaymentMethodDetailsIdeal {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsLink {}
 impl std::fmt::Display for SetupAttemptPaymentMethodDetailsLink {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsSepaDebit {}
 impl std::fmt::Display for SetupAttemptPaymentMethodDetailsSepaDebit {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsSofort {
     #[serde(rename = "bank_code")]
     ///Bank code of bank associated with the bank account.
@@ -13145,14 +13162,14 @@ impl std::fmt::Display for SetupAttemptPaymentMethodDetailsSofort {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsUsBankAccount {}
 impl std::fmt::Display for SetupAttemptPaymentMethodDetailsUsBankAccount {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntent {
     #[serde(rename = "application")]
     ///ID of the Connect application that created the SetupIntent.
@@ -13239,7 +13256,7 @@ impl std::fmt::Display for SetupIntent {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentNextAction {
     #[serde(rename = "redirect_to_url")]
     ///
@@ -13259,7 +13276,7 @@ impl std::fmt::Display for SetupIntentNextAction {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentNextActionRedirectToUrl {
     #[serde(rename = "return_url")]
     ///If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion.
@@ -13273,7 +13290,7 @@ impl std::fmt::Display for SetupIntentNextActionRedirectToUrl {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentNextActionVerifyWithMicrodeposits {
     #[serde(rename = "arrival_date")]
     ///The timestamp when the microdeposits are expected to land.
@@ -13290,7 +13307,7 @@ impl std::fmt::Display for SetupIntentNextActionVerifyWithMicrodeposits {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentPaymentMethodOptions {
     #[serde(rename = "acss_debit")]
     pub acss_debit: Option<serde_json::Value>,
@@ -13311,7 +13328,7 @@ impl std::fmt::Display for SetupIntentPaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentPaymentMethodOptionsAcssDebit {
     #[serde(rename = "currency")]
     ///Currency supported by the bank account
@@ -13328,7 +13345,7 @@ impl std::fmt::Display for SetupIntentPaymentMethodOptionsAcssDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentPaymentMethodOptionsBlik {
     #[serde(rename = "mandate_options")]
     ///
@@ -13339,7 +13356,7 @@ impl std::fmt::Display for SetupIntentPaymentMethodOptionsBlik {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentPaymentMethodOptionsCard {
     #[serde(rename = "mandate_options")]
     ///Configuration options for setting up an eMandate for cards issued in India.
@@ -13356,7 +13373,7 @@ impl std::fmt::Display for SetupIntentPaymentMethodOptionsCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentPaymentMethodOptionsCardMandateOptions {
     #[serde(rename = "amount")]
     ///Amount to be charged for future payments.
@@ -13394,7 +13411,7 @@ impl std::fmt::Display for SetupIntentPaymentMethodOptionsCardMandateOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentPaymentMethodOptionsLink {
     #[serde(rename = "persistent_token")]
     ///Token used for persistent Link logins.
@@ -13405,7 +13422,7 @@ impl std::fmt::Display for SetupIntentPaymentMethodOptionsLink {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit {
     #[serde(rename = "custom_mandate_url")]
     ///A URL for custom mandate text
@@ -13428,7 +13445,7 @@ impl std::fmt::Display for SetupIntentPaymentMethodOptionsMandateOptionsAcssDebi
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentPaymentMethodOptionsMandateOptionsBlik {
     #[serde(rename = "expires_after")]
     ///Date at which the mandate expires.
@@ -13445,14 +13462,14 @@ impl std::fmt::Display for SetupIntentPaymentMethodOptionsMandateOptionsBlik {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit {}
 impl std::fmt::Display for SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentPaymentMethodOptionsSepaDebit {
     #[serde(rename = "mandate_options")]
     ///
@@ -13463,7 +13480,7 @@ impl std::fmt::Display for SetupIntentPaymentMethodOptionsSepaDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentPaymentMethodOptionsUsBankAccount {
     #[serde(rename = "financial_connections")]
     ///
@@ -13477,7 +13494,7 @@ impl std::fmt::Display for SetupIntentPaymentMethodOptionsUsBankAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SetupIntentTypeSpecificPaymentMethodOptionsClient {
     #[serde(rename = "verification_method")]
     ///Bank account verification method.
@@ -13488,7 +13505,7 @@ impl std::fmt::Display for SetupIntentTypeSpecificPaymentMethodOptionsClient {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Shipping {
     #[serde(rename = "address")]
     ///
@@ -13555,7 +13572,7 @@ impl std::fmt::Display for ShippingRate {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ShippingRateCurrencyOption {
     #[serde(rename = "amount")]
     ///A non-negative integer in cents representing how much to charge.
@@ -13569,7 +13586,7 @@ impl std::fmt::Display for ShippingRateCurrencyOption {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ShippingRateDeliveryEstimate {
     #[serde(rename = "maximum")]
     ///The upper bound of the estimated range. If empty, represents no upper bound i.e., infinite.
@@ -13583,7 +13600,7 @@ impl std::fmt::Display for ShippingRateDeliveryEstimate {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ShippingRateDeliveryEstimateBound {
     #[serde(rename = "unit")]
     ///A unit of time.
@@ -13597,7 +13614,7 @@ impl std::fmt::Display for ShippingRateDeliveryEstimateBound {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ShippingRateFixedAmount {
     #[serde(rename = "amount")]
     ///A non-negative integer in cents representing how much to charge.
@@ -13614,7 +13631,7 @@ impl std::fmt::Display for ShippingRateFixedAmount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SigmaScheduledQueryRunError {
     #[serde(rename = "message")]
     ///Information about the run failure.
@@ -13675,7 +13692,7 @@ impl std::fmt::Display for Sku {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SkuInventory {
     #[serde(rename = "quantity")]
     ///The count of inventory available. Will be present if and only if `type` is `finite`.
@@ -13692,7 +13709,7 @@ impl std::fmt::Display for SkuInventory {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Source {
     #[serde(rename = "ach_credit_transfer")]
     pub ach_credit_transfer: Option<SourceTypeAchCreditTransfer>,
@@ -13793,7 +13810,7 @@ impl std::fmt::Display for Source {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceCodeVerificationFlow {
     #[serde(rename = "attempts_remaining")]
     ///The number of attempts remaining to authenticate the source object with a verification code.
@@ -13856,7 +13873,7 @@ impl std::fmt::Display for SourceMandateNotification {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceMandateNotificationAcssDebitData {
     #[serde(rename = "statement_descriptor")]
     ///The statement descriptor associate with the debit.
@@ -13867,7 +13884,7 @@ impl std::fmt::Display for SourceMandateNotificationAcssDebitData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceMandateNotificationBacsDebitData {
     #[serde(rename = "last4")]
     ///Last 4 digits of the account number associated with the debit.
@@ -13878,7 +13895,7 @@ impl std::fmt::Display for SourceMandateNotificationBacsDebitData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceMandateNotificationSepaDebitData {
     #[serde(rename = "creditor_identifier")]
     ///SEPA creditor ID.
@@ -13895,7 +13912,7 @@ impl std::fmt::Display for SourceMandateNotificationSepaDebitData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceOrder {
     #[serde(rename = "amount")]
     ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the order.
@@ -13918,7 +13935,7 @@ impl std::fmt::Display for SourceOrder {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceOrderItem {
     #[serde(rename = "amount")]
     ///The amount (price) for this order item.
@@ -13944,7 +13961,7 @@ impl std::fmt::Display for SourceOrderItem {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceOwner {
     #[serde(rename = "address")]
     ///Owner's address.
@@ -13976,7 +13993,7 @@ impl std::fmt::Display for SourceOwner {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceReceiverFlow {
     #[serde(rename = "address")]
     ///The address of the receiver source. This is the value that should be communicated to the customer to send their funds to.
@@ -14002,7 +14019,7 @@ impl std::fmt::Display for SourceReceiverFlow {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceRedirectFlow {
     #[serde(rename = "failure_reason")]
     ///The failure reason for the redirect, either `user_abort` (the customer aborted or dropped out of the redirect flow), `declined` (the authentication failed or the transaction was declined), or `processing_error` (the redirect failed due to a technical error). Present only if the redirect status is `failed`.
@@ -14022,7 +14039,7 @@ impl std::fmt::Display for SourceRedirectFlow {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTransaction {
     #[serde(rename = "ach_credit_transfer")]
     ///
@@ -14072,7 +14089,7 @@ impl std::fmt::Display for SourceTransaction {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTransactionAchCreditTransferData {
     #[serde(rename = "customer_data")]
     ///Customer data associated with the transfer.
@@ -14092,7 +14109,7 @@ impl std::fmt::Display for SourceTransactionAchCreditTransferData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTransactionChfCreditTransferData {
     #[serde(rename = "reference")]
     ///Reference associated with the transfer.
@@ -14115,7 +14132,7 @@ impl std::fmt::Display for SourceTransactionChfCreditTransferData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTransactionGbpCreditTransferData {
     #[serde(rename = "fingerprint")]
     ///Bank account fingerprint associated with the Stripe owned bank account receiving the transfer.
@@ -14144,7 +14161,7 @@ impl std::fmt::Display for SourceTransactionGbpCreditTransferData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTransactionPaperCheckData {
     #[serde(rename = "available_at")]
     ///Time at which the deposited funds will be available for use. Measured in seconds since the Unix epoch.
@@ -14158,7 +14175,7 @@ impl std::fmt::Display for SourceTransactionPaperCheckData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTransactionSepaCreditTransferData {
     #[serde(rename = "reference")]
     ///Reference associated with the transfer.
@@ -14175,7 +14192,7 @@ impl std::fmt::Display for SourceTransactionSepaCreditTransferData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeAchCreditTransfer {
     #[serde(rename = "account_number")]
     pub account_number: Option<String>,
@@ -14199,7 +14216,7 @@ impl std::fmt::Display for SourceTypeAchCreditTransfer {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeAchDebit {
     #[serde(rename = "bank_name")]
     pub bank_name: Option<String>,
@@ -14219,7 +14236,7 @@ impl std::fmt::Display for SourceTypeAchDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeAcssDebit {
     #[serde(rename = "bank_address_city")]
     pub bank_address_city: Option<String>,
@@ -14247,7 +14264,7 @@ impl std::fmt::Display for SourceTypeAcssDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeAlipay {
     #[serde(rename = "data_string")]
     pub data_string: Option<String>,
@@ -14261,7 +14278,7 @@ impl std::fmt::Display for SourceTypeAlipay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeAuBecsDebit {
     #[serde(rename = "bsb_number")]
     pub bsb_number: Option<String>,
@@ -14275,7 +14292,7 @@ impl std::fmt::Display for SourceTypeAuBecsDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeBancontact {
     #[serde(rename = "bank_code")]
     pub bank_code: Option<String>,
@@ -14295,7 +14312,7 @@ impl std::fmt::Display for SourceTypeBancontact {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeCard {
     #[serde(rename = "address_line1_check")]
     pub address_line1_check: Option<String>,
@@ -14331,7 +14348,7 @@ impl std::fmt::Display for SourceTypeCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeCardPresent {
     #[serde(rename = "application_cryptogram")]
     pub application_cryptogram: Option<String>,
@@ -14385,7 +14402,7 @@ impl std::fmt::Display for SourceTypeCardPresent {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeEps {
     #[serde(rename = "reference")]
     pub reference: Option<String>,
@@ -14397,7 +14414,7 @@ impl std::fmt::Display for SourceTypeEps {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeGiropay {
     #[serde(rename = "bank_code")]
     pub bank_code: Option<String>,
@@ -14413,7 +14430,7 @@ impl std::fmt::Display for SourceTypeGiropay {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeIdeal {
     #[serde(rename = "bank")]
     pub bank: Option<String>,
@@ -14429,7 +14446,7 @@ impl std::fmt::Display for SourceTypeIdeal {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeKlarna {
     #[serde(rename = "background_image_url")]
     pub background_image_url: Option<String>,
@@ -14489,7 +14506,7 @@ impl std::fmt::Display for SourceTypeKlarna {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeMultibanco {
     #[serde(rename = "entity")]
     pub entity: Option<String>,
@@ -14517,7 +14534,7 @@ impl std::fmt::Display for SourceTypeMultibanco {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeP24 {
     #[serde(rename = "reference")]
     pub reference: Option<String>,
@@ -14527,7 +14544,7 @@ impl std::fmt::Display for SourceTypeP24 {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeSepaDebit {
     #[serde(rename = "bank_code")]
     pub bank_code: Option<String>,
@@ -14549,7 +14566,7 @@ impl std::fmt::Display for SourceTypeSepaDebit {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeSofort {
     #[serde(rename = "bank_code")]
     pub bank_code: Option<String>,
@@ -14571,7 +14588,7 @@ impl std::fmt::Display for SourceTypeSofort {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeThreeDSecure {
     #[serde(rename = "address_line1_check")]
     pub address_line1_check: Option<String>,
@@ -14613,7 +14630,7 @@ impl std::fmt::Display for SourceTypeThreeDSecure {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SourceTypeWechat {
     #[serde(rename = "prepay_id")]
     pub prepay_id: Option<String>,
@@ -14763,7 +14780,7 @@ impl std::fmt::Display for Subscription {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionAutomaticTax {
     #[serde(rename = "enabled")]
     ///Whether Stripe automatically computes tax on this subscription.
@@ -14774,7 +14791,7 @@ impl std::fmt::Display for SubscriptionAutomaticTax {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionBillingThresholds {
     #[serde(rename = "amount_gte")]
     ///Monetary threshold that triggers the subscription to create an invoice
@@ -14828,7 +14845,7 @@ impl std::fmt::Display for SubscriptionItem {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionItemBillingThresholds {
     #[serde(rename = "usage_gte")]
     ///Usage threshold that triggers the subscription to create an invoice
@@ -14839,7 +14856,7 @@ impl std::fmt::Display for SubscriptionItemBillingThresholds {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionPaymentMethodOptionsCard {
     #[serde(rename = "mandate_options")]
     ///
@@ -14856,7 +14873,7 @@ impl std::fmt::Display for SubscriptionPaymentMethodOptionsCard {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionPendingInvoiceItemInterval {
     #[serde(rename = "interval")]
     ///Specifies invoicing frequency. Either `day`, `week`, `month` or `year`.
@@ -14969,7 +14986,7 @@ impl std::fmt::Display for SubscriptionScheduleConfigurationItem {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionScheduleCurrentPhase {
     #[serde(rename = "end_date")]
     ///The end of this phase of the subscription schedule.
@@ -14983,7 +15000,7 @@ impl std::fmt::Display for SubscriptionScheduleCurrentPhase {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionSchedulePhaseConfiguration {
     #[serde(rename = "add_invoice_items")]
     ///A list of prices and quantities that will generate invoice items appended to the next invoice for this phase.
@@ -15045,7 +15062,7 @@ impl std::fmt::Display for SubscriptionSchedulePhaseConfiguration {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionSchedulesResourceDefaultSettings {
     #[serde(rename = "application_fee_percent")]
     ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account during this phase of the schedule.
@@ -15077,7 +15094,7 @@ impl std::fmt::Display for SubscriptionSchedulesResourceDefaultSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionSchedulesResourceDefaultSettingsAutomaticTax {
     #[serde(rename = "enabled")]
     ///Whether Stripe automatically computes tax on invoices created during this phase.
@@ -15102,7 +15119,7 @@ impl std::fmt::Display for SubscriptionTransferData {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionsResourcePauseCollection {
     #[serde(rename = "behavior")]
     ///The payment collection behavior for this subscription while paused. One of `keep_as_draft`, `mark_uncollectible`, or `void`.
@@ -15116,7 +15133,7 @@ impl std::fmt::Display for SubscriptionsResourcePauseCollection {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionsResourcePaymentMethodOptions {
     #[serde(rename = "acss_debit")]
     ///This sub-hash contains details about the Canadian pre-authorized debit payment method options to pass to invoices created by the subscription.
@@ -15142,7 +15159,7 @@ impl std::fmt::Display for SubscriptionsResourcePaymentMethodOptions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionsResourcePaymentSettings {
     #[serde(rename = "payment_method_options")]
     ///Payment-method-specific configuration to provide to invoices created by the subscription.
@@ -15159,7 +15176,7 @@ impl std::fmt::Display for SubscriptionsResourcePaymentSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SubscriptionsResourcePendingUpdate {
     #[serde(rename = "billing_cycle_anchor")]
     ///If the update is applied, determines the date of the first full invoice, and, for plans with `month` or `year` intervals, the day of the month for subsequent invoices. The timestamp is in UTC format.
@@ -15182,7 +15199,7 @@ impl std::fmt::Display for SubscriptionsResourcePendingUpdate {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TaxCode {
     #[serde(rename = "description")]
     ///A detailed description of which types of products the tax code represents.
@@ -15202,7 +15219,7 @@ impl std::fmt::Display for TaxCode {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TaxDeductedAtSource {
     #[serde(rename = "id")]
     ///Unique identifier for the object.
@@ -15225,7 +15242,7 @@ impl std::fmt::Display for TaxDeductedAtSource {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TaxId {
     #[serde(rename = "country")]
     ///Two-letter ISO code representing the country of the tax ID.
@@ -15260,7 +15277,7 @@ impl std::fmt::Display for TaxId {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TaxIdVerification {
     #[serde(rename = "status")]
     ///Verification status, one of `pending`, `verified`, `unverified`, or `unavailable`.
@@ -15277,7 +15294,7 @@ impl std::fmt::Display for TaxIdVerification {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TaxRate {
     #[serde(rename = "active")]
     ///Defaults to `true`. When set to `false`, this tax rate cannot be used with new applications or Checkout Sessions, but will still work for subscriptions and invoices that already have it set.
@@ -15327,7 +15344,7 @@ impl std::fmt::Display for TaxRate {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TerminalConfiguration {
     #[serde(rename = "bbpos_wisepos_e")]
     ///
@@ -15360,7 +15377,7 @@ impl std::fmt::Display for TerminalConfiguration {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TerminalConnectionToken {
     #[serde(rename = "location")]
     ///The id of the location that this connection token is scoped to. Note that location scoping only applies to internet-connected readers. For more details, see [the docs on scoping connection tokens](https://stripe.com/docs/terminal/fleet/locations#connection-tokens).
@@ -15450,7 +15467,7 @@ impl std::fmt::Display for TerminalReader {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TerminalConfigurationConfigurationResourceCurrencySpecificConfig {
     #[serde(rename = "fixed_amounts")]
     ///Fixed amounts displayed when collecting a tip
@@ -15468,7 +15485,7 @@ for TerminalConfigurationConfigurationResourceCurrencySpecificConfig {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig {
     #[serde(rename = "splashscreen")]
     ///A File ID representing an image you would like displayed on the reader.
@@ -15480,7 +15497,7 @@ for TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TerminalConfigurationConfigurationResourceTipping {
     #[serde(rename = "aud")]
     ///
@@ -15530,7 +15547,7 @@ impl std::fmt::Display for TerminalConfigurationConfigurationResourceTipping {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TerminalReaderReaderResourceCart {
     #[serde(rename = "currency")]
     ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -15550,7 +15567,7 @@ impl std::fmt::Display for TerminalReaderReaderResourceCart {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TerminalReaderReaderResourceLineItem {
     #[serde(rename = "amount")]
     ///The amount of the line item. A positive integer in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
@@ -15567,7 +15584,7 @@ impl std::fmt::Display for TerminalReaderReaderResourceLineItem {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TerminalReaderReaderResourceProcessConfig {
     #[serde(rename = "skip_tipping")]
     ///Override showing a tipping selection screen on this transaction.
@@ -15606,7 +15623,7 @@ impl std::fmt::Display for TerminalReaderReaderResourceProcessSetupIntentAction 
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TerminalReaderReaderResourceReaderAction {
     #[serde(rename = "failure_code")]
     ///Failure code, only set if status is `failed`.
@@ -15639,7 +15656,7 @@ impl std::fmt::Display for TerminalReaderReaderResourceReaderAction {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TerminalReaderReaderResourceSetReaderDisplayAction {
     #[serde(rename = "cart")]
     ///Cart object to be displayed by the reader.
@@ -15653,7 +15670,7 @@ impl std::fmt::Display for TerminalReaderReaderResourceSetReaderDisplayAction {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TestHelpersTestClock {
     #[serde(rename = "created")]
     ///Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -15685,7 +15702,7 @@ impl std::fmt::Display for TestHelpersTestClock {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ThreeDSecureDetails {
     #[serde(rename = "authentication_flow")]
     /**For authenticated transactions: how the customer was authenticated by
@@ -15707,7 +15724,7 @@ impl std::fmt::Display for ThreeDSecureDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ThreeDSecureUsage {
     #[serde(rename = "supported")]
     ///Whether 3D Secure is supported on this card.
@@ -15718,7 +15735,7 @@ impl std::fmt::Display for ThreeDSecureUsage {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Token {
     #[serde(rename = "bank_account")]
     /**These bank accounts are payment methods on `Customer` objects.
@@ -15932,7 +15949,7 @@ impl std::fmt::Display for TransferReversal {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TransferSchedule {
     #[serde(rename = "delay_days")]
     ///The number of days charges for the account will be held before being paid out.
@@ -15952,7 +15969,7 @@ impl std::fmt::Display for TransferSchedule {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TransformQuantity {
     #[serde(rename = "divide_by")]
     ///Divide usage by this number.
@@ -15966,7 +15983,7 @@ impl std::fmt::Display for TransformQuantity {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TransformUsage {
     #[serde(rename = "divide_by")]
     ///Divide usage by this number.
@@ -16134,7 +16151,7 @@ impl std::fmt::Display for TreasuryFinancialAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountFeatures {
     #[serde(rename = "card_issuing")]
     ///Toggle settings for enabling/disabling a feature
@@ -16586,7 +16603,7 @@ impl std::fmt::Display for TreasuryTransactionEntry {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourceAbaRecord {
     #[serde(rename = "account_holder_name")]
     ///The name of the person or business that owns the bank account.
@@ -16626,7 +16643,7 @@ impl std::fmt::Display for TreasuryFinancialAccountsResourceBalance {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourceClosedStatusDetails {
     #[serde(rename = "reasons")]
     ///The array that contains reasons for a FinancialAccount closure.
@@ -16637,7 +16654,7 @@ impl std::fmt::Display for TreasuryFinancialAccountsResourceClosedStatusDetails 
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourceFinancialAddress {
     #[serde(rename = "aba")]
     ///ABA Records contain U.S. bank account details per the ABA format.
@@ -16654,7 +16671,7 @@ impl std::fmt::Display for TreasuryFinancialAccountsResourceFinancialAddress {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourceFinancialAddressesFeatures {
     #[serde(rename = "aba")]
     ///Toggle settings for enabling/disabling a feature
@@ -16665,7 +16682,7 @@ impl std::fmt::Display for TreasuryFinancialAccountsResourceFinancialAddressesFe
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourceInboundTransfers {
     #[serde(rename = "ach")]
     ///Toggle settings for enabling/disabling a feature
@@ -16676,7 +16693,7 @@ impl std::fmt::Display for TreasuryFinancialAccountsResourceInboundTransfers {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourceOutboundPayments {
     #[serde(rename = "ach")]
     ///Toggle settings for enabling/disabling a feature
@@ -16690,7 +16707,7 @@ impl std::fmt::Display for TreasuryFinancialAccountsResourceOutboundPayments {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourceOutboundTransfers {
     #[serde(rename = "ach")]
     ///Toggle settings for enabling/disabling a feature
@@ -16704,7 +16721,7 @@ impl std::fmt::Display for TreasuryFinancialAccountsResourceOutboundTransfers {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourcePlatformRestrictions {
     #[serde(rename = "inbound_flows")]
     ///Restricts all inbound money movement.
@@ -16718,7 +16735,7 @@ impl std::fmt::Display for TreasuryFinancialAccountsResourcePlatformRestrictions
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourceStatusDetails {
     #[serde(rename = "closed")]
     ///Details related to the closure of this FinancialAccount
@@ -16729,7 +16746,7 @@ impl std::fmt::Display for TreasuryFinancialAccountsResourceStatusDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourceToggleSettings {
     #[serde(rename = "requested")]
     ///Whether the FinancialAccount should have the Feature.
@@ -16748,7 +16765,7 @@ impl std::fmt::Display for TreasuryFinancialAccountsResourceToggleSettings {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourceTogglesSettingStatusDetails {
     #[serde(rename = "code")]
     ///Represents the reason why the status is `pending` or `restricted`.
@@ -16765,7 +16782,7 @@ impl std::fmt::Display for TreasuryFinancialAccountsResourceTogglesSettingStatus
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryInboundTransfersResourceFailureDetails {
     #[serde(rename = "code")]
     ///Reason for the failure.
@@ -16776,7 +16793,7 @@ impl std::fmt::Display for TreasuryInboundTransfersResourceFailureDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows {
     #[serde(rename = "received_debit")]
     ///If funds for this flow were returned after the flow went to the `succeeded` state, this field contains a reference to the ReceivedDebit return.
@@ -16788,7 +16805,7 @@ for TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions {
     #[serde(rename = "canceled_at")]
     ///Timestamp describing when an InboundTransfer changed status to `canceled`.
@@ -16806,7 +16823,7 @@ for TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails {
     #[serde(rename = "ip_address")]
     ///IP address of the user initiating the OutboundPayment. Set if `present` is set to `true`. IP address collection is required for risk and compliance reasons. This will be used to help determine if the OutboundPayment is authorized or should be blocked.
@@ -16821,7 +16838,7 @@ for TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions {
     #[serde(rename = "canceled_at")]
     ///Timestamp describing when an OutboundPayment changed status to `canceled`.
@@ -16870,7 +16887,7 @@ impl std::fmt::Display for TreasuryOutboundTransfersResourceReturnedDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryOutboundTransfersResourceStatusTransitions {
     #[serde(rename = "canceled_at")]
     ///Timestamp describing when an OutboundTransfer changed status to `canceled`
@@ -16890,7 +16907,7 @@ impl std::fmt::Display for TreasuryOutboundTransfersResourceStatusTransitions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryReceivedCreditsResourceLinkedFlows {
     #[serde(rename = "credit_reversal")]
     ///The CreditReversal created as a result of this ReceivedCredit being reversed.
@@ -16916,7 +16933,7 @@ impl std::fmt::Display for TreasuryReceivedCreditsResourceLinkedFlows {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryReceivedCreditsResourceReversalDetails {
     #[serde(rename = "deadline")]
     ///Time before which a ReceivedCredit can be reversed.
@@ -16930,7 +16947,7 @@ impl std::fmt::Display for TreasuryReceivedCreditsResourceReversalDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryReceivedCreditsResourceSourceFlowsDetails {
     #[serde(rename = "credit_reversal")]
     ///You can reverse some [ReceivedCredits](https://stripe.com/docs/api#received_credits) depending on their network and source flow. Reversing a ReceivedCredit leads to the creation of a new object known as a CreditReversal.
@@ -16959,7 +16976,7 @@ impl std::fmt::Display for TreasuryReceivedCreditsResourceSourceFlowsDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryReceivedCreditsResourceStatusTransitions {
     #[serde(rename = "posted_at")]
     ///Timestamp describing when the CreditReversal changed status to `posted`
@@ -16970,7 +16987,7 @@ impl std::fmt::Display for TreasuryReceivedCreditsResourceStatusTransitions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryReceivedDebitsResourceDebitReversalLinkedFlows {
     #[serde(rename = "issuing_dispute")]
     ///Set if there is an Issuing dispute associated with the DebitReversal.
@@ -16981,7 +16998,7 @@ impl std::fmt::Display for TreasuryReceivedDebitsResourceDebitReversalLinkedFlow
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryReceivedDebitsResourceLinkedFlows {
     #[serde(rename = "debit_reversal")]
     ///The DebitReversal created as a result of this ReceivedDebit being reversed.
@@ -17001,7 +17018,7 @@ impl std::fmt::Display for TreasuryReceivedDebitsResourceLinkedFlows {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryReceivedDebitsResourceReversalDetails {
     #[serde(rename = "deadline")]
     ///Time before which a ReceivedDebit can be reversed.
@@ -17015,7 +17032,7 @@ impl std::fmt::Display for TreasuryReceivedDebitsResourceReversalDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryReceivedDebitsResourceStatusTransitions {
     #[serde(rename = "completed_at")]
     ///Timestamp describing when the DebitReversal changed status to `completed`.
@@ -17072,7 +17089,7 @@ for TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodD
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount {
     #[serde(rename = "bank_name")]
     ///Bank name.
@@ -17090,7 +17107,7 @@ for TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions {
     #[serde(rename = "posted_at")]
     ///Timestamp describing when the Transaction changed status to `posted`.
@@ -17105,7 +17122,7 @@ for TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryTransactionsResourceBalanceImpact {
     #[serde(rename = "cash")]
     ///The change made to funds the user can spend right now.
@@ -17122,7 +17139,7 @@ impl std::fmt::Display for TreasuryTransactionsResourceBalanceImpact {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct TreasuryTransactionsResourceFlowDetails {
     #[serde(rename = "credit_reversal")]
     ///You can reverse some [ReceivedCredits](https://stripe.com/docs/api#received_credits) depending on their network and source flow. Reversing a ReceivedCredit leads to the creation of a new object known as a CreditReversal.
@@ -17165,7 +17182,7 @@ impl std::fmt::Display for TreasuryTransactionsResourceFlowDetails {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UsBankAccountNetworks {
     #[serde(rename = "preferred")]
     ///The preferred network.
@@ -17179,7 +17196,7 @@ impl std::fmt::Display for UsBankAccountNetworks {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UsageRecord {
     #[serde(rename = "id")]
     ///Unique identifier for the object.
@@ -17234,7 +17251,7 @@ impl std::fmt::Display for UsageRecordSummary {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct VerificationSessionRedaction {
     #[serde(rename = "status")]
     ///Indicates whether this object and its related objects have been redacted or not.
