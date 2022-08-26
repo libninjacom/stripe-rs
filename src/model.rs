@@ -1233,6 +1233,9 @@ pub struct BillingPortalConfiguration {
     #[serde(rename = "livemode")]
     ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     pub livemode: bool,
+    #[serde(rename = "login_page")]
+    ///
+    pub login_page: PortalLoginPage,
     #[serde(rename = "metadata")]
     ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     pub metadata: Option<serde_json::Value>,
@@ -1400,9 +1403,6 @@ pub struct Card {
     #[serde(rename = "object")]
     ///String representing the object's type. Objects of the same type share the same value.
     pub object: String,
-    #[serde(rename = "recipient")]
-    ///The recipient that this card belongs to. This attribute will not be in the card object if the card belongs to a customer or account instead.
-    pub recipient: Option<serde_json::Value>,
     #[serde(rename = "status")]
     ///For external accounts, possible values are `new` and `errored`. If a transfer fails, the status is set to `errored` and transfers are stopped until account details are updated.
     pub status: Option<String>,
@@ -1585,7 +1585,7 @@ pub struct Charge {
     pub refunded: bool,
     #[serde(rename = "refunds")]
     ///A list of refunds that have been applied to the charge.
-    pub refunds: serde_json::Value,
+    pub refunds: Option<serde_json::Value>,
     #[serde(rename = "review")]
     ///ID of the review associated with this charge if one exists.
     pub review: Option<serde_json::Value>,
@@ -9996,7 +9996,7 @@ impl std::fmt::Display for PaymentMethodDetailsCustomerBalance {
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsEps {
     #[serde(rename = "bank")]
-    ///The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
+    ///The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `deutsche_bank_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
     pub bank: Option<String>,
     #[serde(rename = "verified_name")]
     /**Owner's verified full name. Values are verified or provided by EPS directly
@@ -10401,7 +10401,7 @@ impl std::fmt::Display for PaymentMethodDetailsWechatPay {
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodEps {
     #[serde(rename = "bank")]
-    ///The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
+    ///The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `deutsche_bank_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
     pub bank: Option<String>,
 }
 impl std::fmt::Display for PaymentMethodEps {
@@ -11712,6 +11712,22 @@ impl std::fmt::Display for PortalInvoiceList {
     }
 }
 #[derive(Debug, Serialize, Deserialize, Default)]
+pub struct PortalLoginPage {
+    #[serde(rename = "enabled")]
+    /**If `true`, a shareable `url` will be generated that will take your customers to a hosted login page for the customer portal.
+
+If `false`, the previously generated `url`, if any, will be deactivated.*/
+    pub enabled: bool,
+    #[serde(rename = "url")]
+    ///A shareable URL to the hosted portal login page. Your customers will be able to log in with their [email](https://stripe.com/docs/api/customers/object#customer_object-email) and receive a link to their customer portal.
+    pub url: Option<String>,
+}
+impl std::fmt::Display for PortalLoginPage {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PortalPaymentMethodUpdate {
     #[serde(rename = "enabled")]
     ///Whether the feature is enabled.
@@ -12231,6 +12247,9 @@ impl std::fmt::Display for QuotesResourceStatusTransitions {
 }
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct QuotesResourceSubscriptionData {
+    #[serde(rename = "description")]
+    ///The subscription's description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription.
+    pub description: Option<String>,
     #[serde(rename = "effective_date")]
     ///When creating a new subscription, the date of which the subscription schedule will start after the quote is accepted. This date is ignored if it is in the past when the quote is accepted. Measured in seconds since the Unix epoch.
     pub effective_date: Option<i64>,
@@ -12477,54 +12496,6 @@ pub struct ReceivedPaymentMethodDetailsFinancialAccount {
     pub network: String,
 }
 impl std::fmt::Display for ReceivedPaymentMethodDetailsFinancialAccount {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(f, "{}", serde_json::to_string(self).unwrap())
-    }
-}
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Recipient {
-    #[serde(rename = "active_account")]
-    ///Hash describing the current account on the recipient, if there is one.
-    pub active_account: Option<serde_json::Value>,
-    #[serde(rename = "cards")]
-    ///
-    pub cards: Option<serde_json::Value>,
-    #[serde(rename = "created")]
-    ///Time at which the object was created. Measured in seconds since the Unix epoch.
-    pub created: i64,
-    #[serde(rename = "default_card")]
-    ///The default card to use for creating transfers to this recipient.
-    pub default_card: Option<serde_json::Value>,
-    #[serde(rename = "description")]
-    ///An arbitrary string attached to the object. Often useful for displaying to users.
-    pub description: Option<String>,
-    #[serde(rename = "email")]
-    pub email: Option<String>,
-    #[serde(rename = "id")]
-    ///Unique identifier for the object.
-    pub id: String,
-    #[serde(rename = "livemode")]
-    ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-    pub livemode: bool,
-    #[serde(rename = "metadata")]
-    ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-    pub metadata: serde_json::Value,
-    #[serde(rename = "migrated_to")]
-    ///The ID of the [Custom account](https://stripe.com/docs/connect/custom-accounts) this recipient was migrated to. If set, the recipient can no longer be updated, nor can transfers be made to it: use the Custom account instead.
-    pub migrated_to: Option<serde_json::Value>,
-    #[serde(rename = "name")]
-    ///Full, legal name of the recipient.
-    pub name: Option<String>,
-    #[serde(rename = "object")]
-    ///String representing the object's type. Objects of the same type share the same value.
-    pub object: String,
-    #[serde(rename = "rolled_back_from")]
-    pub rolled_back_from: Option<serde_json::Value>,
-    #[serde(rename = "type")]
-    ///Type of the recipient, one of `individual` or `corporation`.
-    pub type_: String,
-}
-impl std::fmt::Display for Recipient {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
@@ -15032,6 +15003,9 @@ pub struct SubscriptionSchedulePhaseConfiguration {
     #[serde(rename = "default_tax_rates")]
     ///The default tax rates to apply to the subscription during this phase of the subscription schedule.
     pub default_tax_rates: Option<Vec<TaxRate>>,
+    #[serde(rename = "description")]
+    ///Subscription description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription.
+    pub description: Option<String>,
     #[serde(rename = "end_date")]
     ///The end of this phase of the subscription schedule.
     pub end_date: i64,
@@ -15082,6 +15056,9 @@ pub struct SubscriptionSchedulesResourceDefaultSettings {
     #[serde(rename = "default_payment_method")]
     ///ID of the default payment method for the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
     pub default_payment_method: Option<serde_json::Value>,
+    #[serde(rename = "description")]
+    ///Subscription description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription.
+    pub description: Option<String>,
     #[serde(rename = "invoice_settings")]
     ///The subscription schedule's default invoice settings.
     pub invoice_settings: Option<serde_json::Value>,
@@ -16098,7 +16075,7 @@ impl std::fmt::Display for TreasuryDebitReversal {
 pub struct TreasuryFinancialAccount {
     #[serde(rename = "active_features")]
     ///The array of paths to active Features in the Features hash.
-    pub active_features: Vec<String>,
+    pub active_features: Option<Vec<String>>,
     #[serde(rename = "balance")]
     ///Balance information for the FinancialAccount
     pub balance: TreasuryFinancialAccountsResourceBalance,
@@ -16129,13 +16106,13 @@ Stripe or the platform can control Features via the requested field.*/
     pub object: String,
     #[serde(rename = "pending_features")]
     ///The array of paths to pending Features in the Features hash.
-    pub pending_features: Vec<String>,
+    pub pending_features: Option<Vec<String>>,
     #[serde(rename = "platform_restrictions")]
     ///The set of functionalities that the platform can restrict on the FinancialAccount.
     pub platform_restrictions: Option<serde_json::Value>,
     #[serde(rename = "restricted_features")]
     ///The array of paths to restricted Features in the Features hash.
-    pub restricted_features: Vec<String>,
+    pub restricted_features: Option<Vec<String>>,
     #[serde(rename = "status")]
     ///The enum specifying what state the account is in.
     pub status: String,
