@@ -8950,6 +8950,9 @@ impl std::fmt::Display for PaymentLinksResourceShippingOption {
 }
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourceSubscriptionData {
+    #[serde(rename = "description")]
+    ///The subscription's description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription.
+    pub description: Option<String>,
     #[serde(rename = "trial_period_days")]
     ///Integer representing the number of trial period days before the customer is charged for the first time.
     pub trial_period_days: Option<i64>,
