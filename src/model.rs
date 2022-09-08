@@ -6068,6 +6068,9 @@ pub struct IssuingCardShipping {
     #[serde(rename = "phone_number")]
     ///The phone number of the receiver of the bulk shipment. This phone number will be provided to the shipping company, who might use it to contact the receiver in case of delivery issues.
     pub phone_number: Option<String>,
+    #[serde(rename = "require_signature")]
+    ///Whether a signature is required for card delivery. This feature is only supported for US users. Standard shipping service does not support signature on delivery. The default value for standard shipping service is false and for express and priority services is true.
+    pub require_signature: Option<bool>,
     #[serde(rename = "service")]
     ///Shipment service, such as `standard` or `express`.
     pub service: String,
