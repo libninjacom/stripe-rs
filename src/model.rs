@@ -1824,7 +1824,8 @@ subscription creation is successful.*/
     ///Tax and discount details for the computed total amount.
     pub total_details: Option<serde_json::Value>,
     #[serde(rename = "url")]
-    ///The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. If you’re using [Custom Domains](https://stripe.com/docs/payments/checkout/custom-domains), the URL will use your subdomain. Otherwise, it’ll use `checkout.stripe.com.`
+    /**The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. If you’re using [Custom Domains](https://stripe.com/docs/payments/checkout/custom-domains), the URL will use your subdomain. Otherwise, it’ll use `checkout.stripe.com.`
+This value is only present when the session is active.*/
     pub url: Option<String>,
 }
 impl std::fmt::Display for CheckoutSession {
@@ -16085,6 +16086,9 @@ pub struct TreasuryCreditReversal {
     #[serde(rename = "amount")]
     ///Amount (in cents) transferred.
     pub amount: i64,
+    #[serde(rename = "created")]
+    ///Time at which the object was created. Measured in seconds since the Unix epoch.
+    pub created: i64,
     #[serde(rename = "currency")]
     ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     pub currency: String,
