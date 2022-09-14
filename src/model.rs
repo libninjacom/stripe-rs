@@ -2219,6 +2219,17 @@ impl std::fmt::Display for CheckoutPaynowPaymentMethodOptions {
     }
 }
 #[derive(Debug, Serialize, Deserialize, Default)]
+pub struct CheckoutPixPaymentMethodOptions {
+    #[serde(rename = "expires_after_seconds")]
+    ///The number of seconds after which Pix payment will expire.
+    pub expires_after_seconds: Option<i64>,
+}
+impl std::fmt::Display for CheckoutPixPaymentMethodOptions {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CheckoutSepaDebitPaymentMethodOptions {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2295,6 +2306,9 @@ pub struct CheckoutSessionPaymentMethodOptions {
     #[serde(rename = "paynow")]
     ///
     pub paynow: Option<CheckoutPaynowPaymentMethodOptions>,
+    #[serde(rename = "pix")]
+    ///
+    pub pix: Option<CheckoutPixPaymentMethodOptions>,
     #[serde(rename = "sepa_debit")]
     ///
     pub sepa_debit: Option<CheckoutSepaDebitPaymentMethodOptions>,
@@ -4892,6 +4906,9 @@ pub struct Invoice {
     #[serde(rename = "footer")]
     ///Footer displayed on the invoice.
     pub footer: Option<String>,
+    #[serde(rename = "from_invoice")]
+    ///Details of the invoice that was cloned. See the [revision documentation](https://stripe.com/docs/invoicing/invoice-revisions) for more details.
+    pub from_invoice: Option<serde_json::Value>,
     #[serde(rename = "hosted_invoice_url")]
     ///The URL for the hosted invoice page, which allows customers to view and pay an invoice. If the invoice has not been finalized yet, this will be null.
     pub hosted_invoice_url: Option<String>,
@@ -4904,6 +4921,9 @@ pub struct Invoice {
     #[serde(rename = "last_finalization_error")]
     ///The error encountered during the previous attempt to finalize the invoice. This field is cleared when the invoice is successfully finalized.
     pub last_finalization_error: Option<serde_json::Value>,
+    #[serde(rename = "latest_revision")]
+    ///The ID of the most recent non-draft revision of this invoice
+    pub latest_revision: Option<serde_json::Value>,
     #[serde(rename = "lines")]
     ///The individual line items that make up the invoice. `lines` is sorted as follows: invoice items in reverse chronological order, followed by the subscription, if any.
     pub lines: serde_json::Value,
@@ -5379,6 +5399,20 @@ pub struct Invoiceitem {
     pub unit_amount_decimal: Option<String>,
 }
 impl std::fmt::Display for Invoiceitem {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct InvoicesFromInvoice {
+    #[serde(rename = "action")]
+    ///The relation between this invoice and the cloned invoice
+    pub action: String,
+    #[serde(rename = "invoice")]
+    ///The invoice that was cloned.
+    pub invoice: serde_json::Value,
+}
+impl std::fmt::Display for InvoicesFromInvoice {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
@@ -8086,6 +8120,9 @@ pub struct PaymentIntentNextAction {
     #[serde(rename = "paynow_display_qr_code")]
     ///
     pub paynow_display_qr_code: Option<PaymentIntentNextActionPaynowDisplayQrCode>,
+    #[serde(rename = "pix_display_qr_code")]
+    ///
+    pub pix_display_qr_code: Option<PaymentIntentNextActionPixDisplayQrCode>,
     #[serde(rename = "promptpay_display_qr_code")]
     ///
     pub promptpay_display_qr_code: Option<PaymentIntentNextActionPromptpayDisplayQrCode>,
@@ -8334,6 +8371,29 @@ impl std::fmt::Display for PaymentIntentNextActionPaynowDisplayQrCode {
     }
 }
 #[derive(Debug, Serialize, Deserialize, Default)]
+pub struct PaymentIntentNextActionPixDisplayQrCode {
+    #[serde(rename = "data")]
+    ///The raw data string used to generate QR code, it should be used together with QR code library.
+    pub data: Option<String>,
+    #[serde(rename = "expires_at")]
+    ///The date (unix timestamp) when the PIX expires.
+    pub expires_at: Option<i64>,
+    #[serde(rename = "hosted_instructions_url")]
+    ///The URL to the hosted pix instructions page, which allows customers to view the pix QR code.
+    pub hosted_instructions_url: Option<String>,
+    #[serde(rename = "image_url_png")]
+    ///​​The image_url_png string used to render png QR code
+    pub image_url_png: Option<String>,
+    #[serde(rename = "image_url_svg")]
+    ///​​The image_url_svg string used to render svg QR code
+    pub image_url_svg: Option<String>,
+}
+impl std::fmt::Display for PaymentIntentNextActionPixDisplayQrCode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentIntentNextActionPromptpayDisplayQrCode {
     #[serde(rename = "data")]
     ///The raw data string used to generate QR code, it should be used together with QR code library.
@@ -8494,6 +8554,8 @@ pub struct PaymentIntentPaymentMethodOptions {
     pub p24: Option<serde_json::Value>,
     #[serde(rename = "paynow")]
     pub paynow: Option<serde_json::Value>,
+    #[serde(rename = "pix")]
+    pub pix: Option<serde_json::Value>,
     #[serde(rename = "promptpay")]
     pub promptpay: Option<serde_json::Value>,
     #[serde(rename = "sepa_debit")]
@@ -9085,6 +9147,9 @@ pub struct PaymentMethod {
     #[serde(rename = "paynow")]
     ///
     pub paynow: Option<PaymentMethodPaynow>,
+    #[serde(rename = "pix")]
+    ///
+    pub pix: Option<PaymentMethodPix>,
     #[serde(rename = "promptpay")]
     ///
     pub promptpay: Option<PaymentMethodPromptpay>,
@@ -9485,6 +9550,9 @@ pub struct PaymentMethodDetails {
     #[serde(rename = "paynow")]
     ///
     pub paynow: Option<PaymentMethodDetailsPaynow>,
+    #[serde(rename = "pix")]
+    ///
+    pub pix: Option<PaymentMethodDetailsPix>,
     #[serde(rename = "promptpay")]
     ///
     pub promptpay: Option<PaymentMethodDetailsPromptpay>,
@@ -10277,6 +10345,17 @@ impl std::fmt::Display for PaymentMethodDetailsPaynow {
     }
 }
 #[derive(Debug, Serialize, Deserialize, Default)]
+pub struct PaymentMethodDetailsPix {
+    #[serde(rename = "bank_transaction_id")]
+    ///Unique transaction id generated by BCB
+    pub bank_transaction_id: Option<String>,
+}
+impl std::fmt::Display for PaymentMethodDetailsPix {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodDetailsPromptpay {
     #[serde(rename = "reference")]
     ///Bill reference generated by PromptPay
@@ -10894,6 +10973,20 @@ impl std::fmt::Display for PaymentMethodOptionsPaypal {
     }
 }
 #[derive(Debug, Serialize, Deserialize, Default)]
+pub struct PaymentMethodOptionsPix {
+    #[serde(rename = "expires_after_seconds")]
+    ///The number of seconds (between 10 and 1209600) after which Pix payment will expire.
+    pub expires_after_seconds: Option<i64>,
+    #[serde(rename = "expires_at")]
+    ///The timestamp at which the Pix expires.
+    pub expires_at: Option<i64>,
+}
+impl std::fmt::Display for PaymentMethodOptionsPix {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodOptionsPromptpay {
     #[serde(rename = "setup_future_usage")]
     /**Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -10968,6 +11061,13 @@ impl std::fmt::Display for PaymentMethodP24 {
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct PaymentMethodPaynow {}
 impl std::fmt::Display for PaymentMethodPaynow {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+#[derive(Debug, Serialize, Deserialize, Default)]
+pub struct PaymentMethodPix {}
+impl std::fmt::Display for PaymentMethodPix {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
@@ -16032,6 +16132,9 @@ pub struct TreasuryDebitReversal {
     #[serde(rename = "amount")]
     ///Amount (in cents) transferred.
     pub amount: i64,
+    #[serde(rename = "created")]
+    ///Time at which the object was created. Measured in seconds since the Unix epoch.
+    pub created: i64,
     #[serde(rename = "currency")]
     ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     pub currency: String,

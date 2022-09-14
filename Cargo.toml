@@ -1,7 +1,7 @@
 [package]
 name = "stripe2"
 edition = "2021"
-version = "15.0.0"
+version = "16.0.0"
 description = "Stripe client, generated from the OpenAPI spec."
 homepage = "https://github.com/libninjacom/stripe-rs"
 documentation = "https://docs.rs/stripe2"
