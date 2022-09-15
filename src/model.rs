@@ -8383,10 +8383,10 @@ pub struct PaymentIntentNextActionPixDisplayQrCode {
     ///The URL to the hosted pix instructions page, which allows customers to view the pix QR code.
     pub hosted_instructions_url: Option<String>,
     #[serde(rename = "image_url_png")]
-    ///​​The image_url_png string used to render png QR code
+    ///The image_url_png string used to render png QR code
     pub image_url_png: Option<String>,
     #[serde(rename = "image_url_svg")]
-    ///​​The image_url_svg string used to render svg QR code
+    ///The image_url_svg string used to render svg QR code
     pub image_url_svg: Option<String>,
 }
 impl std::fmt::Display for PaymentIntentNextActionPixDisplayQrCode {
