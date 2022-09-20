@@ -8958,6 +8958,9 @@ pub struct PaymentLinksResourceConsentCollection {
     #[serde(rename = "promotions")]
     ///If set to `auto`, enables the collection of customer consent for promotional communications.
     pub promotions: Option<String>,
+    #[serde(rename = "terms_of_service")]
+    ///If set to `required`, it requires cutomers to accept the terms of service before being able to pay. If set to `none`, customers won't be shown a checkbox to accept the terms of service.
+    pub terms_of_service: Option<String>,
 }
 impl std::fmt::Display for PaymentLinksResourceConsentCollection {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
@@ -11209,6 +11212,9 @@ pub struct PaymentPagesCheckoutSessionConsent {
     /**If `opt_in`, the customer consents to receiving promotional communications
 from the merchant about this Checkout Session.*/
     pub promotions: Option<String>,
+    #[serde(rename = "terms_of_service")]
+    ///If `accepted`, the customer in this Checkout Session has agreed to the merchant's terms of service.
+    pub terms_of_service: Option<String>,
 }
 impl std::fmt::Display for PaymentPagesCheckoutSessionConsent {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
@@ -11222,6 +11228,9 @@ pub struct PaymentPagesCheckoutSessionConsentCollection {
 Session will determine whether to display an option to opt into promotional communication
 from the merchant depending on the customer's locale. Only available to US merchants.*/
     pub promotions: Option<String>,
+    #[serde(rename = "terms_of_service")]
+    ///If set to `required`, it requires customers to accept the terms of service before being able to pay.
+    pub terms_of_service: Option<String>,
 }
 impl std::fmt::Display for PaymentPagesCheckoutSessionConsentCollection {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
@@ -15103,7 +15112,7 @@ pub struct SubscriptionSchedulePhaseConfiguration {
     pub coupon: Option<serde_json::Value>,
     #[serde(rename = "currency")]
     ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-    pub currency: Option<String>,
+    pub currency: String,
     #[serde(rename = "default_payment_method")]
     ///ID of the default payment method for the subscription schedule. It must belong to the customer associated with the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
     pub default_payment_method: Option<serde_json::Value>,
