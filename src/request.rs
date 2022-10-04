@@ -1,7 +1,9 @@
 use serde_json::json;
-use crate::model;
 use crate::model::*;
 use crate::StripeClient;
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -24,678 +26,14 @@ impl<'a> GetAccountRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
-pub struct PostAccountRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-}
-impl<'a> PostAccountRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<Account> {
-        let mut r = self.client.client.post("/v1/account");
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct DeleteAccountRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-}
-impl<'a> DeleteAccountRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<DeletedAccount> {
-        let mut r = self.client.client.delete("/v1/account");
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct PostAccountBankAccountsRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-}
-impl<'a> PostAccountBankAccountsRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<ExternalAccount> {
-        let mut r = self.client.client.post("/v1/account/bank_accounts");
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct GetAccountBankAccountsIdRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub expand: Option<Vec<String>>,
-    pub id: String,
-}
-impl<'a> GetAccountBankAccountsIdRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<ExternalAccount> {
-        let mut r = self
-            .client
-            .client
-            .get(&format!("/v1/account/bank_accounts/{id}", id = self.id));
-        if let Some(ref unwrapped) = self.expand {
-            for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
-            }
-        }
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
-        self
-    }
-}
-pub struct PostAccountBankAccountsIdRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub id: String,
-}
-impl<'a> PostAccountBankAccountsIdRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<ExternalAccount> {
-        let mut r = self
-            .client
-            .client
-            .post(&format!("/v1/account/bank_accounts/{id}", id = self.id));
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct DeleteAccountBankAccountsIdRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub id: String,
-}
-impl<'a> DeleteAccountBankAccountsIdRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<DeletedExternalAccount> {
-        let mut r = self
-            .client
-            .client
-            .delete(&format!("/v1/account/bank_accounts/{id}", id = self.id));
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct GetAccountCapabilitiesRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub expand: Option<Vec<String>>,
-}
-impl<'a> GetAccountCapabilitiesRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<serde_json::Value> {
-        let mut r = self.client.client.get("/v1/account/capabilities");
-        if let Some(ref unwrapped) = self.expand {
-            for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
-            }
-        }
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
-        self
-    }
-}
-pub struct GetAccountCapabilitiesCapabilityRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub capability: String,
-    pub expand: Option<Vec<String>>,
-}
-impl<'a> GetAccountCapabilitiesCapabilityRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<Capability> {
-        let mut r = self
-            .client
-            .client
-            .get(
-                &format!(
-                    "/v1/account/capabilities/{capability}", capability = self.capability
-                ),
-            );
-        if let Some(ref unwrapped) = self.expand {
-            for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
-            }
-        }
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
-        self
-    }
-}
-pub struct PostAccountCapabilitiesCapabilityRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub capability: String,
-}
-impl<'a> PostAccountCapabilitiesCapabilityRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<Capability> {
-        let mut r = self
-            .client
-            .client
-            .post(
-                &format!(
-                    "/v1/account/capabilities/{capability}", capability = self.capability
-                ),
-            );
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct GetAccountExternalAccountsRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub ending_before: Option<String>,
-    pub expand: Option<Vec<String>>,
-    pub limit: Option<i64>,
-    pub starting_after: Option<String>,
-}
-impl<'a> GetAccountExternalAccountsRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<serde_json::Value> {
-        let mut r = self.client.client.get("/v1/account/external_accounts");
-        if let Some(ref unwrapped) = self.ending_before {
-            r = r.push_query("ending_before", &unwrapped.to_string());
-        }
-        if let Some(ref unwrapped) = self.expand {
-            for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
-            }
-        }
-        if let Some(ref unwrapped) = self.limit {
-            r = r.push_query("limit", &unwrapped.to_string());
-        }
-        if let Some(ref unwrapped) = self.starting_after {
-            r = r.push_query("starting_after", &unwrapped.to_string());
-        }
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
-        self
-    }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
-        self
-    }
-    pub fn limit(mut self, limit: i64) -> Self {
-        self.limit = Some(limit);
-        self
-    }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
-        self
-    }
-}
-pub struct PostAccountExternalAccountsRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-}
-impl<'a> PostAccountExternalAccountsRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<ExternalAccount> {
-        let mut r = self.client.client.post("/v1/account/external_accounts");
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct GetAccountExternalAccountsIdRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub expand: Option<Vec<String>>,
-    pub id: String,
-}
-impl<'a> GetAccountExternalAccountsIdRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<ExternalAccount> {
-        let mut r = self
-            .client
-            .client
-            .get(&format!("/v1/account/external_accounts/{id}", id = self.id));
-        if let Some(ref unwrapped) = self.expand {
-            for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
-            }
-        }
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
-        self
-    }
-}
-pub struct PostAccountExternalAccountsIdRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub id: String,
-}
-impl<'a> PostAccountExternalAccountsIdRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<ExternalAccount> {
-        let mut r = self
-            .client
-            .client
-            .post(&format!("/v1/account/external_accounts/{id}", id = self.id));
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct DeleteAccountExternalAccountsIdRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub id: String,
-}
-impl<'a> DeleteAccountExternalAccountsIdRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<DeletedExternalAccount> {
-        let mut r = self
-            .client
-            .client
-            .delete(&format!("/v1/account/external_accounts/{id}", id = self.id));
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct PostAccountLoginLinksRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-}
-impl<'a> PostAccountLoginLinksRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<LoginLink> {
-        let mut r = self.client.client.post("/v1/account/login_links");
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct GetAccountPeopleRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub ending_before: Option<String>,
-    pub expand: Option<Vec<String>>,
-    pub limit: Option<i64>,
-    pub relationship: Option<serde_json::Value>,
-    pub starting_after: Option<String>,
-}
-impl<'a> GetAccountPeopleRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<serde_json::Value> {
-        let mut r = self.client.client.get("/v1/account/people");
-        if let Some(ref unwrapped) = self.ending_before {
-            r = r.push_query("ending_before", &unwrapped.to_string());
-        }
-        if let Some(ref unwrapped) = self.expand {
-            for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
-            }
-        }
-        if let Some(ref unwrapped) = self.limit {
-            r = r.push_query("limit", &unwrapped.to_string());
-        }
-        if let Some(ref unwrapped) = self.relationship {
-            r = r.push_query("relationship", &unwrapped.to_string());
-        }
-        if let Some(ref unwrapped) = self.starting_after {
-            r = r.push_query("starting_after", &unwrapped.to_string());
-        }
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
-        self
-    }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
-        self
-    }
-    pub fn limit(mut self, limit: i64) -> Self {
-        self.limit = Some(limit);
-        self
-    }
-    pub fn relationship(mut self, relationship: serde_json::Value) -> Self {
-        self.relationship = Some(relationship);
-        self
-    }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
-        self
-    }
-}
-pub struct PostAccountPeopleRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-}
-impl<'a> PostAccountPeopleRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<Person> {
-        let mut r = self.client.client.post("/v1/account/people");
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct GetAccountPeoplePersonRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub expand: Option<Vec<String>>,
-    pub person: String,
-}
-impl<'a> GetAccountPeoplePersonRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<Person> {
-        let mut r = self
-            .client
-            .client
-            .get(&format!("/v1/account/people/{person}", person = self.person));
-        if let Some(ref unwrapped) = self.expand {
-            for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
-            }
-        }
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
-        self
-    }
-}
-pub struct PostAccountPeoplePersonRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub person: String,
-}
-impl<'a> PostAccountPeoplePersonRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<Person> {
-        let mut r = self
-            .client
-            .client
-            .post(&format!("/v1/account/people/{person}", person = self.person));
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct DeleteAccountPeoplePersonRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub person: String,
-}
-impl<'a> DeleteAccountPeoplePersonRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<DeletedPerson> {
-        let mut r = self
-            .client
-            .client
-            .delete(&format!("/v1/account/people/{person}", person = self.person));
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct GetAccountPersonsRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub ending_before: Option<String>,
-    pub expand: Option<Vec<String>>,
-    pub limit: Option<i64>,
-    pub relationship: Option<serde_json::Value>,
-    pub starting_after: Option<String>,
-}
-impl<'a> GetAccountPersonsRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<serde_json::Value> {
-        let mut r = self.client.client.get("/v1/account/persons");
-        if let Some(ref unwrapped) = self.ending_before {
-            r = r.push_query("ending_before", &unwrapped.to_string());
-        }
-        if let Some(ref unwrapped) = self.expand {
-            for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
-            }
-        }
-        if let Some(ref unwrapped) = self.limit {
-            r = r.push_query("limit", &unwrapped.to_string());
-        }
-        if let Some(ref unwrapped) = self.relationship {
-            r = r.push_query("relationship", &unwrapped.to_string());
-        }
-        if let Some(ref unwrapped) = self.starting_after {
-            r = r.push_query("starting_after", &unwrapped.to_string());
-        }
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
-        self
-    }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
-        self
-    }
-    pub fn limit(mut self, limit: i64) -> Self {
-        self.limit = Some(limit);
-        self
-    }
-    pub fn relationship(mut self, relationship: serde_json::Value) -> Self {
-        self.relationship = Some(relationship);
-        self
-    }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
-        self
-    }
-}
-pub struct PostAccountPersonsRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-}
-impl<'a> PostAccountPersonsRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<Person> {
-        let mut r = self.client.client.post("/v1/account/persons");
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct GetAccountPersonsPersonRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub expand: Option<Vec<String>>,
-    pub person: String,
-}
-impl<'a> GetAccountPersonsPersonRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<Person> {
-        let mut r = self
-            .client
-            .client
-            .get(&format!("/v1/account/persons/{person}", person = self.person));
-        if let Some(ref unwrapped) = self.expand {
-            for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
-            }
-        }
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
-        self
-    }
-}
-pub struct PostAccountPersonsPersonRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub person: String,
-}
-impl<'a> PostAccountPersonsPersonRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<Person> {
-        let mut r = self
-            .client
-            .client
-            .post(&format!("/v1/account/persons/{person}", person = self.person));
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
-pub struct DeleteAccountPersonsPersonRequest<'a> {
-    pub(crate) client: &'a StripeClient,
-    pub person: String,
-}
-impl<'a> DeleteAccountPersonsPersonRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<DeletedPerson> {
-        let mut r = self
-            .client
-            .client
-            .delete(&format!("/v1/account/persons/{person}", person = self.person));
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
-    }
-}
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountLinksRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -713,6 +51,9 @@ impl<'a> PostAccountLinksRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -755,23 +96,26 @@ impl<'a> GetAccountsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -789,6 +133,9 @@ impl<'a> PostAccountsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountsAccountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -815,11 +162,14 @@ impl<'a> GetAccountsAccountRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -841,6 +191,9 @@ impl<'a> PostAccountsAccountRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteAccountsAccountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -862,6 +215,9 @@ impl<'a> DeleteAccountsAccountRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountBankAccountsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -885,6 +241,9 @@ impl<'a> PostAccountsAccountBankAccountsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountsAccountBankAccountsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -917,11 +276,14 @@ impl<'a> GetAccountsAccountBankAccountsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountBankAccountsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -949,6 +311,9 @@ impl<'a> PostAccountsAccountBankAccountsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteAccountsAccountBankAccountsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -976,6 +341,9 @@ impl<'a> DeleteAccountsAccountBankAccountsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountsAccountCapabilitiesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1004,11 +372,14 @@ impl<'a> GetAccountsAccountCapabilitiesRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountsAccountCapabilitiesCapabilityRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1041,11 +412,14 @@ impl<'a> GetAccountsAccountCapabilitiesCapabilityRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountCapabilitiesCapabilityRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1073,6 +447,9 @@ impl<'a> PostAccountsAccountCapabilitiesCapabilityRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountsAccountExternalAccountsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1115,23 +492,26 @@ impl<'a> GetAccountsAccountExternalAccountsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountExternalAccountsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1157,6 +537,9 @@ impl<'a> PostAccountsAccountExternalAccountsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountsAccountExternalAccountsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1189,11 +572,14 @@ impl<'a> GetAccountsAccountExternalAccountsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountExternalAccountsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1221,6 +607,9 @@ impl<'a> PostAccountsAccountExternalAccountsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteAccountsAccountExternalAccountsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1248,6 +637,9 @@ impl<'a> DeleteAccountsAccountExternalAccountsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountLoginLinksRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1271,6 +663,9 @@ impl<'a> PostAccountsAccountLoginLinksRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountsAccountPeopleRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1313,12 +708,12 @@ impl<'a> GetAccountsAccountPeopleRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
@@ -1329,11 +724,14 @@ impl<'a> GetAccountsAccountPeopleRequest<'a> {
         self.relationship = Some(relationship);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountPeopleRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1355,6 +753,9 @@ impl<'a> PostAccountsAccountPeopleRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountsAccountPeoplePersonRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1387,11 +788,14 @@ impl<'a> GetAccountsAccountPeoplePersonRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountPeoplePersonRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1419,6 +823,9 @@ impl<'a> PostAccountsAccountPeoplePersonRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteAccountsAccountPeoplePersonRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1446,6 +853,9 @@ impl<'a> DeleteAccountsAccountPeoplePersonRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountsAccountPersonsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1488,12 +898,12 @@ impl<'a> GetAccountsAccountPersonsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
@@ -1504,11 +914,14 @@ impl<'a> GetAccountsAccountPersonsRequest<'a> {
         self.relationship = Some(relationship);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountPersonsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1530,6 +943,9 @@ impl<'a> PostAccountsAccountPersonsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAccountsAccountPersonsPersonRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1562,11 +978,14 @@ impl<'a> GetAccountsAccountPersonsPersonRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountPersonsPersonRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1594,6 +1013,9 @@ impl<'a> PostAccountsAccountPersonsPersonRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteAccountsAccountPersonsPersonRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1621,6 +1043,9 @@ impl<'a> DeleteAccountsAccountPersonsPersonRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAccountsAccountRejectRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -1642,6 +1067,9 @@ impl<'a> PostAccountsAccountRejectRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetApplePayDomainsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub domain_name: Option<String>,
@@ -1680,27 +1108,30 @@ impl<'a> GetApplePayDomainsRequest<'a> {
             }
         }
     }
-    pub fn domain_name(mut self, domain_name: String) -> Self {
-        self.domain_name = Some(domain_name);
+    pub fn domain_name(mut self, domain_name: &str) -> Self {
+        self.domain_name = Some(domain_name.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostApplePayDomainsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -1718,6 +1149,9 @@ impl<'a> PostApplePayDomainsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetApplePayDomainsDomainRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub domain: String,
@@ -1744,11 +1178,14 @@ impl<'a> GetApplePayDomainsDomainRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteApplePayDomainsDomainRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub domain: String,
@@ -1770,6 +1207,9 @@ impl<'a> DeleteApplePayDomainsDomainRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetApplicationFeesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: Option<String>,
@@ -1812,31 +1252,34 @@ impl<'a> GetApplicationFeesRequest<'a> {
             }
         }
     }
-    pub fn charge(mut self, charge: String) -> Self {
-        self.charge = Some(charge);
+    pub fn charge(mut self, charge: &str) -> Self {
+        self.charge = Some(charge.to_owned());
         self
     }
     pub fn created(mut self, created: serde_json::Value) -> Self {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetApplicationFeesFeeRefundsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -1869,11 +1312,14 @@ impl<'a> GetApplicationFeesFeeRefundsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostApplicationFeesFeeRefundsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub fee: String,
@@ -1901,6 +1347,9 @@ impl<'a> PostApplicationFeesFeeRefundsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetApplicationFeesIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -1927,11 +1376,14 @@ impl<'a> GetApplicationFeesIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostApplicationFeesIdRefundRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -1953,6 +1405,9 @@ impl<'a> PostApplicationFeesIdRefundRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetApplicationFeesIdRefundsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -1991,23 +1446,26 @@ impl<'a> GetApplicationFeesIdRefundsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostApplicationFeesIdRefundsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -2029,12 +1487,15 @@ impl<'a> PostApplicationFeesIdRefundsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAppsSecretsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
     pub expand: Option<Vec<String>>,
     pub limit: Option<i64>,
-    pub scope: Option<serde_json::Value>,
+    pub scope: serde_json::Value,
     pub starting_after: Option<String>,
 }
 impl<'a> GetAppsSecretsRequest<'a> {
@@ -2051,9 +1512,7 @@ impl<'a> GetAppsSecretsRequest<'a> {
         if let Some(ref unwrapped) = self.limit {
             r = r.push_query("limit", &unwrapped.to_string());
         }
-        if let Some(ref unwrapped) = self.scope {
-            r = r.push_query("scope", &unwrapped.to_string());
-        }
+        r = r.push_query("scope", &self.scope.to_string());
         if let Some(ref unwrapped) = self.starting_after {
             r = r.push_query("starting_after", &unwrapped.to_string());
         }
@@ -2067,27 +1526,26 @@ impl<'a> GetAppsSecretsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn scope(mut self, scope: serde_json::Value) -> Self {
-        self.scope = Some(scope);
-        self
-    }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAppsSecretsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -2105,6 +1563,9 @@ impl<'a> PostAppsSecretsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostAppsSecretsDeleteRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -2122,11 +1583,14 @@ impl<'a> PostAppsSecretsDeleteRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetAppsSecretsFindRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
     pub name: String,
-    pub scope: Option<serde_json::Value>,
+    pub scope: serde_json::Value,
 }
 impl<'a> GetAppsSecretsFindRequest<'a> {
     pub async fn send(self) -> anyhow::Result<AppsSecret> {
@@ -2137,9 +1601,7 @@ impl<'a> GetAppsSecretsFindRequest<'a> {
             }
         }
         r = r.push_query("name", &self.name.to_string());
-        if let Some(ref unwrapped) = self.scope {
-            r = r.push_query("scope", &unwrapped.to_string());
-        }
+        r = r.push_query("scope", &self.scope.to_string());
         r = self.client.authenticate(r);
         let res = r.send().await.unwrap().error_for_status();
         match res {
@@ -2150,15 +1612,14 @@ impl<'a> GetAppsSecretsFindRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
-        self
-    }
-    pub fn scope(mut self, scope: serde_json::Value) -> Self {
-        self.scope = Some(scope);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetBalanceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -2181,11 +1642,14 @@ impl<'a> GetBalanceRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetBalanceHistoryRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -2244,39 +1708,42 @@ impl<'a> GetBalanceHistoryRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn currency(mut self, currency: String) -> Self {
-        self.currency = Some(currency);
+    pub fn currency(mut self, currency: &str) -> Self {
+        self.currency = Some(currency.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn payout(mut self, payout: String) -> Self {
-        self.payout = Some(payout);
+    pub fn payout(mut self, payout: &str) -> Self {
+        self.payout = Some(payout.to_owned());
         self
     }
-    pub fn source(mut self, source: String) -> Self {
-        self.source = Some(source);
+    pub fn source(mut self, source: &str) -> Self {
+        self.source = Some(source.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn type_(mut self, type_: String) -> Self {
-        self.type_ = Some(type_);
+    pub fn type_(mut self, type_: &str) -> Self {
+        self.type_ = Some(type_.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetBalanceHistoryIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -2303,11 +1770,14 @@ impl<'a> GetBalanceHistoryIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetBalanceTransactionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -2366,39 +1836,42 @@ impl<'a> GetBalanceTransactionsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn currency(mut self, currency: String) -> Self {
-        self.currency = Some(currency);
+    pub fn currency(mut self, currency: &str) -> Self {
+        self.currency = Some(currency.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn payout(mut self, payout: String) -> Self {
-        self.payout = Some(payout);
+    pub fn payout(mut self, payout: &str) -> Self {
+        self.payout = Some(payout.to_owned());
         self
     }
-    pub fn source(mut self, source: String) -> Self {
-        self.source = Some(source);
+    pub fn source(mut self, source: &str) -> Self {
+        self.source = Some(source.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn type_(mut self, type_: String) -> Self {
-        self.type_ = Some(type_);
+    pub fn type_(mut self, type_: &str) -> Self {
+        self.type_ = Some(type_.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetBalanceTransactionsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -2425,11 +1898,14 @@ impl<'a> GetBalanceTransactionsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetBillingPortalConfigurationsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub active: Option<bool>,
@@ -2476,12 +1952,12 @@ impl<'a> GetBillingPortalConfigurationsRequest<'a> {
         self.active = Some(active);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn is_default(mut self, is_default: bool) -> Self {
@@ -2492,11 +1968,14 @@ impl<'a> GetBillingPortalConfigurationsRequest<'a> {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostBillingPortalConfigurationsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -2514,6 +1993,9 @@ impl<'a> PostBillingPortalConfigurationsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetBillingPortalConfigurationsConfigurationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub configuration: String,
@@ -2545,11 +2027,14 @@ impl<'a> GetBillingPortalConfigurationsConfigurationRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostBillingPortalConfigurationsConfigurationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub configuration: String,
@@ -2576,6 +2061,9 @@ impl<'a> PostBillingPortalConfigurationsConfigurationRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostBillingPortalSessionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -2593,6 +2081,9 @@ impl<'a> PostBillingPortalSessionsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetChargesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -2647,35 +2138,38 @@ impl<'a> GetChargesRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn payment_intent(mut self, payment_intent: String) -> Self {
-        self.payment_intent = Some(payment_intent);
+    pub fn payment_intent(mut self, payment_intent: &str) -> Self {
+        self.payment_intent = Some(payment_intent.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn transfer_group(mut self, transfer_group: String) -> Self {
-        self.transfer_group = Some(transfer_group);
+    pub fn transfer_group(mut self, transfer_group: &str) -> Self {
+        self.transfer_group = Some(transfer_group.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostChargesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -2693,6 +2187,9 @@ impl<'a> PostChargesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetChargesSearchRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -2725,19 +2222,22 @@ impl<'a> GetChargesSearchRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn page(mut self, page: String) -> Self {
-        self.page = Some(page);
+    pub fn page(mut self, page: &str) -> Self {
+        self.page = Some(page.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetChargesChargeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: String,
@@ -2764,11 +2264,14 @@ impl<'a> GetChargesChargeRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostChargesChargeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: String,
@@ -2790,6 +2293,9 @@ impl<'a> PostChargesChargeRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostChargesChargeCaptureRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: String,
@@ -2811,6 +2317,9 @@ impl<'a> PostChargesChargeCaptureRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetChargesChargeDisputeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: String,
@@ -2837,11 +2346,14 @@ impl<'a> GetChargesChargeDisputeRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostChargesChargeDisputeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: String,
@@ -2863,6 +2375,9 @@ impl<'a> PostChargesChargeDisputeRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostChargesChargeDisputeCloseRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: String,
@@ -2884,6 +2399,9 @@ impl<'a> PostChargesChargeDisputeCloseRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostChargesChargeRefundRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: String,
@@ -2905,6 +2423,9 @@ impl<'a> PostChargesChargeRefundRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetChargesChargeRefundsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: String,
@@ -2943,23 +2464,26 @@ impl<'a> GetChargesChargeRefundsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostChargesChargeRefundsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: String,
@@ -2981,6 +2505,9 @@ impl<'a> PostChargesChargeRefundsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetChargesChargeRefundsRefundRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: String,
@@ -3013,11 +2540,14 @@ impl<'a> GetChargesChargeRefundsRefundRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostChargesChargeRefundsRefundRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: String,
@@ -3045,6 +2575,9 @@ impl<'a> PostChargesChargeRefundsRefundRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCheckoutSessionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: Option<String>,
@@ -3095,39 +2628,42 @@ impl<'a> GetCheckoutSessionsRequest<'a> {
             }
         }
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
     pub fn customer_details(mut self, customer_details: serde_json::Value) -> Self {
         self.customer_details = Some(customer_details);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn payment_intent(mut self, payment_intent: String) -> Self {
-        self.payment_intent = Some(payment_intent);
+    pub fn payment_intent(mut self, payment_intent: &str) -> Self {
+        self.payment_intent = Some(payment_intent.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn subscription(mut self, subscription: String) -> Self {
-        self.subscription = Some(subscription);
+    pub fn subscription(mut self, subscription: &str) -> Self {
+        self.subscription = Some(subscription.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCheckoutSessionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -3145,6 +2681,9 @@ impl<'a> PostCheckoutSessionsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCheckoutSessionsSessionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -3171,11 +2710,14 @@ impl<'a> GetCheckoutSessionsSessionRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCheckoutSessionsSessionExpireRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub session: String,
@@ -3201,6 +2743,9 @@ impl<'a> PostCheckoutSessionsSessionExpireRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCheckoutSessionsSessionLineItemsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -3243,23 +2788,26 @@ impl<'a> GetCheckoutSessionsSessionLineItemsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCountrySpecsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -3294,23 +2842,26 @@ impl<'a> GetCountrySpecsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCountrySpecsCountryRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub country: String,
@@ -3337,11 +2888,14 @@ impl<'a> GetCountrySpecsCountryRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCouponsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -3384,23 +2938,26 @@ impl<'a> GetCouponsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCouponsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -3418,6 +2975,9 @@ impl<'a> PostCouponsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCouponsCouponRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub coupon: String,
@@ -3444,11 +3004,14 @@ impl<'a> GetCouponsCouponRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCouponsCouponRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub coupon: String,
@@ -3470,6 +3033,9 @@ impl<'a> PostCouponsCouponRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteCouponsCouponRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub coupon: String,
@@ -3491,6 +3057,9 @@ impl<'a> DeleteCouponsCouponRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCreditNotesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: Option<String>,
@@ -3533,31 +3102,34 @@ impl<'a> GetCreditNotesRequest<'a> {
             }
         }
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
-    pub fn invoice(mut self, invoice: String) -> Self {
-        self.invoice = Some(invoice);
+    pub fn invoice(mut self, invoice: &str) -> Self {
+        self.invoice = Some(invoice.to_owned());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCreditNotesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -3575,6 +3147,9 @@ impl<'a> PostCreditNotesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCreditNotesPreviewRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub amount: Option<i64>,
@@ -3645,16 +3220,16 @@ impl<'a> GetCreditNotesPreviewRequest<'a> {
         self.credit_amount = Some(credit_amount);
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn lines(mut self, lines: Vec<serde_json::Value>) -> Self {
         self.lines = Some(lines);
         self
     }
-    pub fn memo(mut self, memo: String) -> Self {
-        self.memo = Some(memo);
+    pub fn memo(mut self, memo: &str) -> Self {
+        self.memo = Some(memo.to_owned());
         self
     }
     pub fn metadata(mut self, metadata: serde_json::Value) -> Self {
@@ -3665,12 +3240,12 @@ impl<'a> GetCreditNotesPreviewRequest<'a> {
         self.out_of_band_amount = Some(out_of_band_amount);
         self
     }
-    pub fn reason(mut self, reason: String) -> Self {
-        self.reason = Some(reason);
+    pub fn reason(mut self, reason: &str) -> Self {
+        self.reason = Some(reason.to_owned());
         self
     }
-    pub fn refund(mut self, refund: String) -> Self {
-        self.refund = Some(refund);
+    pub fn refund(mut self, refund: &str) -> Self {
+        self.refund = Some(refund.to_owned());
         self
     }
     pub fn refund_amount(mut self, refund_amount: i64) -> Self {
@@ -3678,6 +3253,9 @@ impl<'a> GetCreditNotesPreviewRequest<'a> {
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCreditNotesPreviewLinesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub amount: Option<i64>,
@@ -3760,12 +3338,12 @@ impl<'a> GetCreditNotesPreviewLinesRequest<'a> {
         self.credit_amount = Some(credit_amount);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
@@ -3776,8 +3354,8 @@ impl<'a> GetCreditNotesPreviewLinesRequest<'a> {
         self.lines = Some(lines);
         self
     }
-    pub fn memo(mut self, memo: String) -> Self {
-        self.memo = Some(memo);
+    pub fn memo(mut self, memo: &str) -> Self {
+        self.memo = Some(memo.to_owned());
         self
     }
     pub fn metadata(mut self, metadata: serde_json::Value) -> Self {
@@ -3788,23 +3366,26 @@ impl<'a> GetCreditNotesPreviewLinesRequest<'a> {
         self.out_of_band_amount = Some(out_of_band_amount);
         self
     }
-    pub fn reason(mut self, reason: String) -> Self {
-        self.reason = Some(reason);
+    pub fn reason(mut self, reason: &str) -> Self {
+        self.reason = Some(reason.to_owned());
         self
     }
-    pub fn refund(mut self, refund: String) -> Self {
-        self.refund = Some(refund);
+    pub fn refund(mut self, refund: &str) -> Self {
+        self.refund = Some(refund.to_owned());
         self
     }
     pub fn refund_amount(mut self, refund_amount: i64) -> Self {
         self.refund_amount = Some(refund_amount);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCreditNotesCreditNoteLinesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub credit_note: String,
@@ -3848,23 +3429,26 @@ impl<'a> GetCreditNotesCreditNoteLinesRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCreditNotesIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -3891,11 +3475,14 @@ impl<'a> GetCreditNotesIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCreditNotesIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -3917,6 +3504,9 @@ impl<'a> PostCreditNotesIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCreditNotesIdVoidRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -3938,6 +3528,9 @@ impl<'a> PostCreditNotesIdVoidRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -3988,31 +3581,34 @@ impl<'a> GetCustomersRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn email(mut self, email: String) -> Self {
-        self.email = Some(email);
+    pub fn email(mut self, email: &str) -> Self {
+        self.email = Some(email.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn test_clock(mut self, test_clock: String) -> Self {
-        self.test_clock = Some(test_clock);
+    pub fn test_clock(mut self, test_clock: &str) -> Self {
+        self.test_clock = Some(test_clock.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -4030,6 +3626,9 @@ impl<'a> PostCustomersRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersSearchRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -4062,19 +3661,22 @@ impl<'a> GetCustomersSearchRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn page(mut self, page: String) -> Self {
-        self.page = Some(page);
+    pub fn page(mut self, page: &str) -> Self {
+        self.page = Some(page.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4101,11 +3703,14 @@ impl<'a> GetCustomersCustomerRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4127,6 +3732,9 @@ impl<'a> PostCustomersCustomerRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteCustomersCustomerRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4148,6 +3756,9 @@ impl<'a> DeleteCustomersCustomerRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerBalanceTransactionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4191,23 +3802,26 @@ impl<'a> GetCustomersCustomerBalanceTransactionsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerBalanceTransactionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4234,6 +3848,9 @@ impl<'a> PostCustomersCustomerBalanceTransactionsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerBalanceTransactionsTransactionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4266,11 +3883,14 @@ impl<'a> GetCustomersCustomerBalanceTransactionsTransactionRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerBalanceTransactionsTransactionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4298,6 +3918,9 @@ impl<'a> PostCustomersCustomerBalanceTransactionsTransactionRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerBankAccountsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4340,23 +3963,26 @@ impl<'a> GetCustomersCustomerBankAccountsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerBankAccountsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4382,6 +4008,9 @@ impl<'a> PostCustomersCustomerBankAccountsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerBankAccountsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4414,11 +4043,14 @@ impl<'a> GetCustomersCustomerBankAccountsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerBankAccountsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4446,6 +4078,9 @@ impl<'a> PostCustomersCustomerBankAccountsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteCustomersCustomerBankAccountsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4473,6 +4108,9 @@ impl<'a> DeleteCustomersCustomerBankAccountsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerBankAccountsIdVerifyRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4500,6 +4138,9 @@ impl<'a> PostCustomersCustomerBankAccountsIdVerifyRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerCardsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4538,23 +4179,26 @@ impl<'a> GetCustomersCustomerCardsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerCardsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4576,6 +4220,9 @@ impl<'a> PostCustomersCustomerCardsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerCardsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4608,11 +4255,14 @@ impl<'a> GetCustomersCustomerCardsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerCardsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4640,6 +4290,9 @@ impl<'a> PostCustomersCustomerCardsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteCustomersCustomerCardsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4667,6 +4320,9 @@ impl<'a> DeleteCustomersCustomerCardsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerCashBalanceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4697,11 +4353,14 @@ impl<'a> GetCustomersCustomerCashBalanceRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerCashBalanceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4727,6 +4386,9 @@ impl<'a> PostCustomersCustomerCashBalanceRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerCashBalanceTransactionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4770,23 +4432,26 @@ impl<'a> GetCustomersCustomerCashBalanceTransactionsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerCashBalanceTransactionsTransactionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4819,11 +4484,14 @@ impl<'a> GetCustomersCustomerCashBalanceTransactionsTransactionRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerDiscountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4852,11 +4520,14 @@ impl<'a> GetCustomersCustomerDiscountRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteCustomersCustomerDiscountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4880,6 +4551,9 @@ impl<'a> DeleteCustomersCustomerDiscountRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerFundingInstructionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4906,6 +4580,9 @@ impl<'a> PostCustomersCustomerFundingInstructionsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerPaymentMethodsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4950,23 +4627,26 @@ impl<'a> GetCustomersCustomerPaymentMethodsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerPaymentMethodsPaymentMethodRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -4999,11 +4679,14 @@ impl<'a> GetCustomersCustomerPaymentMethodsPaymentMethodRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerSourcesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5046,27 +4729,30 @@ impl<'a> GetCustomersCustomerSourcesRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn object(mut self, object: String) -> Self {
-        self.object = Some(object);
+    pub fn object(mut self, object: &str) -> Self {
+        self.object = Some(object.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerSourcesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5090,6 +4776,9 @@ impl<'a> PostCustomersCustomerSourcesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerSourcesIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5122,11 +4811,14 @@ impl<'a> GetCustomersCustomerSourcesIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerSourcesIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5154,6 +4846,9 @@ impl<'a> PostCustomersCustomerSourcesIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteCustomersCustomerSourcesIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5181,6 +4876,9 @@ impl<'a> DeleteCustomersCustomerSourcesIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerSourcesIdVerifyRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5208,6 +4906,9 @@ impl<'a> PostCustomersCustomerSourcesIdVerifyRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerSubscriptionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5250,23 +4951,26 @@ impl<'a> GetCustomersCustomerSubscriptionsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerSubscriptionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5292,6 +4996,9 @@ impl<'a> PostCustomersCustomerSubscriptionsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerSubscriptionsSubscriptionExposedIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5325,11 +5032,14 @@ impl<'a> GetCustomersCustomerSubscriptionsSubscriptionExposedIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerSubscriptionsSubscriptionExposedIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5358,6 +5068,9 @@ impl<'a> PostCustomersCustomerSubscriptionsSubscriptionExposedIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5386,6 +5099,9 @@ impl<'a> DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5419,11 +5135,14 @@ impl<'a> GetCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest<'
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5452,6 +5171,9 @@ impl<'a> DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountReques
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerTaxIdsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5490,23 +5212,26 @@ impl<'a> GetCustomersCustomerTaxIdsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostCustomersCustomerTaxIdsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5530,6 +5255,9 @@ impl<'a> PostCustomersCustomerTaxIdsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetCustomersCustomerTaxIdsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5562,11 +5290,14 @@ impl<'a> GetCustomersCustomerTaxIdsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteCustomersCustomerTaxIdsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -5594,6 +5325,9 @@ impl<'a> DeleteCustomersCustomerTaxIdsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetDisputesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: Option<String>,
@@ -5640,35 +5374,38 @@ impl<'a> GetDisputesRequest<'a> {
             }
         }
     }
-    pub fn charge(mut self, charge: String) -> Self {
-        self.charge = Some(charge);
+    pub fn charge(mut self, charge: &str) -> Self {
+        self.charge = Some(charge.to_owned());
         self
     }
     pub fn created(mut self, created: serde_json::Value) -> Self {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn payment_intent(mut self, payment_intent: String) -> Self {
-        self.payment_intent = Some(payment_intent);
+    pub fn payment_intent(mut self, payment_intent: &str) -> Self {
+        self.payment_intent = Some(payment_intent.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetDisputesDisputeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub dispute: String,
@@ -5695,11 +5432,14 @@ impl<'a> GetDisputesDisputeRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostDisputesDisputeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub dispute: String,
@@ -5721,6 +5461,9 @@ impl<'a> PostDisputesDisputeRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostDisputesDisputeCloseRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub dispute: String,
@@ -5742,6 +5485,9 @@ impl<'a> PostDisputesDisputeCloseRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostEphemeralKeysRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -5759,6 +5505,9 @@ impl<'a> PostEphemeralKeysRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteEphemeralKeysKeyRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub key: String,
@@ -5780,6 +5529,9 @@ impl<'a> DeleteEphemeralKeysKeyRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetEventsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -5840,31 +5592,34 @@ impl<'a> GetEventsRequest<'a> {
         self.delivery_success = Some(delivery_success);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn type_(mut self, type_: String) -> Self {
-        self.type_ = Some(type_);
+    pub fn type_(mut self, type_: &str) -> Self {
+        self.type_ = Some(type_.to_owned());
         self
     }
-    pub fn types(mut self, types: Vec<String>) -> Self {
-        self.types = Some(types);
+    pub fn types(mut self, types: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.types = Some(types.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetEventsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -5888,11 +5643,14 @@ impl<'a> GetEventsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetExchangeRatesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -5927,23 +5685,26 @@ impl<'a> GetExchangeRatesRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetExchangeRatesRateIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -5970,11 +5731,14 @@ impl<'a> GetExchangeRatesRateIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetFileLinksRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -6025,31 +5789,34 @@ impl<'a> GetFileLinksRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn expired(mut self, expired: bool) -> Self {
         self.expired = Some(expired);
         self
     }
-    pub fn file(mut self, file: String) -> Self {
-        self.file = Some(file);
+    pub fn file(mut self, file: &str) -> Self {
+        self.file = Some(file.to_owned());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostFileLinksRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -6067,6 +5834,9 @@ impl<'a> PostFileLinksRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetFileLinksLinkRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -6093,11 +5863,14 @@ impl<'a> GetFileLinksLinkRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostFileLinksLinkRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub link: String,
@@ -6119,6 +5892,9 @@ impl<'a> PostFileLinksLinkRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetFilesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -6165,27 +5941,30 @@ impl<'a> GetFilesRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn purpose(mut self, purpose: String) -> Self {
-        self.purpose = Some(purpose);
+    pub fn purpose(mut self, purpose: &str) -> Self {
+        self.purpose = Some(purpose.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostFilesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -6203,6 +5982,9 @@ impl<'a> PostFilesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetFilesFileRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -6229,11 +6011,14 @@ impl<'a> GetFilesFileRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetFinancialConnectionsAccountsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account_holder: Option<serde_json::Value>,
@@ -6280,27 +6065,30 @@ impl<'a> GetFinancialConnectionsAccountsRequest<'a> {
         self.account_holder = Some(account_holder);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn session(mut self, session: String) -> Self {
-        self.session = Some(session);
+    pub fn session(mut self, session: &str) -> Self {
+        self.session = Some(session.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetFinancialConnectionsAccountsAccountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -6332,11 +6120,14 @@ impl<'a> GetFinancialConnectionsAccountsAccountRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostFinancialConnectionsAccountsAccountDisconnectRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -6363,6 +6154,9 @@ impl<'a> PostFinancialConnectionsAccountsAccountDisconnectRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetFinancialConnectionsAccountsAccountOwnersRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -6408,23 +6202,26 @@ impl<'a> GetFinancialConnectionsAccountsAccountOwnersRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostFinancialConnectionsAccountsAccountRefreshRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -6451,6 +6248,9 @@ impl<'a> PostFinancialConnectionsAccountsAccountRefreshRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostFinancialConnectionsSessionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -6468,6 +6268,9 @@ impl<'a> PostFinancialConnectionsSessionsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetFinancialConnectionsSessionsSessionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -6499,11 +6302,14 @@ impl<'a> GetFinancialConnectionsSessionsSessionRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIdentityVerificationReportsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -6554,31 +6360,34 @@ impl<'a> GetIdentityVerificationReportsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn type_(mut self, type_: String) -> Self {
-        self.type_ = Some(type_);
+    pub fn type_(mut self, type_: &str) -> Self {
+        self.type_ = Some(type_.to_owned());
         self
     }
-    pub fn verification_session(mut self, verification_session: String) -> Self {
-        self.verification_session = Some(verification_session);
+    pub fn verification_session(mut self, verification_session: &str) -> Self {
+        self.verification_session = Some(verification_session.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIdentityVerificationReportsReportRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -6609,11 +6418,14 @@ impl<'a> GetIdentityVerificationReportsReportRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIdentityVerificationSessionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -6660,27 +6472,30 @@ impl<'a> GetIdentityVerificationSessionsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIdentityVerificationSessionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -6698,6 +6513,9 @@ impl<'a> PostIdentityVerificationSessionsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIdentityVerificationSessionsSessionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -6729,11 +6547,14 @@ impl<'a> GetIdentityVerificationSessionsSessionRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIdentityVerificationSessionsSessionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub session: String,
@@ -6760,6 +6581,9 @@ impl<'a> PostIdentityVerificationSessionsSessionRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIdentityVerificationSessionsSessionCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub session: String,
@@ -6786,6 +6610,9 @@ impl<'a> PostIdentityVerificationSessionsSessionCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIdentityVerificationSessionsSessionRedactRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub session: String,
@@ -6812,6 +6639,9 @@ impl<'a> PostIdentityVerificationSessionsSessionRedactRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetInvoiceitemsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -6866,20 +6696,20 @@ impl<'a> GetInvoiceitemsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
-    pub fn invoice(mut self, invoice: String) -> Self {
-        self.invoice = Some(invoice);
+    pub fn invoice(mut self, invoice: &str) -> Self {
+        self.invoice = Some(invoice.to_owned());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
@@ -6890,11 +6720,14 @@ impl<'a> GetInvoiceitemsRequest<'a> {
         self.pending = Some(pending);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostInvoiceitemsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -6912,6 +6745,9 @@ impl<'a> PostInvoiceitemsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetInvoiceitemsInvoiceitemRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -6942,11 +6778,14 @@ impl<'a> GetInvoiceitemsInvoiceitemRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostInvoiceitemsInvoiceitemRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub invoiceitem: String,
@@ -6972,6 +6811,9 @@ impl<'a> PostInvoiceitemsInvoiceitemRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteInvoiceitemsInvoiceitemRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub invoiceitem: String,
@@ -6997,6 +6839,9 @@ impl<'a> DeleteInvoiceitemsInvoiceitemRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetInvoicesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub collection_method: Option<String>,
@@ -7055,47 +6900,50 @@ impl<'a> GetInvoicesRequest<'a> {
             }
         }
     }
-    pub fn collection_method(mut self, collection_method: String) -> Self {
-        self.collection_method = Some(collection_method);
+    pub fn collection_method(mut self, collection_method: &str) -> Self {
+        self.collection_method = Some(collection_method.to_owned());
         self
     }
     pub fn created(mut self, created: serde_json::Value) -> Self {
         self.created = Some(created);
         self
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
     pub fn due_date(mut self, due_date: serde_json::Value) -> Self {
         self.due_date = Some(due_date);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
-    pub fn subscription(mut self, subscription: String) -> Self {
-        self.subscription = Some(subscription);
+    pub fn subscription(mut self, subscription: &str) -> Self {
+        self.subscription = Some(subscription.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostInvoicesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -7113,6 +6961,9 @@ impl<'a> PostInvoicesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetInvoicesSearchRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -7145,19 +6996,22 @@ impl<'a> GetInvoicesSearchRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn page(mut self, page: String) -> Self {
-        self.page = Some(page);
+    pub fn page(mut self, page: &str) -> Self {
+        self.page = Some(page.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetInvoicesUpcomingRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub automatic_tax: Option<serde_json::Value>,
@@ -7270,16 +7124,16 @@ impl<'a> GetInvoicesUpcomingRequest<'a> {
         self.automatic_tax = Some(automatic_tax);
         self
     }
-    pub fn coupon(mut self, coupon: String) -> Self {
-        self.coupon = Some(coupon);
+    pub fn coupon(mut self, coupon: &str) -> Self {
+        self.coupon = Some(coupon.to_owned());
         self
     }
-    pub fn currency(mut self, currency: String) -> Self {
-        self.currency = Some(currency);
+    pub fn currency(mut self, currency: &str) -> Self {
+        self.currency = Some(currency.to_owned());
         self
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
     pub fn customer_details(mut self, customer_details: serde_json::Value) -> Self {
@@ -7290,20 +7144,20 @@ impl<'a> GetInvoicesUpcomingRequest<'a> {
         self.discounts = Some(discounts);
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn invoice_items(mut self, invoice_items: Vec<serde_json::Value>) -> Self {
         self.invoice_items = Some(invoice_items);
         self
     }
-    pub fn schedule(mut self, schedule: String) -> Self {
-        self.schedule = Some(schedule);
+    pub fn schedule(mut self, schedule: &str) -> Self {
+        self.schedule = Some(schedule.to_owned());
         self
     }
-    pub fn subscription(mut self, subscription: String) -> Self {
-        self.subscription = Some(subscription);
+    pub fn subscription(mut self, subscription: &str) -> Self {
+        self.subscription = Some(subscription.to_owned());
         self
     }
     pub fn subscription_billing_cycle_anchor(
@@ -7347,9 +7201,12 @@ impl<'a> GetInvoicesUpcomingRequest<'a> {
     }
     pub fn subscription_proration_behavior(
         mut self,
-        subscription_proration_behavior: String,
+        subscription_proration_behavior: &str,
     ) -> Self {
-        self.subscription_proration_behavior = Some(subscription_proration_behavior);
+        self
+            .subscription_proration_behavior = Some(
+            subscription_proration_behavior.to_owned(),
+        );
         self
     }
     pub fn subscription_proration_date(
@@ -7378,6 +7235,9 @@ impl<'a> GetInvoicesUpcomingRequest<'a> {
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetInvoicesUpcomingLinesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub automatic_tax: Option<serde_json::Value>,
@@ -7502,16 +7362,16 @@ impl<'a> GetInvoicesUpcomingLinesRequest<'a> {
         self.automatic_tax = Some(automatic_tax);
         self
     }
-    pub fn coupon(mut self, coupon: String) -> Self {
-        self.coupon = Some(coupon);
+    pub fn coupon(mut self, coupon: &str) -> Self {
+        self.coupon = Some(coupon.to_owned());
         self
     }
-    pub fn currency(mut self, currency: String) -> Self {
-        self.currency = Some(currency);
+    pub fn currency(mut self, currency: &str) -> Self {
+        self.currency = Some(currency.to_owned());
         self
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
     pub fn customer_details(mut self, customer_details: serde_json::Value) -> Self {
@@ -7522,12 +7382,12 @@ impl<'a> GetInvoicesUpcomingLinesRequest<'a> {
         self.discounts = Some(discounts);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn invoice_items(mut self, invoice_items: Vec<serde_json::Value>) -> Self {
@@ -7538,16 +7398,16 @@ impl<'a> GetInvoicesUpcomingLinesRequest<'a> {
         self.limit = Some(limit);
         self
     }
-    pub fn schedule(mut self, schedule: String) -> Self {
-        self.schedule = Some(schedule);
+    pub fn schedule(mut self, schedule: &str) -> Self {
+        self.schedule = Some(schedule.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn subscription(mut self, subscription: String) -> Self {
-        self.subscription = Some(subscription);
+    pub fn subscription(mut self, subscription: &str) -> Self {
+        self.subscription = Some(subscription.to_owned());
         self
     }
     pub fn subscription_billing_cycle_anchor(
@@ -7591,9 +7451,12 @@ impl<'a> GetInvoicesUpcomingLinesRequest<'a> {
     }
     pub fn subscription_proration_behavior(
         mut self,
-        subscription_proration_behavior: String,
+        subscription_proration_behavior: &str,
     ) -> Self {
-        self.subscription_proration_behavior = Some(subscription_proration_behavior);
+        self
+            .subscription_proration_behavior = Some(
+            subscription_proration_behavior.to_owned(),
+        );
         self
     }
     pub fn subscription_proration_date(
@@ -7622,6 +7485,9 @@ impl<'a> GetInvoicesUpcomingLinesRequest<'a> {
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetInvoicesInvoiceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -7648,11 +7514,14 @@ impl<'a> GetInvoicesInvoiceRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostInvoicesInvoiceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub invoice: String,
@@ -7674,6 +7543,9 @@ impl<'a> PostInvoicesInvoiceRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteInvoicesInvoiceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub invoice: String,
@@ -7695,6 +7567,9 @@ impl<'a> DeleteInvoicesInvoiceRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostInvoicesInvoiceFinalizeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub invoice: String,
@@ -7716,6 +7591,9 @@ impl<'a> PostInvoicesInvoiceFinalizeRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetInvoicesInvoiceLinesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -7754,23 +7632,26 @@ impl<'a> GetInvoicesInvoiceLinesRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostInvoicesInvoiceMarkUncollectibleRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub invoice: String,
@@ -7796,6 +7677,9 @@ impl<'a> PostInvoicesInvoiceMarkUncollectibleRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostInvoicesInvoicePayRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub invoice: String,
@@ -7817,6 +7701,9 @@ impl<'a> PostInvoicesInvoicePayRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostInvoicesInvoiceSendRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub invoice: String,
@@ -7838,6 +7725,9 @@ impl<'a> PostInvoicesInvoiceSendRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostInvoicesInvoiceVoidRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub invoice: String,
@@ -7859,6 +7749,9 @@ impl<'a> PostInvoicesInvoiceVoidRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingAuthorizationsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub card: Option<String>,
@@ -7909,39 +7802,42 @@ impl<'a> GetIssuingAuthorizationsRequest<'a> {
             }
         }
     }
-    pub fn card(mut self, card: String) -> Self {
-        self.card = Some(card);
+    pub fn card(mut self, card: &str) -> Self {
+        self.card = Some(card.to_owned());
         self
     }
-    pub fn cardholder(mut self, cardholder: String) -> Self {
-        self.cardholder = Some(cardholder);
+    pub fn cardholder(mut self, cardholder: &str) -> Self {
+        self.cardholder = Some(cardholder.to_owned());
         self
     }
     pub fn created(mut self, created: serde_json::Value) -> Self {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingAuthorizationsAuthorizationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub authorization: String,
@@ -7973,11 +7869,14 @@ impl<'a> GetIssuingAuthorizationsAuthorizationRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingAuthorizationsAuthorizationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub authorization: String,
@@ -8004,6 +7903,9 @@ impl<'a> PostIssuingAuthorizationsAuthorizationRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingAuthorizationsAuthorizationApproveRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub authorization: String,
@@ -8030,6 +7932,9 @@ impl<'a> PostIssuingAuthorizationsAuthorizationApproveRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingAuthorizationsAuthorizationDeclineRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub authorization: String,
@@ -8056,6 +7961,9 @@ impl<'a> PostIssuingAuthorizationsAuthorizationDeclineRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingCardholdersRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -8114,39 +8022,42 @@ impl<'a> GetIssuingCardholdersRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn email(mut self, email: String) -> Self {
-        self.email = Some(email);
+    pub fn email(mut self, email: &str) -> Self {
+        self.email = Some(email.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn phone_number(mut self, phone_number: String) -> Self {
-        self.phone_number = Some(phone_number);
+    pub fn phone_number(mut self, phone_number: &str) -> Self {
+        self.phone_number = Some(phone_number.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
-    pub fn type_(mut self, type_: String) -> Self {
-        self.type_ = Some(type_);
+    pub fn type_(mut self, type_: &str) -> Self {
+        self.type_ = Some(type_.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingCardholdersRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -8164,6 +8075,9 @@ impl<'a> PostIssuingCardholdersRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingCardholdersCardholderRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub cardholder: String,
@@ -8194,11 +8108,14 @@ impl<'a> GetIssuingCardholdersCardholderRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingCardholdersCardholderRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub cardholder: String,
@@ -8224,6 +8141,9 @@ impl<'a> PostIssuingCardholdersCardholderRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingCardsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub cardholder: Option<String>,
@@ -8286,16 +8206,16 @@ impl<'a> GetIssuingCardsRequest<'a> {
             }
         }
     }
-    pub fn cardholder(mut self, cardholder: String) -> Self {
-        self.cardholder = Some(cardholder);
+    pub fn cardholder(mut self, cardholder: &str) -> Self {
+        self.cardholder = Some(cardholder.to_owned());
         self
     }
     pub fn created(mut self, created: serde_json::Value) -> Self {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
     pub fn exp_month(mut self, exp_month: i64) -> Self {
@@ -8306,31 +8226,34 @@ impl<'a> GetIssuingCardsRequest<'a> {
         self.exp_year = Some(exp_year);
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
-    pub fn last4(mut self, last4: String) -> Self {
-        self.last4 = Some(last4);
+    pub fn last4(mut self, last4: &str) -> Self {
+        self.last4 = Some(last4.to_owned());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
-    pub fn type_(mut self, type_: String) -> Self {
-        self.type_ = Some(type_);
+    pub fn type_(mut self, type_: &str) -> Self {
+        self.type_ = Some(type_.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingCardsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -8348,6 +8271,9 @@ impl<'a> PostIssuingCardsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingCardsCardRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub card: String,
@@ -8374,11 +8300,14 @@ impl<'a> GetIssuingCardsCardRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingCardsCardRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub card: String,
@@ -8400,6 +8329,9 @@ impl<'a> PostIssuingCardsCardRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingDisputesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -8450,31 +8382,34 @@ impl<'a> GetIssuingDisputesRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
-    pub fn transaction(mut self, transaction: String) -> Self {
-        self.transaction = Some(transaction);
+    pub fn transaction(mut self, transaction: &str) -> Self {
+        self.transaction = Some(transaction.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingDisputesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -8492,6 +8427,9 @@ impl<'a> PostIssuingDisputesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingDisputesDisputeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub dispute: String,
@@ -8518,11 +8456,14 @@ impl<'a> GetIssuingDisputesDisputeRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingDisputesDisputeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub dispute: String,
@@ -8544,6 +8485,9 @@ impl<'a> PostIssuingDisputesDisputeRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingDisputesDisputeSubmitRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub dispute: String,
@@ -8567,6 +8511,9 @@ impl<'a> PostIssuingDisputesDisputeSubmitRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingSettlementsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -8609,23 +8556,26 @@ impl<'a> GetIssuingSettlementsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingSettlementsSettlementRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -8656,11 +8606,14 @@ impl<'a> GetIssuingSettlementsSettlementRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingSettlementsSettlementRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub settlement: String,
@@ -8686,6 +8639,9 @@ impl<'a> PostIssuingSettlementsSettlementRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingTransactionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub card: Option<String>,
@@ -8736,39 +8692,42 @@ impl<'a> GetIssuingTransactionsRequest<'a> {
             }
         }
     }
-    pub fn card(mut self, card: String) -> Self {
-        self.card = Some(card);
+    pub fn card(mut self, card: &str) -> Self {
+        self.card = Some(card.to_owned());
         self
     }
-    pub fn cardholder(mut self, cardholder: String) -> Self {
-        self.cardholder = Some(cardholder);
+    pub fn cardholder(mut self, cardholder: &str) -> Self {
+        self.cardholder = Some(cardholder.to_owned());
         self
     }
     pub fn created(mut self, created: serde_json::Value) -> Self {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn type_(mut self, type_: String) -> Self {
-        self.type_ = Some(type_);
+    pub fn type_(mut self, type_: &str) -> Self {
+        self.type_ = Some(type_.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetIssuingTransactionsTransactionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -8800,11 +8759,14 @@ impl<'a> GetIssuingTransactionsTransactionRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostIssuingTransactionsTransactionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub transaction: String,
@@ -8831,6 +8793,9 @@ impl<'a> PostIssuingTransactionsTransactionRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostLinkAccountSessionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -8848,6 +8813,9 @@ impl<'a> PostLinkAccountSessionsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetLinkAccountSessionsSessionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -8876,11 +8844,14 @@ impl<'a> GetLinkAccountSessionsSessionRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetLinkedAccountsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account_holder: Option<serde_json::Value>,
@@ -8927,27 +8898,30 @@ impl<'a> GetLinkedAccountsRequest<'a> {
         self.account_holder = Some(account_holder);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn session(mut self, session: String) -> Self {
-        self.session = Some(session);
+    pub fn session(mut self, session: &str) -> Self {
+        self.session = Some(session.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetLinkedAccountsAccountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -8974,11 +8948,14 @@ impl<'a> GetLinkedAccountsAccountRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostLinkedAccountsAccountDisconnectRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -9004,6 +8981,9 @@ impl<'a> PostLinkedAccountsAccountDisconnectRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetLinkedAccountsAccountOwnersRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -9046,23 +9026,26 @@ impl<'a> GetLinkedAccountsAccountOwnersRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostLinkedAccountsAccountRefreshRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub account: String,
@@ -9086,6 +9069,9 @@ impl<'a> PostLinkedAccountsAccountRefreshRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetMandatesMandateRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -9112,11 +9098,14 @@ impl<'a> GetMandatesMandateRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetOrdersRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: Option<String>,
@@ -9155,27 +9144,30 @@ impl<'a> GetOrdersRequest<'a> {
             }
         }
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostOrdersRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -9193,6 +9185,9 @@ impl<'a> PostOrdersRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetOrdersIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -9216,11 +9211,14 @@ impl<'a> GetOrdersIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostOrdersIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -9239,6 +9237,9 @@ impl<'a> PostOrdersIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostOrdersIdCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -9260,6 +9261,9 @@ impl<'a> PostOrdersIdCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetOrdersIdLineItemsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -9298,23 +9302,26 @@ impl<'a> GetOrdersIdLineItemsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostOrdersIdReopenRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -9336,6 +9343,9 @@ impl<'a> PostOrdersIdReopenRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostOrdersIdSubmitRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -9357,6 +9367,9 @@ impl<'a> PostOrdersIdSubmitRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPaymentIntentsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -9403,27 +9416,30 @@ impl<'a> GetPaymentIntentsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentIntentsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -9441,6 +9457,9 @@ impl<'a> PostPaymentIntentsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPaymentIntentsSearchRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -9473,19 +9492,22 @@ impl<'a> GetPaymentIntentsSearchRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn page(mut self, page: String) -> Self {
-        self.page = Some(page);
+    pub fn page(mut self, page: &str) -> Self {
+        self.page = Some(page.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPaymentIntentsIntentRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub client_secret: Option<String>,
@@ -9516,15 +9538,18 @@ impl<'a> GetPaymentIntentsIntentRequest<'a> {
             }
         }
     }
-    pub fn client_secret(mut self, client_secret: String) -> Self {
-        self.client_secret = Some(client_secret);
+    pub fn client_secret(mut self, client_secret: &str) -> Self {
+        self.client_secret = Some(client_secret.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentIntentsIntentRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub intent: String,
@@ -9546,6 +9571,9 @@ impl<'a> PostPaymentIntentsIntentRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentIntentsIntentApplyCustomerBalanceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub intent: String,
@@ -9572,6 +9600,9 @@ impl<'a> PostPaymentIntentsIntentApplyCustomerBalanceRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentIntentsIntentCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub intent: String,
@@ -9593,6 +9624,9 @@ impl<'a> PostPaymentIntentsIntentCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentIntentsIntentCaptureRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub intent: String,
@@ -9616,6 +9650,9 @@ impl<'a> PostPaymentIntentsIntentCaptureRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentIntentsIntentConfirmRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub intent: String,
@@ -9639,6 +9676,9 @@ impl<'a> PostPaymentIntentsIntentConfirmRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentIntentsIntentIncrementAuthorizationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub intent: String,
@@ -9665,6 +9705,9 @@ impl<'a> PostPaymentIntentsIntentIncrementAuthorizationRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentIntentsIntentVerifyMicrodepositsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub intent: String,
@@ -9691,6 +9734,9 @@ impl<'a> PostPaymentIntentsIntentVerifyMicrodepositsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPaymentLinksRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub active: Option<bool>,
@@ -9733,23 +9779,26 @@ impl<'a> GetPaymentLinksRequest<'a> {
         self.active = Some(active);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentLinksRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -9767,6 +9816,9 @@ impl<'a> PostPaymentLinksRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPaymentLinksPaymentLinkRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -9797,11 +9849,14 @@ impl<'a> GetPaymentLinksPaymentLinkRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentLinksPaymentLinkRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub payment_link: String,
@@ -9827,6 +9882,9 @@ impl<'a> PostPaymentLinksPaymentLinkRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPaymentLinksPaymentLinkLineItemsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -9870,23 +9928,26 @@ impl<'a> GetPaymentLinksPaymentLinkLineItemsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPaymentMethodsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: Option<String>,
@@ -9927,27 +9988,30 @@ impl<'a> GetPaymentMethodsRequest<'a> {
             }
         }
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentMethodsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -9965,6 +10029,9 @@ impl<'a> PostPaymentMethodsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPaymentMethodsPaymentMethodRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -9996,11 +10063,14 @@ impl<'a> GetPaymentMethodsPaymentMethodRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentMethodsPaymentMethodRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub payment_method: String,
@@ -10027,6 +10097,9 @@ impl<'a> PostPaymentMethodsPaymentMethodRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentMethodsPaymentMethodAttachRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub payment_method: String,
@@ -10053,6 +10126,9 @@ impl<'a> PostPaymentMethodsPaymentMethodAttachRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPaymentMethodsPaymentMethodDetachRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub payment_method: String,
@@ -10079,6 +10155,9 @@ impl<'a> PostPaymentMethodsPaymentMethodDetachRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPayoutsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub arrival_date: Option<serde_json::Value>,
@@ -10137,31 +10216,34 @@ impl<'a> GetPayoutsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn destination(mut self, destination: String) -> Self {
-        self.destination = Some(destination);
+    pub fn destination(mut self, destination: &str) -> Self {
+        self.destination = Some(destination.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPayoutsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -10179,6 +10261,9 @@ impl<'a> PostPayoutsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPayoutsPayoutRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -10205,11 +10290,14 @@ impl<'a> GetPayoutsPayoutRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPayoutsPayoutRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub payout: String,
@@ -10231,6 +10319,9 @@ impl<'a> PostPayoutsPayoutRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPayoutsPayoutCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub payout: String,
@@ -10252,6 +10343,9 @@ impl<'a> PostPayoutsPayoutCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPayoutsPayoutReverseRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub payout: String,
@@ -10273,6 +10367,9 @@ impl<'a> PostPayoutsPayoutReverseRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPlansRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub active: Option<bool>,
@@ -10327,27 +10424,30 @@ impl<'a> GetPlansRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn product(mut self, product: String) -> Self {
-        self.product = Some(product);
+    pub fn product(mut self, product: &str) -> Self {
+        self.product = Some(product.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPlansRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -10365,6 +10465,9 @@ impl<'a> PostPlansRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPlansPlanRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -10391,11 +10494,14 @@ impl<'a> GetPlansPlanRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPlansPlanRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub plan: String,
@@ -10417,6 +10523,9 @@ impl<'a> PostPlansPlanRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeletePlansPlanRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub plan: String,
@@ -10438,6 +10547,9 @@ impl<'a> DeletePlansPlanRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPricesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub active: Option<bool>,
@@ -10510,43 +10622,52 @@ impl<'a> GetPricesRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn currency(mut self, currency: String) -> Self {
-        self.currency = Some(currency);
+    pub fn currency(mut self, currency: &str) -> Self {
+        self.currency = Some(currency.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn lookup_keys(mut self, lookup_keys: Vec<String>) -> Self {
-        self.lookup_keys = Some(lookup_keys);
+    pub fn lookup_keys(
+        mut self,
+        lookup_keys: impl IntoIterator<Item = impl AsRef<str>>,
+    ) -> Self {
+        self
+            .lookup_keys = Some(
+            lookup_keys.into_iter().map(|s| s.as_ref().to_owned()).collect(),
+        );
         self
     }
-    pub fn product(mut self, product: String) -> Self {
-        self.product = Some(product);
+    pub fn product(mut self, product: &str) -> Self {
+        self.product = Some(product.to_owned());
         self
     }
     pub fn recurring(mut self, recurring: serde_json::Value) -> Self {
         self.recurring = Some(recurring);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn type_(mut self, type_: String) -> Self {
-        self.type_ = Some(type_);
+    pub fn type_(mut self, type_: &str) -> Self {
+        self.type_ = Some(type_.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPricesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -10564,6 +10685,9 @@ impl<'a> PostPricesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPricesSearchRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -10596,19 +10720,22 @@ impl<'a> GetPricesSearchRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn page(mut self, page: String) -> Self {
-        self.page = Some(page);
+    pub fn page(mut self, page: &str) -> Self {
+        self.page = Some(page.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPricesPriceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -10635,11 +10762,14 @@ impl<'a> GetPricesPriceRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPricesPriceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub price: String,
@@ -10661,6 +10791,9 @@ impl<'a> PostPricesPriceRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetProductsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub active: Option<bool>,
@@ -10725,16 +10858,16 @@ impl<'a> GetProductsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
-    pub fn ids(mut self, ids: Vec<String>) -> Self {
-        self.ids = Some(ids);
+    pub fn ids(mut self, ids: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.ids = Some(ids.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
@@ -10745,15 +10878,18 @@ impl<'a> GetProductsRequest<'a> {
         self.shippable = Some(shippable);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn url(mut self, url: String) -> Self {
-        self.url = Some(url);
+    pub fn url(mut self, url: &str) -> Self {
+        self.url = Some(url.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostProductsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -10771,6 +10907,9 @@ impl<'a> PostProductsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetProductsSearchRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -10803,19 +10942,22 @@ impl<'a> GetProductsSearchRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn page(mut self, page: String) -> Self {
-        self.page = Some(page);
+    pub fn page(mut self, page: &str) -> Self {
+        self.page = Some(page.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetProductsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -10839,11 +10981,14 @@ impl<'a> GetProductsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostProductsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -10862,6 +11007,9 @@ impl<'a> PostProductsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteProductsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -10883,6 +11031,9 @@ impl<'a> DeleteProductsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPromotionCodesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub active: Option<bool>,
@@ -10941,39 +11092,42 @@ impl<'a> GetPromotionCodesRequest<'a> {
         self.active = Some(active);
         self
     }
-    pub fn code(mut self, code: String) -> Self {
-        self.code = Some(code);
+    pub fn code(mut self, code: &str) -> Self {
+        self.code = Some(code.to_owned());
         self
     }
-    pub fn coupon(mut self, coupon: String) -> Self {
-        self.coupon = Some(coupon);
+    pub fn coupon(mut self, coupon: &str) -> Self {
+        self.coupon = Some(coupon.to_owned());
         self
     }
     pub fn created(mut self, created: serde_json::Value) -> Self {
         self.created = Some(created);
         self
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPromotionCodesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -10991,6 +11145,9 @@ impl<'a> PostPromotionCodesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetPromotionCodesPromotionCodeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -11022,11 +11179,14 @@ impl<'a> GetPromotionCodesPromotionCodeRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostPromotionCodesPromotionCodeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub promotion_code: String,
@@ -11053,6 +11213,9 @@ impl<'a> PostPromotionCodesPromotionCodeRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetQuotesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: Option<String>,
@@ -11099,35 +11262,38 @@ impl<'a> GetQuotesRequest<'a> {
             }
         }
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
-    pub fn test_clock(mut self, test_clock: String) -> Self {
-        self.test_clock = Some(test_clock);
+    pub fn test_clock(mut self, test_clock: &str) -> Self {
+        self.test_clock = Some(test_clock.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostQuotesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -11145,6 +11311,9 @@ impl<'a> PostQuotesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetQuotesQuoteRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -11171,11 +11340,14 @@ impl<'a> GetQuotesQuoteRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostQuotesQuoteRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub quote: String,
@@ -11197,6 +11369,9 @@ impl<'a> PostQuotesQuoteRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostQuotesQuoteAcceptRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub quote: String,
@@ -11218,6 +11393,9 @@ impl<'a> PostQuotesQuoteAcceptRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostQuotesQuoteCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub quote: String,
@@ -11239,6 +11417,9 @@ impl<'a> PostQuotesQuoteCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetQuotesQuoteComputedUpfrontLineItemsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -11281,23 +11462,26 @@ impl<'a> GetQuotesQuoteComputedUpfrontLineItemsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostQuotesQuoteFinalizeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub quote: String,
@@ -11319,6 +11503,9 @@ impl<'a> PostQuotesQuoteFinalizeRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetQuotesQuoteLineItemsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -11357,23 +11544,60 @@ impl<'a> GetQuotesQuoteLineItemsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+pub struct GetQuotesQuotePdfRequest<'a> {
+    pub(crate) client: &'a StripeClient,
+    pub expand: Option<Vec<String>>,
+    pub quote: String,
+}
+impl<'a> GetQuotesQuotePdfRequest<'a> {
+    pub async fn send(self) -> anyhow::Result<()> {
+        let mut r = self
+            .client
+            .client
+            .get(&format!("/v1/quotes/{quote}/pdf", quote = self.quote));
+        if let Some(ref unwrapped) = self.expand {
+            for item in unwrapped {
+                r = r.push_query("expand[]", &item.to_string());
+            }
+        }
+        r = self.client.authenticate(r);
+        let res = r.send().await.unwrap().error_for_status();
+        match res {
+            Ok(res) => Ok(()),
+            Err(res) => {
+                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
+                Err(anyhow::anyhow!("{:?}", text))
+            }
+        }
+    }
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
+        self
+    }
+}
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetRadarEarlyFraudWarningsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: Option<String>,
@@ -11416,31 +11640,34 @@ impl<'a> GetRadarEarlyFraudWarningsRequest<'a> {
             }
         }
     }
-    pub fn charge(mut self, charge: String) -> Self {
-        self.charge = Some(charge);
+    pub fn charge(mut self, charge: &str) -> Self {
+        self.charge = Some(charge.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn payment_intent(mut self, payment_intent: String) -> Self {
-        self.payment_intent = Some(payment_intent);
+    pub fn payment_intent(mut self, payment_intent: &str) -> Self {
+        self.payment_intent = Some(payment_intent.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetRadarEarlyFraudWarningsEarlyFraudWarningRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub early_fraud_warning: String,
@@ -11472,11 +11699,14 @@ impl<'a> GetRadarEarlyFraudWarningsEarlyFraudWarningRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetRadarValueListItemsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -11525,27 +11755,30 @@ impl<'a> GetRadarValueListItemsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn value(mut self, value: String) -> Self {
-        self.value = Some(value);
+    pub fn value(mut self, value: &str) -> Self {
+        self.value = Some(value.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostRadarValueListItemsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -11563,6 +11796,9 @@ impl<'a> PostRadarValueListItemsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetRadarValueListItemsItemRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -11589,11 +11825,14 @@ impl<'a> GetRadarValueListItemsItemRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteRadarValueListItemsItemRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub item: String,
@@ -11615,6 +11854,9 @@ impl<'a> DeleteRadarValueListItemsItemRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetRadarValueListsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub alias: Option<String>,
@@ -11661,35 +11903,38 @@ impl<'a> GetRadarValueListsRequest<'a> {
             }
         }
     }
-    pub fn alias(mut self, alias: String) -> Self {
-        self.alias = Some(alias);
+    pub fn alias(mut self, alias: &str) -> Self {
+        self.alias = Some(alias.to_owned());
         self
     }
-    pub fn contains(mut self, contains: String) -> Self {
-        self.contains = Some(contains);
+    pub fn contains(mut self, contains: &str) -> Self {
+        self.contains = Some(contains.to_owned());
         self
     }
     pub fn created(mut self, created: serde_json::Value) -> Self {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostRadarValueListsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -11707,6 +11952,9 @@ impl<'a> PostRadarValueListsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetRadarValueListsValueListRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -11737,11 +11985,14 @@ impl<'a> GetRadarValueListsValueListRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostRadarValueListsValueListRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub value_list: String,
@@ -11767,6 +12018,9 @@ impl<'a> PostRadarValueListsValueListRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteRadarValueListsValueListRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub value_list: String,
@@ -11792,6 +12046,9 @@ impl<'a> DeleteRadarValueListsValueListRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetRefundsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub charge: Option<String>,
@@ -11838,35 +12095,38 @@ impl<'a> GetRefundsRequest<'a> {
             }
         }
     }
-    pub fn charge(mut self, charge: String) -> Self {
-        self.charge = Some(charge);
+    pub fn charge(mut self, charge: &str) -> Self {
+        self.charge = Some(charge.to_owned());
         self
     }
     pub fn created(mut self, created: serde_json::Value) -> Self {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn payment_intent(mut self, payment_intent: String) -> Self {
-        self.payment_intent = Some(payment_intent);
+    pub fn payment_intent(mut self, payment_intent: &str) -> Self {
+        self.payment_intent = Some(payment_intent.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostRefundsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -11884,6 +12144,9 @@ impl<'a> PostRefundsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetRefundsRefundRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -11910,11 +12173,14 @@ impl<'a> GetRefundsRefundRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostRefundsRefundRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub refund: String,
@@ -11936,6 +12202,9 @@ impl<'a> PostRefundsRefundRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostRefundsRefundCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub refund: String,
@@ -11957,6 +12226,9 @@ impl<'a> PostRefundsRefundCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetReportingReportRunsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -11999,23 +12271,26 @@ impl<'a> GetReportingReportRunsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostReportingReportRunsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -12033,6 +12308,9 @@ impl<'a> PostReportingReportRunsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetReportingReportRunsReportRunRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -12064,11 +12342,14 @@ impl<'a> GetReportingReportRunsReportRunRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetReportingReportTypesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -12091,11 +12372,14 @@ impl<'a> GetReportingReportTypesRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetReportingReportTypesReportTypeRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -12127,11 +12411,14 @@ impl<'a> GetReportingReportTypesReportTypeRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetReviewsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -12174,23 +12461,26 @@ impl<'a> GetReviewsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetReviewsReviewRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -12217,11 +12507,14 @@ impl<'a> GetReviewsReviewRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostReviewsReviewApproveRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub review: String,
@@ -12243,6 +12536,9 @@ impl<'a> PostReviewsReviewApproveRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSetupAttemptsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -12287,23 +12583,26 @@ impl<'a> GetSetupAttemptsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSetupIntentsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub attach_to_self: Option<bool>,
@@ -12362,31 +12661,34 @@ impl<'a> GetSetupIntentsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn payment_method(mut self, payment_method: String) -> Self {
-        self.payment_method = Some(payment_method);
+    pub fn payment_method(mut self, payment_method: &str) -> Self {
+        self.payment_method = Some(payment_method.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSetupIntentsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -12404,6 +12706,9 @@ impl<'a> PostSetupIntentsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSetupIntentsIntentRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub client_secret: Option<String>,
@@ -12434,15 +12739,18 @@ impl<'a> GetSetupIntentsIntentRequest<'a> {
             }
         }
     }
-    pub fn client_secret(mut self, client_secret: String) -> Self {
-        self.client_secret = Some(client_secret);
+    pub fn client_secret(mut self, client_secret: &str) -> Self {
+        self.client_secret = Some(client_secret.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSetupIntentsIntentRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub intent: String,
@@ -12464,6 +12772,9 @@ impl<'a> PostSetupIntentsIntentRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSetupIntentsIntentCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub intent: String,
@@ -12485,6 +12796,9 @@ impl<'a> PostSetupIntentsIntentCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSetupIntentsIntentConfirmRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub intent: String,
@@ -12506,6 +12820,9 @@ impl<'a> PostSetupIntentsIntentConfirmRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSetupIntentsIntentVerifyMicrodepositsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub intent: String,
@@ -12532,6 +12849,9 @@ impl<'a> PostSetupIntentsIntentVerifyMicrodepositsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetShippingRatesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub active: Option<bool>,
@@ -12586,27 +12906,30 @@ impl<'a> GetShippingRatesRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn currency(mut self, currency: String) -> Self {
-        self.currency = Some(currency);
+    pub fn currency(mut self, currency: &str) -> Self {
+        self.currency = Some(currency.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostShippingRatesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -12624,6 +12947,9 @@ impl<'a> PostShippingRatesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetShippingRatesShippingRateTokenRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -12655,11 +12981,14 @@ impl<'a> GetShippingRatesShippingRateTokenRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostShippingRatesShippingRateTokenRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub shipping_rate_token: String,
@@ -12686,6 +13015,9 @@ impl<'a> PostShippingRatesShippingRateTokenRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSigmaScheduledQueryRunsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -12720,23 +13052,26 @@ impl<'a> GetSigmaScheduledQueryRunsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSigmaScheduledQueryRunsScheduledQueryRunRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -12768,11 +13103,14 @@ impl<'a> GetSigmaScheduledQueryRunsScheduledQueryRunRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSkusRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub active: Option<bool>,
@@ -12837,16 +13175,16 @@ impl<'a> GetSkusRequest<'a> {
         self.attributes = Some(attributes);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
-    pub fn ids(mut self, ids: Vec<String>) -> Self {
-        self.ids = Some(ids);
+    pub fn ids(mut self, ids: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.ids = Some(ids.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn in_stock(mut self, in_stock: bool) -> Self {
@@ -12857,15 +13195,18 @@ impl<'a> GetSkusRequest<'a> {
         self.limit = Some(limit);
         self
     }
-    pub fn product(mut self, product: String) -> Self {
-        self.product = Some(product);
+    pub fn product(mut self, product: &str) -> Self {
+        self.product = Some(product.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSkusRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -12883,6 +13224,9 @@ impl<'a> PostSkusRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSkusIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -12906,11 +13250,14 @@ impl<'a> GetSkusIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSkusIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -12929,6 +13276,9 @@ impl<'a> PostSkusIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteSkusIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -12947,6 +13297,9 @@ impl<'a> DeleteSkusIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSourcesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -12964,6 +13317,9 @@ impl<'a> PostSourcesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSourcesSourceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub client_secret: Option<String>,
@@ -12994,15 +13350,18 @@ impl<'a> GetSourcesSourceRequest<'a> {
             }
         }
     }
-    pub fn client_secret(mut self, client_secret: String) -> Self {
-        self.client_secret = Some(client_secret);
+    pub fn client_secret(mut self, client_secret: &str) -> Self {
+        self.client_secret = Some(client_secret.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSourcesSourceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub source: String,
@@ -13024,6 +13383,9 @@ impl<'a> PostSourcesSourceRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSourcesSourceMandateNotificationsMandateNotificationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -13057,11 +13419,14 @@ impl<'a> GetSourcesSourceMandateNotificationsMandateNotificationRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSourcesSourceSourceTransactionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -13104,23 +13469,26 @@ impl<'a> GetSourcesSourceSourceTransactionsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSourcesSourceSourceTransactionsSourceTransactionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -13153,11 +13521,14 @@ impl<'a> GetSourcesSourceSourceTransactionsSourceTransactionRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSourcesSourceVerifyRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub source: String,
@@ -13179,6 +13550,9 @@ impl<'a> PostSourcesSourceVerifyRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSubscriptionItemsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -13215,23 +13589,26 @@ impl<'a> GetSubscriptionItemsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSubscriptionItemsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -13249,6 +13626,9 @@ impl<'a> PostSubscriptionItemsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSubscriptionItemsItemRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -13275,11 +13655,14 @@ impl<'a> GetSubscriptionItemsItemRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSubscriptionItemsItemRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub item: String,
@@ -13301,6 +13684,9 @@ impl<'a> PostSubscriptionItemsItemRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteSubscriptionItemsItemRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub item: String,
@@ -13322,6 +13708,9 @@ impl<'a> DeleteSubscriptionItemsItemRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSubscriptionItemsSubscriptionItemUsageRecordSummariesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -13365,23 +13754,26 @@ impl<'a> GetSubscriptionItemsSubscriptionItemUsageRecordSummariesRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSubscriptionItemsSubscriptionItemUsageRecordsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub subscription_item: String,
@@ -13408,6 +13800,9 @@ impl<'a> PostSubscriptionItemsSubscriptionItemUsageRecordsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSubscriptionSchedulesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub canceled_at: Option<serde_json::Value>,
@@ -13478,16 +13873,16 @@ impl<'a> GetSubscriptionSchedulesRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
@@ -13502,11 +13897,14 @@ impl<'a> GetSubscriptionSchedulesRequest<'a> {
         self.scheduled = Some(scheduled);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSubscriptionSchedulesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -13524,6 +13922,9 @@ impl<'a> PostSubscriptionSchedulesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSubscriptionSchedulesScheduleRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -13554,11 +13955,14 @@ impl<'a> GetSubscriptionSchedulesScheduleRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSubscriptionSchedulesScheduleRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub schedule: String,
@@ -13584,6 +13988,9 @@ impl<'a> PostSubscriptionSchedulesScheduleRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSubscriptionSchedulesScheduleCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub schedule: String,
@@ -13610,6 +14017,9 @@ impl<'a> PostSubscriptionSchedulesScheduleCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSubscriptionSchedulesScheduleReleaseRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub schedule: String,
@@ -13636,6 +14046,9 @@ impl<'a> PostSubscriptionSchedulesScheduleReleaseRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSubscriptionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub collection_method: Option<String>,
@@ -13702,8 +14115,8 @@ impl<'a> GetSubscriptionsRequest<'a> {
             }
         }
     }
-    pub fn collection_method(mut self, collection_method: String) -> Self {
-        self.collection_method = Some(collection_method);
+    pub fn collection_method(mut self, collection_method: &str) -> Self {
+        self.collection_method = Some(collection_method.to_owned());
         self
     }
     pub fn created(mut self, created: serde_json::Value) -> Self {
@@ -13721,39 +14134,42 @@ impl<'a> GetSubscriptionsRequest<'a> {
         self.current_period_start = Some(current_period_start);
         self
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn price(mut self, price: String) -> Self {
-        self.price = Some(price);
+    pub fn price(mut self, price: &str) -> Self {
+        self.price = Some(price.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
-    pub fn test_clock(mut self, test_clock: String) -> Self {
-        self.test_clock = Some(test_clock);
+    pub fn test_clock(mut self, test_clock: &str) -> Self {
+        self.test_clock = Some(test_clock.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSubscriptionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -13771,6 +14187,9 @@ impl<'a> PostSubscriptionsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSubscriptionsSearchRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -13803,19 +14222,22 @@ impl<'a> GetSubscriptionsSearchRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn page(mut self, page: String) -> Self {
-        self.page = Some(page);
+    pub fn page(mut self, page: &str) -> Self {
+        self.page = Some(page.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetSubscriptionsSubscriptionExposedIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -13847,11 +14269,14 @@ impl<'a> GetSubscriptionsSubscriptionExposedIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostSubscriptionsSubscriptionExposedIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub subscription_exposed_id: String,
@@ -13878,6 +14303,9 @@ impl<'a> PostSubscriptionsSubscriptionExposedIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteSubscriptionsSubscriptionExposedIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub subscription_exposed_id: String,
@@ -13904,6 +14332,9 @@ impl<'a> DeleteSubscriptionsSubscriptionExposedIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteSubscriptionsSubscriptionExposedIdDiscountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub subscription_exposed_id: String,
@@ -13930,6 +14361,9 @@ impl<'a> DeleteSubscriptionsSubscriptionExposedIdDiscountRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTaxCodesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -13964,23 +14398,26 @@ impl<'a> GetTaxCodesRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTaxCodesIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -14004,11 +14441,14 @@ impl<'a> GetTaxCodesIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTaxRatesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub active: Option<bool>,
@@ -14063,12 +14503,12 @@ impl<'a> GetTaxRatesRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn inclusive(mut self, inclusive: bool) -> Self {
@@ -14079,11 +14519,14 @@ impl<'a> GetTaxRatesRequest<'a> {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTaxRatesRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -14101,6 +14544,9 @@ impl<'a> PostTaxRatesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTaxRatesTaxRateRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -14127,11 +14573,14 @@ impl<'a> GetTaxRatesTaxRateRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTaxRatesTaxRateRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub tax_rate: String,
@@ -14153,6 +14602,9 @@ impl<'a> PostTaxRatesTaxRateRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTerminalConfigurationsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -14191,12 +14643,12 @@ impl<'a> GetTerminalConfigurationsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn is_account_default(mut self, is_account_default: bool) -> Self {
@@ -14207,11 +14659,14 @@ impl<'a> GetTerminalConfigurationsRequest<'a> {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTerminalConfigurationsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -14229,6 +14684,9 @@ impl<'a> PostTerminalConfigurationsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTerminalConfigurationsConfigurationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub configuration: String,
@@ -14260,11 +14718,14 @@ impl<'a> GetTerminalConfigurationsConfigurationRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTerminalConfigurationsConfigurationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub configuration: String,
@@ -14291,6 +14752,9 @@ impl<'a> PostTerminalConfigurationsConfigurationRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteTerminalConfigurationsConfigurationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub configuration: String,
@@ -14317,6 +14781,9 @@ impl<'a> DeleteTerminalConfigurationsConfigurationRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTerminalConnectionTokensRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -14334,6 +14801,9 @@ impl<'a> PostTerminalConnectionTokensRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTerminalLocationsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -14368,23 +14838,26 @@ impl<'a> GetTerminalLocationsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTerminalLocationsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -14402,6 +14875,9 @@ impl<'a> PostTerminalLocationsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTerminalLocationsLocationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -14430,11 +14906,14 @@ impl<'a> GetTerminalLocationsLocationRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTerminalLocationsLocationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub location: String,
@@ -14458,6 +14937,9 @@ impl<'a> PostTerminalLocationsLocationRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteTerminalLocationsLocationRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub location: String,
@@ -14481,6 +14963,9 @@ impl<'a> DeleteTerminalLocationsLocationRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTerminalReadersRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub device_type: Option<String>,
@@ -14527,35 +15012,38 @@ impl<'a> GetTerminalReadersRequest<'a> {
             }
         }
     }
-    pub fn device_type(mut self, device_type: String) -> Self {
-        self.device_type = Some(device_type);
+    pub fn device_type(mut self, device_type: &str) -> Self {
+        self.device_type = Some(device_type.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn location(mut self, location: String) -> Self {
-        self.location = Some(location);
+    pub fn location(mut self, location: &str) -> Self {
+        self.location = Some(location.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTerminalReadersRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -14573,6 +15061,9 @@ impl<'a> PostTerminalReadersRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTerminalReadersReaderRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -14599,11 +15090,14 @@ impl<'a> GetTerminalReadersReaderRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTerminalReadersReaderRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub reader: String,
@@ -14625,6 +15119,9 @@ impl<'a> PostTerminalReadersReaderRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteTerminalReadersReaderRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub reader: String,
@@ -14646,6 +15143,9 @@ impl<'a> DeleteTerminalReadersReaderRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTerminalReadersReaderCancelActionRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub reader: String,
@@ -14671,6 +15171,9 @@ impl<'a> PostTerminalReadersReaderCancelActionRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTerminalReadersReaderProcessPaymentIntentRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub reader: String,
@@ -14697,6 +15200,9 @@ impl<'a> PostTerminalReadersReaderProcessPaymentIntentRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTerminalReadersReaderProcessSetupIntentRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub reader: String,
@@ -14723,6 +15229,9 @@ impl<'a> PostTerminalReadersReaderProcessSetupIntentRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTerminalReadersReaderSetReaderDisplayRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub reader: String,
@@ -14749,6 +15258,9 @@ impl<'a> PostTerminalReadersReaderSetReaderDisplayRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersCustomersCustomerFundCashBalanceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: String,
@@ -14775,6 +15287,9 @@ impl<'a> PostTestHelpersCustomersCustomerFundCashBalanceRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersIssuingCardsCardShippingDeliverRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub card: String,
@@ -14801,6 +15316,9 @@ impl<'a> PostTestHelpersIssuingCardsCardShippingDeliverRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersIssuingCardsCardShippingFailRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub card: String,
@@ -14827,6 +15345,9 @@ impl<'a> PostTestHelpersIssuingCardsCardShippingFailRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersIssuingCardsCardShippingReturnRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub card: String,
@@ -14853,6 +15374,9 @@ impl<'a> PostTestHelpersIssuingCardsCardShippingReturnRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersIssuingCardsCardShippingShipRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub card: String,
@@ -14879,6 +15403,9 @@ impl<'a> PostTestHelpersIssuingCardsCardShippingShipRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersRefundsRefundExpireRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub refund: String,
@@ -14904,6 +15431,9 @@ impl<'a> PostTestHelpersRefundsRefundExpireRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTerminalReadersReaderPresentPaymentMethodRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub reader: String,
@@ -14930,6 +15460,9 @@ impl<'a> PostTestHelpersTerminalReadersReaderPresentPaymentMethodRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTestHelpersTestClocksRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -14964,23 +15497,26 @@ impl<'a> GetTestHelpersTestClocksRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTestClocksRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -14998,6 +15534,9 @@ impl<'a> PostTestHelpersTestClocksRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTestHelpersTestClocksTestClockRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -15029,11 +15568,14 @@ impl<'a> GetTestHelpersTestClocksTestClockRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteTestHelpersTestClocksTestClockRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub test_clock: String,
@@ -15060,6 +15602,9 @@ impl<'a> DeleteTestHelpersTestClocksTestClockRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTestClocksTestClockAdvanceRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub test_clock: String,
@@ -15086,6 +15631,9 @@ impl<'a> PostTestHelpersTestClocksTestClockAdvanceRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTreasuryInboundTransfersIdFailRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -15111,6 +15659,9 @@ impl<'a> PostTestHelpersTreasuryInboundTransfersIdFailRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTreasuryInboundTransfersIdReturnRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -15137,6 +15688,9 @@ impl<'a> PostTestHelpersTreasuryInboundTransfersIdReturnRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTreasuryInboundTransfersIdSucceedRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -15163,6 +15717,9 @@ impl<'a> PostTestHelpersTreasuryInboundTransfersIdSucceedRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTreasuryOutboundPaymentsIdFailRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -15188,6 +15745,9 @@ impl<'a> PostTestHelpersTreasuryOutboundPaymentsIdFailRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTreasuryOutboundPaymentsIdPostRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -15213,6 +15773,9 @@ impl<'a> PostTestHelpersTreasuryOutboundPaymentsIdPostRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTreasuryOutboundPaymentsIdReturnRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -15239,6 +15802,9 @@ impl<'a> PostTestHelpersTreasuryOutboundPaymentsIdReturnRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTreasuryOutboundTransfersOutboundTransferFailRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub outbound_transfer: String,
@@ -15265,6 +15831,9 @@ impl<'a> PostTestHelpersTreasuryOutboundTransfersOutboundTransferFailRequest<'a>
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTreasuryOutboundTransfersOutboundTransferPostRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub outbound_transfer: String,
@@ -15291,6 +15860,9 @@ impl<'a> PostTestHelpersTreasuryOutboundTransfersOutboundTransferPostRequest<'a>
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturnRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub outbound_transfer: String,
@@ -15317,6 +15889,9 @@ impl<'a> PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturnRequest<'
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTreasuryReceivedCreditsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -15337,6 +15912,9 @@ impl<'a> PostTestHelpersTreasuryReceivedCreditsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTestHelpersTreasuryReceivedDebitsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -15354,6 +15932,9 @@ impl<'a> PostTestHelpersTreasuryReceivedDebitsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTokensRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -15371,6 +15952,9 @@ impl<'a> PostTokensRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTokensTokenRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -15397,11 +15981,14 @@ impl<'a> GetTokensTokenRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTopupsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub amount: Option<serde_json::Value>,
@@ -15456,27 +16043,30 @@ impl<'a> GetTopupsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTopupsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -15494,6 +16084,9 @@ impl<'a> PostTopupsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTopupsTopupRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -15520,11 +16113,14 @@ impl<'a> GetTopupsTopupRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTopupsTopupRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub topup: String,
@@ -15546,6 +16142,9 @@ impl<'a> PostTopupsTopupRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTopupsTopupCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub topup: String,
@@ -15567,6 +16166,9 @@ impl<'a> PostTopupsTopupCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTransfersRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -15617,31 +16219,34 @@ impl<'a> GetTransfersRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn destination(mut self, destination: String) -> Self {
-        self.destination = Some(destination);
+    pub fn destination(mut self, destination: &str) -> Self {
+        self.destination = Some(destination.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn transfer_group(mut self, transfer_group: String) -> Self {
-        self.transfer_group = Some(transfer_group);
+    pub fn transfer_group(mut self, transfer_group: &str) -> Self {
+        self.transfer_group = Some(transfer_group.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTransfersRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -15659,6 +16264,9 @@ impl<'a> PostTransfersRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTransfersIdReversalsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -15697,23 +16305,26 @@ impl<'a> GetTransfersIdReversalsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTransfersIdReversalsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -15735,6 +16346,9 @@ impl<'a> PostTransfersIdReversalsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTransfersTransferRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -15761,11 +16375,14 @@ impl<'a> GetTransfersTransferRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTransfersTransferRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub transfer: String,
@@ -15787,6 +16404,9 @@ impl<'a> PostTransfersTransferRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTransfersTransferReversalsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -15819,11 +16439,14 @@ impl<'a> GetTransfersTransferReversalsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTransfersTransferReversalsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -15851,6 +16474,9 @@ impl<'a> PostTransfersTransferReversalsIdRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryCreditReversalsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -15895,31 +16521,34 @@ impl<'a> GetTreasuryCreditReversalsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn received_credit(mut self, received_credit: String) -> Self {
-        self.received_credit = Some(received_credit);
+    pub fn received_credit(mut self, received_credit: &str) -> Self {
+        self.received_credit = Some(received_credit.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTreasuryCreditReversalsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -15937,6 +16566,9 @@ impl<'a> PostTreasuryCreditReversalsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryCreditReversalsCreditReversalRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub credit_reversal: String,
@@ -15968,11 +16600,14 @@ impl<'a> GetTreasuryCreditReversalsCreditReversalRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryDebitReversalsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -16021,35 +16656,38 @@ impl<'a> GetTreasuryDebitReversalsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn received_debit(mut self, received_debit: String) -> Self {
-        self.received_debit = Some(received_debit);
+    pub fn received_debit(mut self, received_debit: &str) -> Self {
+        self.received_debit = Some(received_debit.to_owned());
         self
     }
-    pub fn resolution(mut self, resolution: String) -> Self {
-        self.resolution = Some(resolution);
+    pub fn resolution(mut self, resolution: &str) -> Self {
+        self.resolution = Some(resolution.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTreasuryDebitReversalsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -16067,6 +16705,9 @@ impl<'a> PostTreasuryDebitReversalsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryDebitReversalsDebitReversalRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub debit_reversal: String,
@@ -16098,11 +16739,14 @@ impl<'a> GetTreasuryDebitReversalsDebitReversalRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryFinancialAccountsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -16145,23 +16789,26 @@ impl<'a> GetTreasuryFinancialAccountsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTreasuryFinancialAccountsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -16179,6 +16826,9 @@ impl<'a> PostTreasuryFinancialAccountsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryFinancialAccountsFinancialAccountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -16210,11 +16860,14 @@ impl<'a> GetTreasuryFinancialAccountsFinancialAccountRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTreasuryFinancialAccountsFinancialAccountRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub financial_account: String,
@@ -16241,6 +16894,9 @@ impl<'a> PostTreasuryFinancialAccountsFinancialAccountRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryFinancialAccountsFinancialAccountFeaturesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -16272,11 +16928,14 @@ impl<'a> GetTreasuryFinancialAccountsFinancialAccountFeaturesRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTreasuryFinancialAccountsFinancialAccountFeaturesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub financial_account: String,
@@ -16303,6 +16962,9 @@ impl<'a> PostTreasuryFinancialAccountsFinancialAccountFeaturesRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryInboundTransfersRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -16343,27 +17005,30 @@ impl<'a> GetTreasuryInboundTransfersRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTreasuryInboundTransfersRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -16381,6 +17046,9 @@ impl<'a> PostTreasuryInboundTransfersRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryInboundTransfersIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -16407,11 +17075,14 @@ impl<'a> GetTreasuryInboundTransfersIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTreasuryInboundTransfersInboundTransferCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub inbound_transfer: String,
@@ -16438,6 +17109,9 @@ impl<'a> PostTreasuryInboundTransfersInboundTransferCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryOutboundPaymentsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub customer: Option<String>,
@@ -16482,31 +17156,34 @@ impl<'a> GetTreasuryOutboundPaymentsRequest<'a> {
             }
         }
     }
-    pub fn customer(mut self, customer: String) -> Self {
-        self.customer = Some(customer);
+    pub fn customer(mut self, customer: &str) -> Self {
+        self.customer = Some(customer.to_owned());
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTreasuryOutboundPaymentsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -16524,6 +17201,9 @@ impl<'a> PostTreasuryOutboundPaymentsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryOutboundPaymentsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -16550,11 +17230,14 @@ impl<'a> GetTreasuryOutboundPaymentsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTreasuryOutboundPaymentsIdCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub id: String,
@@ -16576,6 +17259,9 @@ impl<'a> PostTreasuryOutboundPaymentsIdCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryOutboundTransfersRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -16616,27 +17302,30 @@ impl<'a> GetTreasuryOutboundTransfersRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTreasuryOutboundTransfersRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -16654,6 +17343,9 @@ impl<'a> PostTreasuryOutboundTransfersRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryOutboundTransfersOutboundTransferRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -16685,11 +17377,14 @@ impl<'a> GetTreasuryOutboundTransfersOutboundTransferRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostTreasuryOutboundTransfersOutboundTransferCancelRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub outbound_transfer: String,
@@ -16716,6 +17411,9 @@ impl<'a> PostTreasuryOutboundTransfersOutboundTransferCancelRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryReceivedCreditsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -16760,12 +17458,12 @@ impl<'a> GetTreasuryReceivedCreditsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
@@ -16776,15 +17474,18 @@ impl<'a> GetTreasuryReceivedCreditsRequest<'a> {
         self.linked_flows = Some(linked_flows);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryReceivedCreditsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -16811,11 +17512,14 @@ impl<'a> GetTreasuryReceivedCreditsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryReceivedDebitsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -16856,27 +17560,30 @@ impl<'a> GetTreasuryReceivedDebitsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryReceivedDebitsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -16903,11 +17610,14 @@ impl<'a> GetTreasuryReceivedDebitsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryTransactionEntriesRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -16968,31 +17678,34 @@ impl<'a> GetTreasuryTransactionEntriesRequest<'a> {
         self.effective_at = Some(effective_at);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn order_by(mut self, order_by: String) -> Self {
-        self.order_by = Some(order_by);
+    pub fn order_by(mut self, order_by: &str) -> Self {
+        self.order_by = Some(order_by.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn transaction(mut self, transaction: String) -> Self {
-        self.transaction = Some(transaction);
+    pub fn transaction(mut self, transaction: &str) -> Self {
+        self.transaction = Some(transaction.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryTransactionEntriesIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -17019,11 +17732,14 @@ impl<'a> GetTreasuryTransactionEntriesIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryTransactionsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
@@ -17080,28 +17796,28 @@ impl<'a> GetTreasuryTransactionsRequest<'a> {
         self.created = Some(created);
         self
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn order_by(mut self, order_by: String) -> Self {
-        self.order_by = Some(order_by);
+    pub fn order_by(mut self, order_by: &str) -> Self {
+        self.order_by = Some(order_by.to_owned());
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
-    pub fn status(mut self, status: String) -> Self {
-        self.status = Some(status);
+    pub fn status(mut self, status: &str) -> Self {
+        self.status = Some(status.to_owned());
         self
     }
     pub fn status_transitions(mut self, status_transitions: serde_json::Value) -> Self {
@@ -17109,6 +17825,9 @@ impl<'a> GetTreasuryTransactionsRequest<'a> {
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetTreasuryTransactionsIdRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -17135,11 +17854,14 @@ impl<'a> GetTreasuryTransactionsIdRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetWebhookEndpointsRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub ending_before: Option<String>,
@@ -17174,23 +17896,26 @@ impl<'a> GetWebhookEndpointsRequest<'a> {
             }
         }
     }
-    pub fn ending_before(mut self, ending_before: String) -> Self {
-        self.ending_before = Some(ending_before);
+    pub fn ending_before(mut self, ending_before: &str) -> Self {
+        self.ending_before = Some(ending_before.to_owned());
         self
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
         self.limit = Some(limit);
         self
     }
-    pub fn starting_after(mut self, starting_after: String) -> Self {
-        self.starting_after = Some(starting_after);
+    pub fn starting_after(mut self, starting_after: &str) -> Self {
+        self.starting_after = Some(starting_after.to_owned());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostWebhookEndpointsRequest<'a> {
     pub(crate) client: &'a StripeClient,
 }
@@ -17208,6 +17933,9 @@ impl<'a> PostWebhookEndpointsRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct GetWebhookEndpointsWebhookEndpointRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub expand: Option<Vec<String>>,
@@ -17239,11 +17967,14 @@ impl<'a> GetWebhookEndpointsWebhookEndpointRequest<'a> {
             }
         }
     }
-    pub fn expand(mut self, expand: Vec<String>) -> Self {
-        self.expand = Some(expand);
+    pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct PostWebhookEndpointsWebhookEndpointRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub webhook_endpoint: String,
@@ -17270,6 +18001,9 @@ impl<'a> PostWebhookEndpointsWebhookEndpointRequest<'a> {
         }
     }
 }
+/**Create this with the associated client method.
+
+That method takes required values as arguments. Set optional values using builder methods on this struct.*/
 pub struct DeleteWebhookEndpointsWebhookEndpointRequest<'a> {
     pub(crate) client: &'a StripeClient,
     pub webhook_endpoint: String,

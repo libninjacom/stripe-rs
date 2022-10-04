@@ -2,37 +2,43 @@
 //!
 //! Library created with [`libninja`](https://www.libninja.com).
 #![allow(non_camel_case_types)]
+#![allow(unused)]
 pub mod model;
 pub mod request;
 use crate::model::*;
 
 pub struct StripeClient {
     pub(crate) client: httpclient::Client,
-    authentication: Option<StripeAuthentication>,
+    authentication: StripeAuthentication,
 }
-impl StripeClient {}
 impl StripeClient {
-    pub fn new(url: &str) -> Self {
+    pub fn from_env() -> Self {
+        let url = "https://api.stripe.com/".to_string();
+        Self {
+            client: httpclient::Client::new(Some(url)),
+            authentication: stripe_authentication::from_env(),
+        }
+    }
+}
+impl StripeClient {
+    pub fn new(url: &str, authentication: StripeAuthentication) -> Self {
         let client = httpclient::Client::new(Some(url.to_string()));
-        let authentication = None;
         Self { client, authentication }
     }
     pub fn with_authentication(mut self, authentication: StripeAuthentication) -> Self {
-        self.authentication = Some(authentication);
+        self.authentication = authentication;
         self
     }
     pub fn authenticate<'a>(
         &self,
         mut r: httpclient::RequestBuilder<'a>,
     ) -> httpclient::RequestBuilder<'a> {
-        if let Some(ref authentication) = self.authentication {
-            match authentication {
-                StripeAuthentication::BasicAuth { basic_auth } => {
-                    r = r.basic_auth(basic_auth);
-                }
-                StripeAuthentication::BearerAuth { bearer_auth } => {
-                    r = r.bearer_auth(bearer_auth);
-                }
+        match &self.authentication {
+            StripeAuthentication::BasicAuth { basic_auth } => {
+                r = r.basic_auth(basic_auth);
+            }
+            StripeAuthentication::BearerAuth { bearer_auth } => {
+                r = r.bearer_auth(bearer_auth);
             }
         }
         r
@@ -49,248 +55,6 @@ impl StripeClient {
         request::GetAccountRequest {
             client: &self,
             expand: None,
-        }
-    }
-    /**<p>Updates a <a href="/docs/connect/accounts">connected account</a> by setting the values of the parameters passed. Any parameters not provided are left unchanged. Most parameters can be changed only for Custom accounts. (These are marked <strong>Custom Only</strong> below.) Parameters marked <strong>Custom and Express</strong> are not supported for Standard accounts.</p>
-
-<p>To update your own account, use the <a href="https://dashboard.stripe.com/account">Dashboard</a>. Refer to our <a href="/docs/connect/updating-accounts">Connect</a> documentation to learn more about updating accounts.</p>*/
-    pub fn post_account(&self) -> request::PostAccountRequest {
-        request::PostAccountRequest {
-            client: &self,
-        }
-    }
-    /**<p>With <a href="/docs/connect">Connect</a>, you can delete accounts you manage.</p>
-
-<p>Accounts created using test-mode keys can be deleted at any time. Standard accounts created using live-mode keys cannot be deleted. Custom or Express accounts created using live-mode keys can only be deleted once all balances are zero.</p>
-
-<p>If you want to delete your own account, use the <a href="https://dashboard.stripe.com/account">account information tab in your account settings</a> instead.</p>*/
-    pub fn delete_account(&self) -> request::DeleteAccountRequest {
-        request::DeleteAccountRequest {
-            client: &self,
-        }
-    }
-    ///<p>Create an external account for a given account.</p>
-    pub fn post_account_bank_accounts(&self) -> request::PostAccountBankAccountsRequest {
-        request::PostAccountBankAccountsRequest {
-            client: &self,
-        }
-    }
-    ///<p>Retrieve a specified external account for a given account.</p>
-    pub fn get_account_bank_accounts_id(
-        &self,
-        id: &str,
-    ) -> request::GetAccountBankAccountsIdRequest {
-        request::GetAccountBankAccountsIdRequest {
-            client: &self,
-            expand: None,
-            id: id.to_owned(),
-        }
-    }
-    /**<p>Updates the metadata, account holder name, account holder type of a bank account belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and optionally sets it as the default for its currency. Other bank account details are not editable by design.</p>
-
-<p>You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>*/
-    pub fn post_account_bank_accounts_id(
-        &self,
-        id: &str,
-    ) -> request::PostAccountBankAccountsIdRequest {
-        request::PostAccountBankAccountsIdRequest {
-            client: &self,
-            id: id.to_owned(),
-        }
-    }
-    ///<p>Delete a specified external account for a given account.</p>
-    pub fn delete_account_bank_accounts_id(
-        &self,
-        id: &str,
-    ) -> request::DeleteAccountBankAccountsIdRequest {
-        request::DeleteAccountBankAccountsIdRequest {
-            client: &self,
-            id: id.to_owned(),
-        }
-    }
-    ///<p>Returns a list of capabilities associated with the account. The capabilities are returned sorted by creation date, with the most recent capability appearing first.</p>
-    pub fn get_account_capabilities(&self) -> request::GetAccountCapabilitiesRequest {
-        request::GetAccountCapabilitiesRequest {
-            client: &self,
-            expand: None,
-        }
-    }
-    ///<p>Retrieves information about the specified Account Capability.</p>
-    pub fn get_account_capabilities_capability(
-        &self,
-        capability: &str,
-    ) -> request::GetAccountCapabilitiesCapabilityRequest {
-        request::GetAccountCapabilitiesCapabilityRequest {
-            client: &self,
-            capability: capability.to_owned(),
-            expand: None,
-        }
-    }
-    ///<p>Updates an existing Account Capability.</p>
-    pub fn post_account_capabilities_capability(
-        &self,
-        capability: &str,
-    ) -> request::PostAccountCapabilitiesCapabilityRequest {
-        request::PostAccountCapabilitiesCapabilityRequest {
-            client: &self,
-            capability: capability.to_owned(),
-        }
-    }
-    ///<p>List external accounts for an account.</p>
-    pub fn get_account_external_accounts(
-        &self,
-    ) -> request::GetAccountExternalAccountsRequest {
-        request::GetAccountExternalAccountsRequest {
-            client: &self,
-            ending_before: None,
-            expand: None,
-            limit: None,
-            starting_after: None,
-        }
-    }
-    ///<p>Create an external account for a given account.</p>
-    pub fn post_account_external_accounts(
-        &self,
-    ) -> request::PostAccountExternalAccountsRequest {
-        request::PostAccountExternalAccountsRequest {
-            client: &self,
-        }
-    }
-    ///<p>Retrieve a specified external account for a given account.</p>
-    pub fn get_account_external_accounts_id(
-        &self,
-        id: &str,
-    ) -> request::GetAccountExternalAccountsIdRequest {
-        request::GetAccountExternalAccountsIdRequest {
-            client: &self,
-            expand: None,
-            id: id.to_owned(),
-        }
-    }
-    /**<p>Updates the metadata, account holder name, account holder type of a bank account belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and optionally sets it as the default for its currency. Other bank account details are not editable by design.</p>
-
-<p>You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>*/
-    pub fn post_account_external_accounts_id(
-        &self,
-        id: &str,
-    ) -> request::PostAccountExternalAccountsIdRequest {
-        request::PostAccountExternalAccountsIdRequest {
-            client: &self,
-            id: id.to_owned(),
-        }
-    }
-    ///<p>Delete a specified external account for a given account.</p>
-    pub fn delete_account_external_accounts_id(
-        &self,
-        id: &str,
-    ) -> request::DeleteAccountExternalAccountsIdRequest {
-        request::DeleteAccountExternalAccountsIdRequest {
-            client: &self,
-            id: id.to_owned(),
-        }
-    }
-    /**<p>Creates a single-use login link for an Express account to access their Stripe dashboard.</p>
-
-<p><strong>You may only create login links for <a href="/docs/connect/express-accounts">Express accounts</a> connected to your platform</strong>.</p>*/
-    pub fn post_account_login_links(&self) -> request::PostAccountLoginLinksRequest {
-        request::PostAccountLoginLinksRequest {
-            client: &self,
-        }
-    }
-    ///<p>Returns a list of people associated with the account’s legal entity. The people are returned sorted by creation date, with the most recent people appearing first.</p>
-    pub fn get_account_people(&self) -> request::GetAccountPeopleRequest {
-        request::GetAccountPeopleRequest {
-            client: &self,
-            ending_before: None,
-            expand: None,
-            limit: None,
-            relationship: None,
-            starting_after: None,
-        }
-    }
-    ///<p>Creates a new person.</p>
-    pub fn post_account_people(&self) -> request::PostAccountPeopleRequest {
-        request::PostAccountPeopleRequest {
-            client: &self,
-        }
-    }
-    ///<p>Retrieves an existing person.</p>
-    pub fn get_account_people_person(
-        &self,
-        person: &str,
-    ) -> request::GetAccountPeoplePersonRequest {
-        request::GetAccountPeoplePersonRequest {
-            client: &self,
-            expand: None,
-            person: person.to_owned(),
-        }
-    }
-    ///<p>Updates an existing person.</p>
-    pub fn post_account_people_person(
-        &self,
-        person: &str,
-    ) -> request::PostAccountPeoplePersonRequest {
-        request::PostAccountPeoplePersonRequest {
-            client: &self,
-            person: person.to_owned(),
-        }
-    }
-    ///<p>Deletes an existing person’s relationship to the account’s legal entity. Any person with a relationship for an account can be deleted through the API, except if the person is the <code>account_opener</code>. If your integration is using the <code>executive</code> parameter, you cannot delete the only verified <code>executive</code> on file.</p>
-    pub fn delete_account_people_person(
-        &self,
-        person: &str,
-    ) -> request::DeleteAccountPeoplePersonRequest {
-        request::DeleteAccountPeoplePersonRequest {
-            client: &self,
-            person: person.to_owned(),
-        }
-    }
-    ///<p>Returns a list of people associated with the account’s legal entity. The people are returned sorted by creation date, with the most recent people appearing first.</p>
-    pub fn get_account_persons(&self) -> request::GetAccountPersonsRequest {
-        request::GetAccountPersonsRequest {
-            client: &self,
-            ending_before: None,
-            expand: None,
-            limit: None,
-            relationship: None,
-            starting_after: None,
-        }
-    }
-    ///<p>Creates a new person.</p>
-    pub fn post_account_persons(&self) -> request::PostAccountPersonsRequest {
-        request::PostAccountPersonsRequest {
-            client: &self,
-        }
-    }
-    ///<p>Retrieves an existing person.</p>
-    pub fn get_account_persons_person(
-        &self,
-        person: &str,
-    ) -> request::GetAccountPersonsPersonRequest {
-        request::GetAccountPersonsPersonRequest {
-            client: &self,
-            expand: None,
-            person: person.to_owned(),
-        }
-    }
-    ///<p>Updates an existing person.</p>
-    pub fn post_account_persons_person(
-        &self,
-        person: &str,
-    ) -> request::PostAccountPersonsPersonRequest {
-        request::PostAccountPersonsPersonRequest {
-            client: &self,
-            person: person.to_owned(),
-        }
-    }
-    ///<p>Deletes an existing person’s relationship to the account’s legal entity. Any person with a relationship for an account can be deleted through the API, except if the person is the <code>account_opener</code>. If your integration is using the <code>executive</code> parameter, you cannot delete the only verified <code>executive</code> on file.</p>
-    pub fn delete_account_persons_person(
-        &self,
-        person: &str,
-    ) -> request::DeleteAccountPersonsPersonRequest {
-        request::DeleteAccountPersonsPersonRequest {
-            client: &self,
-            person: person.to_owned(),
         }
     }
     ///<p>Creates an AccountLink object that includes a single-use Stripe URL that the platform can redirect their user to in order to take them through the Connect Onboarding flow.</p>
@@ -738,7 +502,6 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
             id: id.to_owned(),
         }
     }
-    ///
     pub fn post_application_fees_id_refund(
         &self,
         id: &str,
@@ -781,13 +544,16 @@ or when trying to refund more money than is left on an application fee.</p>*/
         }
     }
     ///<p>List all secrets stored on the given scope.</p>
-    pub fn get_apps_secrets(&self) -> request::GetAppsSecretsRequest {
+    pub fn get_apps_secrets(
+        &self,
+        scope: serde_json::Value,
+    ) -> request::GetAppsSecretsRequest {
         request::GetAppsSecretsRequest {
             client: &self,
             ending_before: None,
             expand: None,
             limit: None,
-            scope: None,
+            scope,
             starting_after: None,
         }
     }
@@ -807,12 +573,13 @@ or when trying to refund more money than is left on an application fee.</p>*/
     pub fn get_apps_secrets_find(
         &self,
         name: &str,
+        scope: serde_json::Value,
     ) -> request::GetAppsSecretsFindRequest {
         request::GetAppsSecretsFindRequest {
             client: &self,
             expand: None,
             name: name.to_owned(),
-            scope: None,
+            scope,
         }
     }
     /**<p>Retrieves the current account balance, based on the authentication that was used to make the request.
@@ -1008,7 +775,6 @@ to an hour behind during outages. Search functionality is not available to merch
             expand: None,
         }
     }
-    ///
     pub fn post_charges_charge_dispute(
         &self,
         charge: &str,
@@ -1018,7 +784,6 @@ to an hour behind during outages. Search functionality is not available to merch
             charge: charge.to_owned(),
         }
     }
-    ///
     pub fn post_charges_charge_dispute_close(
         &self,
         charge: &str,
@@ -1644,7 +1409,6 @@ To change the default, you should <a href="/docs/api#update_customer">update the
             transaction: transaction.to_owned(),
         }
     }
-    ///
     pub fn get_customers_customer_discount(
         &self,
         customer: &str,
@@ -1849,7 +1613,6 @@ To change the default, you should <a href="/docs/api#update_customer">update the
             subscription_exposed_id: subscription_exposed_id.to_owned(),
         }
     }
-    ///
     pub fn get_customers_customer_subscriptions_subscription_exposed_id_discount(
         &self,
         customer: &str,
@@ -3617,6 +3380,17 @@ to an hour behind during outages. Search functionality is not available to merch
             limit: None,
             quote: quote.to_owned(),
             starting_after: None,
+        }
+    }
+    ///<p>Download the PDF for a finalized quote</p>
+    pub fn get_quotes_quote_pdf(
+        &self,
+        quote: &str,
+    ) -> request::GetQuotesQuotePdfRequest {
+        request::GetQuotesQuotePdfRequest {
+            client: &self,
+            expand: None,
+            quote: quote.to_owned(),
         }
     }
     ///<p>Returns a list of early fraud warnings.</p>
