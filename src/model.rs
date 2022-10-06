@@ -2057,7 +2057,7 @@ pub struct CreditNote {
     ///The integer amount in %s representing the total amount of the credit note, excluding tax, but including discounts.
     pub total_excluding_tax: Option<i64>,
     #[serde(rename = "type")]
-    ///Type of this credit note, one of `pre_payment`, `post_payment`, or `mixed`. A `pre_payment` credit note means it was issued when the invoice was open. A `post_payment` credit note means it was issued when the invoice was paid.
+    ///Type of this credit note, one of `pre_payment` or `post_payment`. A `pre_payment` credit note means it was issued when the invoice was open. A `post_payment` credit note means it was issued when the invoice was paid.
     pub type_: String,
     ///The time that the credit note was voided.
     pub voided_at: Option<i64>,
