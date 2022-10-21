@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 use stripe2::StripeClient;
 use stripe2::model::*;
 #[tokio::main]
