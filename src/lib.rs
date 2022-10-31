@@ -2344,7 +2344,8 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
             authorization: authorization.to_owned(),
         }
     }
-    ///<p>Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow.</p>
+    /**<p>Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow.
+You can also respond directly to the webhook request to approve an authorization (preferred). More details can be found <a href="https://site-admin.stripe.com/docs/issuing/controls/real-time-authorizations#authorization-handling">here</a>.</p>*/
     pub fn post_issuing_authorizations_authorization_approve(
         &self,
         authorization: &str,
@@ -2354,7 +2355,8 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
             authorization: authorization.to_owned(),
         }
     }
-    ///<p>Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.</p>
+    /**<p>Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.
+You can also respond directly to the webhook request to decline an authorization (preferred). More details can be found <a href="https://site-admin.stripe.com/docs/issuing/controls/real-time-authorizations#authorization-handling">here</a>.</p>*/
     pub fn post_issuing_authorizations_authorization_decline(
         &self,
         authorization: &str,
