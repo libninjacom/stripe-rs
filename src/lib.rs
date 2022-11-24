@@ -2656,73 +2656,6 @@ You can also respond directly to the webhook request to decline an authorization
             mandate: mandate.to_owned(),
         }
     }
-    ///<p>Returns a list of your orders. The orders are returned sorted by creation date, with the most recently created orders appearing first.</p>
-    pub fn get_orders(&self) -> request::GetOrdersRequest {
-        request::GetOrdersRequest {
-            client: &self,
-            customer: None,
-            ending_before: None,
-            expand: None,
-            limit: None,
-            starting_after: None,
-        }
-    }
-    ///<p>Creates a new <code>open</code> order object.</p>
-    pub fn post_orders(&self) -> request::PostOrdersRequest {
-        request::PostOrdersRequest {
-            client: &self,
-        }
-    }
-    ///<p>Retrieves the details of an existing order. Supply the unique order ID from either an order creation request or the order list, and Stripe will return the corresponding order information.</p>
-    pub fn get_orders_id(&self, id: &str) -> request::GetOrdersIdRequest {
-        request::GetOrdersIdRequest {
-            client: &self,
-            expand: None,
-            id: id.to_owned(),
-        }
-    }
-    ///<p>Updates the specific order by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-    pub fn post_orders_id(&self, id: &str) -> request::PostOrdersIdRequest {
-        request::PostOrdersIdRequest {
-            client: &self,
-            id: id.to_owned(),
-        }
-    }
-    ///<p>Cancels the order as well as the payment intent if one is attached.</p>
-    pub fn post_orders_id_cancel(&self, id: &str) -> request::PostOrdersIdCancelRequest {
-        request::PostOrdersIdCancelRequest {
-            client: &self,
-            id: id.to_owned(),
-        }
-    }
-    ///<p>When retrieving an order, there is an includable <strong>line_items</strong> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
-    pub fn get_orders_id_line_items(
-        &self,
-        id: &str,
-    ) -> request::GetOrdersIdLineItemsRequest {
-        request::GetOrdersIdLineItemsRequest {
-            client: &self,
-            ending_before: None,
-            expand: None,
-            id: id.to_owned(),
-            limit: None,
-            starting_after: None,
-        }
-    }
-    ///<p>Reopens a <code>submitted</code> order.</p>
-    pub fn post_orders_id_reopen(&self, id: &str) -> request::PostOrdersIdReopenRequest {
-        request::PostOrdersIdReopenRequest {
-            client: &self,
-            id: id.to_owned(),
-        }
-    }
-    ///<p>Submitting an Order transitions the status to <code>processing</code> and creates a PaymentIntent object so the order can be paid. If the Order has an <code>amount_total</code> of 0, no PaymentIntent object will be created. Once the order is submitted, its contents cannot be changed, unless the <a href="#reopen_order">reopen</a> method is called.</p>
-    pub fn post_orders_id_submit(&self, id: &str) -> request::PostOrdersIdSubmitRequest {
-        request::PostOrdersIdSubmitRequest {
-            client: &self,
-            id: id.to_owned(),
-        }
-    }
     ///<p>Returns a list of PaymentIntents.</p>
     pub fn get_payment_intents(&self) -> request::GetPaymentIntentsRequest {
         request::GetPaymentIntentsRequest {
@@ -2962,7 +2895,7 @@ Once captured, a PaymentIntent can no longer be incremented.</p>
             starting_after: None,
         }
     }
-    ///<p>Returns a list of PaymentMethods attached to the StripeAccount. For listing a customer’s payment methods, you should use <a href="/docs/api/payment_methods/customer_list">List a Customer’s PaymentMethods</a></p>
+    ///<p>Returns a list of PaymentMethods for Treasury flows. If you want to list the PaymentMethods attached to a Customer for payments, you should use the <a href="/docs/api/payment_methods/customer_list">List a Customer’s PaymentMethods</a> API instead.</p>
     pub fn get_payment_methods(&self, type_: &str) -> request::GetPaymentMethodsRequest {
         request::GetPaymentMethodsRequest {
             client: &self,
@@ -3809,51 +3742,6 @@ the SetupIntent will transition to the
             client: &self,
             expand: None,
             scheduled_query_run: scheduled_query_run.to_owned(),
-        }
-    }
-    ///<p>Returns a list of your SKUs. The SKUs are returned sorted by creation date, with the most recently created SKUs appearing first.</p>
-    pub fn get_skus(&self) -> request::GetSkusRequest {
-        request::GetSkusRequest {
-            client: &self,
-            active: None,
-            attributes: None,
-            ending_before: None,
-            expand: None,
-            ids: None,
-            in_stock: None,
-            limit: None,
-            product: None,
-            starting_after: None,
-        }
-    }
-    ///<p>Creates a new SKU associated with a product.</p>
-    pub fn post_skus(&self) -> request::PostSkusRequest {
-        request::PostSkusRequest {
-            client: &self,
-        }
-    }
-    ///<p>Retrieves the details of an existing SKU. Supply the unique SKU identifier from either a SKU creation request or from the product, and Stripe will return the corresponding SKU information.</p>
-    pub fn get_skus_id(&self, id: &str) -> request::GetSkusIdRequest {
-        request::GetSkusIdRequest {
-            client: &self,
-            expand: None,
-            id: id.to_owned(),
-        }
-    }
-    /**<p>Updates the specific SKU by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-
-<p>Note that a SKU’s <code>attributes</code> are not editable. Instead, you would need to deactivate the existing SKU and create a new one with the new attribute values.</p>*/
-    pub fn post_skus_id(&self, id: &str) -> request::PostSkusIdRequest {
-        request::PostSkusIdRequest {
-            client: &self,
-            id: id.to_owned(),
-        }
-    }
-    ///<p>Delete a SKU. Deleting a SKU is only possible until it has been used in an order.</p>
-    pub fn delete_skus_id(&self, id: &str) -> request::DeleteSkusIdRequest {
-        request::DeleteSkusIdRequest {
-            client: &self,
-            id: id.to_owned(),
         }
     }
     ///<p>Creates a new source object.</p>
