@@ -1,7 +1,7 @@
 use futures::future::IntoFuture;
 use serde_json::json;
 use crate::model::*;
-use crate::request::FluentRequest;
+use crate::FluentRequest;
 use crate::StripeClient;
 use httpclient::InMemoryResponseExt;
 use serde::{Serialize, Deserialize};
@@ -85,13 +85,13 @@ impl FluentRequest<'_, GetSubscriptionsRequest> {
 
 impl<'a> std::future::IntoFuture for FluentRequest<'a, GetSubscriptionsRequest> {
     type Output = httpclient::InMemoryResult<SubscriptionsSubscriptionList>;
-    type IntoFuture = ::futures::future::BoxFuture<'static, Self::Output>;
+    type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
 
     fn into_future(self) -> Self::IntoFuture {
         Box::pin(async {
-            let mut r = self.http_client.get("/v1/subscriptions");
+            let mut r = self.client.client.get("/v1/subscriptions");
             r = r.set_query(self.params);
-            r = self.http_client.authenticate(r);
+            r = self.client.authenticate(r);
             let res = r.await?;
             res.json().map_err(Into::into)
         })

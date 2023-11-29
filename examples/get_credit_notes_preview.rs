@@ -18,7 +18,7 @@ async fn main() {
                 Some("your invoice line item".to_owned()), quantity : Some(1),
                 tax_amounts : Some(serde_json::json!({})), tax_rates :
                 Some(serde_json::json!({})), type_ : "your type".to_owned(), unit_amount
-                : Some(1), unit_amount_decimal : Some(rust_decimal::dec!(100.01)) }
+                : Some(1), unit_amount_decimal : Some(rust_decimal_macros::dec!(100.01)) }
             ],
         )
         .memo("your memo")

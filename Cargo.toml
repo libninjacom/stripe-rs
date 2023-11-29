@@ -13,7 +13,7 @@ repository = "https://github.com/libninjacom/stripe-rs"
 anyhow = "1.0.57"
 futures = "0.3.25"
 serde_json = "1.0.81"
-serde_qs = "0.12.0"
+rust_decimal_macros = "1.33"
 
 [dependencies.chrono]
 version = "0.4.26"
@@ -173,12 +173,6 @@ required-features = []
 [[example]]
 path = "examples/delete_radar_value_lists_value_list.rs"
 name = "delete_radar_value_lists_value_list"
-edition = "2021"
-required-features = []
-
-[[example]]
-path = "examples/delete_skus_id.rs"
-name = "delete_skus_id"
 edition = "2021"
 required-features = []
 
@@ -951,24 +945,6 @@ edition = "2021"
 required-features = []
 
 [[example]]
-path = "examples/get_orders.rs"
-name = "get_orders"
-edition = "2021"
-required-features = []
-
-[[example]]
-path = "examples/get_orders_id.rs"
-name = "get_orders_id"
-edition = "2021"
-required-features = []
-
-[[example]]
-path = "examples/get_orders_id_line_items.rs"
-name = "get_orders_id_line_items"
-edition = "2021"
-required-features = []
-
-[[example]]
 path = "examples/get_payment_intents.rs"
 name = "get_payment_intents"
 edition = "2021"
@@ -1265,18 +1241,6 @@ required-features = []
 [[example]]
 path = "examples/get_sigma_scheduled_query_runs_scheduled_query_run.rs"
 name = "get_sigma_scheduled_query_runs_scheduled_query_run"
-edition = "2021"
-required-features = []
-
-[[example]]
-path = "examples/get_skus.rs"
-name = "get_skus"
-edition = "2021"
-required-features = []
-
-[[example]]
-path = "examples/get_skus_id.rs"
-name = "get_skus_id"
 edition = "2021"
 required-features = []
 
@@ -2247,36 +2211,6 @@ edition = "2021"
 required-features = []
 
 [[example]]
-path = "examples/post_orders.rs"
-name = "post_orders"
-edition = "2021"
-required-features = []
-
-[[example]]
-path = "examples/post_orders_id.rs"
-name = "post_orders_id"
-edition = "2021"
-required-features = []
-
-[[example]]
-path = "examples/post_orders_id_cancel.rs"
-name = "post_orders_id_cancel"
-edition = "2021"
-required-features = []
-
-[[example]]
-path = "examples/post_orders_id_reopen.rs"
-name = "post_orders_id_reopen"
-edition = "2021"
-required-features = []
-
-[[example]]
-path = "examples/post_orders_id_submit.rs"
-name = "post_orders_id_submit"
-edition = "2021"
-required-features = []
-
-[[example]]
 path = "examples/post_payment_intents.rs"
 name = "post_payment_intents"
 edition = "2021"
@@ -2579,18 +2513,6 @@ required-features = []
 [[example]]
 path = "examples/post_shipping_rates_shipping_rate_token.rs"
 name = "post_shipping_rates_shipping_rate_token"
-edition = "2021"
-required-features = []
-
-[[example]]
-path = "examples/post_skus.rs"
-name = "post_skus"
-edition = "2021"
-required-features = []
-
-[[example]]
-path = "examples/post_skus_id.rs"
-name = "post_skus_id"
 edition = "2021"
 required-features = []
 

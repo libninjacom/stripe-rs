@@ -9,7 +9,7 @@ pub struct Plan {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub amount: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(with = "rust_decimal::serde::str")]
+    #[serde(with = "rust_decimal::serde::str_option")]
     pub amount_decimal: Option<rust_decimal::Decimal>,
     pub billing_scheme: String,
     pub created: i64,

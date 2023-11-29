@@ -38,11 +38,11 @@ async fn main() {
                 .to_owned()), price_data : Some(OneTimePriceData { currency :
                 "your currency".to_owned(), product : "your product".to_owned(),
                 tax_behavior : Some("your tax behavior".to_owned()), unit_amount :
-                Some(1), unit_amount_decimal : Some(rust_decimal::dec!(100.01)) }),
+                Some(1), unit_amount_decimal : Some(rust_decimal_macros::dec!(100.01)) }),
                 quantity : Some(1), tax_behavior : Some("your tax behavior".to_owned()),
                 tax_code : Some(serde_json::json!({})), tax_rates :
                 Some(serde_json::json!({})), unit_amount : Some(1), unit_amount_decimal :
-                Some(rust_decimal::dec!(100.01)) }
+                Some(rust_decimal_macros::dec!(100.01)) }
             ],
         )
         .limit(1)
@@ -65,7 +65,7 @@ async fn main() {
                 RecurringAdhoc { interval : "your interval".to_owned(), interval_count :
                 Some(1) }, tax_behavior : Some("your tax behavior".to_owned()),
                 unit_amount : Some(1), unit_amount_decimal :
-                Some(rust_decimal::dec!(100.01)) }), quantity : Some(1), tax_rates :
+                Some(rust_decimal_macros::dec!(100.01)) }), quantity : Some(1), tax_rates :
                 Some(serde_json::json!({})) }
             ],
         )

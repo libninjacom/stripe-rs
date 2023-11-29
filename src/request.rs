@@ -987,7 +987,3 @@ pub use get_webhook_endpoints_webhook_endpoint::GetWebhookEndpointsWebhookEndpoi
 pub use post_webhook_endpoints_webhook_endpoint::PostWebhookEndpointsWebhookEndpointRequest;
 pub use delete_webhook_endpoints_webhook_endpoint::DeleteWebhookEndpointsWebhookEndpointRequest;
 
-pub struct FluentRequest<'a, T> {
-    pub(crate) http_client: &'a httpclient::Client,
-    pub params: T,
-}
