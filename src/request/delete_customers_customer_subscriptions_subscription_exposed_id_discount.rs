@@ -1,38 +1,41 @@
 use serde_json::json;
 use crate::model::*;
-use crate::StripeClient;
+use crate::FluentRequest;
+use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
+use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
-#[derive(Clone)]
-pub struct DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest<'a> {
-    pub(crate) http_client: &'a StripeClient,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest {
     pub customer: String,
     pub subscription_exposed_id: String,
 }
-impl<'a> DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest<'a> {
-    pub async fn send(self) -> ::httpclient::InMemoryResult<DeletedDiscount> {
-        let mut r = self
-            .http_client
-            .client
-            .delete(
-                &format!(
-                    "/v1/customers/{customer}/subscriptions/{subscription_exposed_id}/discount",
-                    customer = self.customer, subscription_exposed_id = self
-                    .subscription_exposed_id
-                ),
-            );
-        r = self.http_client.authenticate(r);
-        let res = r.await?;
-        res.json().map_err(Into::into)
-    }
-}
+impl DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest {}
+impl FluentRequest<
+    '_,
+    DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest,
+> {}
 impl<'a> ::std::future::IntoFuture
-for DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest<'a> {
+for FluentRequest<
+    'a,
+    DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest,
+> {
     type Output = httpclient::InMemoryResult<DeletedDiscount>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(self.send())
+        Box::pin(async {
+            let url = &format!(
+                "/v1/customers/{customer}/subscriptions/{subscription_exposed_id}/discount",
+                customer = self.params.customer, subscription_exposed_id = self.params
+                .subscription_exposed_id
+            );
+            let mut r = self.client.client.delete(url);
+            r = r.set_query(self.params);
+            r = self.client.authenticate(r);
+            let res = r.await?;
+            res.json().map_err(Into::into)
+        })
     }
 }

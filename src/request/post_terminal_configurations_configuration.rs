@@ -1,36 +1,33 @@
 use serde_json::json;
 use crate::model::*;
-use crate::StripeClient;
+use crate::FluentRequest;
+use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
+use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
-#[derive(Clone)]
-pub struct PostTerminalConfigurationsConfigurationRequest<'a> {
-    pub(crate) http_client: &'a StripeClient,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PostTerminalConfigurationsConfigurationRequest {
     pub configuration: String,
 }
-impl<'a> PostTerminalConfigurationsConfigurationRequest<'a> {
-    pub async fn send(self) -> ::httpclient::InMemoryResult<serde_json::Value> {
-        let mut r = self
-            .http_client
-            .client
-            .post(
-                &format!(
-                    "/v1/terminal/configurations/{configuration}", configuration = self
-                    .configuration
-                ),
-            );
-        r = self.http_client.authenticate(r);
-        let res = r.await?;
-        res.json().map_err(Into::into)
-    }
-}
+impl PostTerminalConfigurationsConfigurationRequest {}
+impl FluentRequest<'_, PostTerminalConfigurationsConfigurationRequest> {}
 impl<'a> ::std::future::IntoFuture
-for PostTerminalConfigurationsConfigurationRequest<'a> {
+for FluentRequest<'a, PostTerminalConfigurationsConfigurationRequest> {
     type Output = httpclient::InMemoryResult<serde_json::Value>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(self.send())
+        Box::pin(async {
+            let url = &format!(
+                "/v1/terminal/configurations/{configuration}", configuration = self
+                .params.configuration
+            );
+            let mut r = self.client.client.post(url);
+            r = r.set_query(self.params);
+            r = self.client.authenticate(r);
+            let res = r.await?;
+            res.json().map_err(Into::into)
+        })
     }
 }

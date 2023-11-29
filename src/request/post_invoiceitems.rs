@@ -1,26 +1,27 @@
 use serde_json::json;
 use crate::model::*;
-use crate::StripeClient;
+use crate::FluentRequest;
+use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
+use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
-#[derive(Clone)]
-pub struct PostInvoiceitemsRequest<'a> {
-    pub(crate) http_client: &'a StripeClient,
-}
-impl<'a> PostInvoiceitemsRequest<'a> {
-    pub async fn send(self) -> ::httpclient::InMemoryResult<Invoiceitem> {
-        let mut r = self.http_client.client.post("/v1/invoiceitems");
-        r = self.http_client.authenticate(r);
-        let res = r.await?;
-        res.json().map_err(Into::into)
-    }
-}
-impl<'a> ::std::future::IntoFuture for PostInvoiceitemsRequest<'a> {
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PostInvoiceitemsRequest {}
+impl PostInvoiceitemsRequest {}
+impl FluentRequest<'_, PostInvoiceitemsRequest> {}
+impl<'a> ::std::future::IntoFuture for FluentRequest<'a, PostInvoiceitemsRequest> {
     type Output = httpclient::InMemoryResult<Invoiceitem>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(self.send())
+        Box::pin(async {
+            let url = "/v1/invoiceitems";
+            let mut r = self.client.client.post(url);
+            r = r.set_query(self.params);
+            r = self.client.authenticate(r);
+            let res = r.await?;
+            res.json().map_err(Into::into)
+        })
     }
 }

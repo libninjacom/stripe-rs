@@ -1,14 +1,13 @@
-use futures::future::IntoFuture;
 use serde_json::json;
 use crate::model::*;
 use crate::FluentRequest;
-use crate::StripeClient;
-use httpclient::InMemoryResponseExt;
 use serde::{Serialize, Deserialize};
+use httpclient::InMemoryResponseExt;
+use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetSubscriptionsRequest {
     pub automatic_tax: Option<AutomaticTaxFilterParams>,
     pub collection_method: Option<String>,
@@ -24,7 +23,7 @@ pub struct GetSubscriptionsRequest {
     pub status: Option<String>,
     pub test_clock: Option<String>,
 }
-
+impl GetSubscriptionsRequest {}
 impl FluentRequest<'_, GetSubscriptionsRequest> {
     pub fn automatic_tax(mut self, automatic_tax: AutomaticTaxFilterParams) -> Self {
         self.params.automatic_tax = Some(automatic_tax);
@@ -58,7 +57,9 @@ impl FluentRequest<'_, GetSubscriptionsRequest> {
         self
     }
     pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
-        self.params.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
+        self
+            .params
+            .expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
@@ -82,14 +83,13 @@ impl FluentRequest<'_, GetSubscriptionsRequest> {
         self
     }
 }
-
-impl<'a> std::future::IntoFuture for FluentRequest<'a, GetSubscriptionsRequest> {
+impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetSubscriptionsRequest> {
     type Output = httpclient::InMemoryResult<SubscriptionsSubscriptionList>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
-
     fn into_future(self) -> Self::IntoFuture {
         Box::pin(async {
-            let mut r = self.client.client.get("/v1/subscriptions");
+            let url = "/v1/subscriptions";
+            let mut r = self.client.client.get(url);
             r = r.set_query(self.params);
             r = self.client.authenticate(r);
             let res = r.await?;

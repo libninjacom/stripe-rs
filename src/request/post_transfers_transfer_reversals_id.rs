@@ -1,36 +1,34 @@
 use serde_json::json;
 use crate::model::*;
-use crate::StripeClient;
+use crate::FluentRequest;
+use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
+use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
-#[derive(Clone)]
-pub struct PostTransfersTransferReversalsIdRequest<'a> {
-    pub(crate) http_client: &'a StripeClient,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PostTransfersTransferReversalsIdRequest {
     pub id: String,
     pub transfer: String,
 }
-impl<'a> PostTransfersTransferReversalsIdRequest<'a> {
-    pub async fn send(self) -> ::httpclient::InMemoryResult<TransferReversal> {
-        let mut r = self
-            .http_client
-            .client
-            .post(
-                &format!(
-                    "/v1/transfers/{transfer}/reversals/{id}", id = self.id, transfer =
-                    self.transfer
-                ),
-            );
-        r = self.http_client.authenticate(r);
-        let res = r.await?;
-        res.json().map_err(Into::into)
-    }
-}
-impl<'a> ::std::future::IntoFuture for PostTransfersTransferReversalsIdRequest<'a> {
+impl PostTransfersTransferReversalsIdRequest {}
+impl FluentRequest<'_, PostTransfersTransferReversalsIdRequest> {}
+impl<'a> ::std::future::IntoFuture
+for FluentRequest<'a, PostTransfersTransferReversalsIdRequest> {
     type Output = httpclient::InMemoryResult<TransferReversal>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(self.send())
+        Box::pin(async {
+            let url = &format!(
+                "/v1/transfers/{transfer}/reversals/{id}", id = self.params.id, transfer
+                = self.params.transfer
+            );
+            let mut r = self.client.client.post(url);
+            r = r.set_query(self.params);
+            r = self.client.authenticate(r);
+            let res = r.await?;
+            res.json().map_err(Into::into)
+        })
     }
 }

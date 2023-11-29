@@ -1,30 +1,29 @@
 use serde_json::json;
 use crate::model::*;
-use crate::StripeClient;
+use crate::FluentRequest;
+use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
+use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
-#[derive(Clone)]
-pub struct PostIssuingCardsCardRequest<'a> {
-    pub(crate) http_client: &'a StripeClient,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PostIssuingCardsCardRequest {
     pub card: String,
 }
-impl<'a> PostIssuingCardsCardRequest<'a> {
-    pub async fn send(self) -> ::httpclient::InMemoryResult<IssuingCard> {
-        let mut r = self
-            .http_client
-            .client
-            .post(&format!("/v1/issuing/cards/{card}", card = self.card));
-        r = self.http_client.authenticate(r);
-        let res = r.await?;
-        res.json().map_err(Into::into)
-    }
-}
-impl<'a> ::std::future::IntoFuture for PostIssuingCardsCardRequest<'a> {
+impl PostIssuingCardsCardRequest {}
+impl FluentRequest<'_, PostIssuingCardsCardRequest> {}
+impl<'a> ::std::future::IntoFuture for FluentRequest<'a, PostIssuingCardsCardRequest> {
     type Output = httpclient::InMemoryResult<IssuingCard>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(self.send())
+        Box::pin(async {
+            let url = &format!("/v1/issuing/cards/{card}", card = self.params.card);
+            let mut r = self.client.client.post(url);
+            r = r.set_query(self.params);
+            r = self.client.authenticate(r);
+            let res = r.await?;
+            res.json().map_err(Into::into)
+        })
     }
 }

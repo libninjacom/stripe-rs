@@ -1,36 +1,33 @@
 use serde_json::json;
 use crate::model::*;
-use crate::StripeClient;
+use crate::FluentRequest;
+use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
+use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
-#[derive(Clone)]
-pub struct PostPaymentMethodDomainsPaymentMethodDomainValidateRequest<'a> {
-    pub(crate) http_client: &'a StripeClient,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PostPaymentMethodDomainsPaymentMethodDomainValidateRequest {
     pub payment_method_domain: String,
 }
-impl<'a> PostPaymentMethodDomainsPaymentMethodDomainValidateRequest<'a> {
-    pub async fn send(self) -> ::httpclient::InMemoryResult<PaymentMethodDomain> {
-        let mut r = self
-            .http_client
-            .client
-            .post(
-                &format!(
-                    "/v1/payment_method_domains/{payment_method_domain}/validate",
-                    payment_method_domain = self.payment_method_domain
-                ),
-            );
-        r = self.http_client.authenticate(r);
-        let res = r.await?;
-        res.json().map_err(Into::into)
-    }
-}
+impl PostPaymentMethodDomainsPaymentMethodDomainValidateRequest {}
+impl FluentRequest<'_, PostPaymentMethodDomainsPaymentMethodDomainValidateRequest> {}
 impl<'a> ::std::future::IntoFuture
-for PostPaymentMethodDomainsPaymentMethodDomainValidateRequest<'a> {
+for FluentRequest<'a, PostPaymentMethodDomainsPaymentMethodDomainValidateRequest> {
     type Output = httpclient::InMemoryResult<PaymentMethodDomain>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(self.send())
+        Box::pin(async {
+            let url = &format!(
+                "/v1/payment_method_domains/{payment_method_domain}/validate",
+                payment_method_domain = self.params.payment_method_domain
+            );
+            let mut r = self.client.client.post(url);
+            r = r.set_query(self.params);
+            r = self.client.authenticate(r);
+            let res = r.await?;
+            res.json().map_err(Into::into)
+        })
     }
 }

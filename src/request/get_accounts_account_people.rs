@@ -1,13 +1,14 @@
 use serde_json::json;
 use crate::model::*;
-use crate::StripeClient;
+use crate::FluentRequest;
+use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
+use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
-#[derive(Clone)]
-pub struct GetAccountsAccountPeopleRequest<'a> {
-    pub(crate) http_client: &'a StripeClient,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GetAccountsAccountPeopleRequest {
     pub account: String,
     pub ending_before: Option<String>,
     pub expand: Option<Vec<String>>,
@@ -15,58 +16,45 @@ pub struct GetAccountsAccountPeopleRequest<'a> {
     pub relationship: Option<AllPeopleRelationshipSpecs>,
     pub starting_after: Option<String>,
 }
-impl<'a> GetAccountsAccountPeopleRequest<'a> {
-    pub async fn send(self) -> ::httpclient::InMemoryResult<PersonList> {
-        let mut r = self
-            .http_client
-            .client
-            .get(&format!("/v1/accounts/{account}/people", account = self.account));
-        if let Some(ref unwrapped) = self.ending_before {
-            r = r.query("ending_before", &unwrapped.to_string());
-        }
-        if let Some(ref unwrapped) = self.expand {
-            for item in unwrapped {
-                r = r.query("expand[]", &item.to_string());
-            }
-        }
-        if let Some(ref unwrapped) = self.limit {
-            r = r.query("limit", &unwrapped.to_string());
-        }
-        if let Some(ref unwrapped) = self.relationship {
-            r = r.query("relationship", &unwrapped.to_string());
-        }
-        if let Some(ref unwrapped) = self.starting_after {
-            r = r.query("starting_after", &unwrapped.to_string());
-        }
-        r = self.http_client.authenticate(r);
-        let res = r.await?;
-        res.json().map_err(Into::into)
-    }
+impl GetAccountsAccountPeopleRequest {}
+impl FluentRequest<'_, GetAccountsAccountPeopleRequest> {
     pub fn ending_before(mut self, ending_before: &str) -> Self {
-        self.ending_before = Some(ending_before.to_owned());
+        self.params.ending_before = Some(ending_before.to_owned());
         self
     }
     pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
-        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
+        self
+            .params
+            .expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
     pub fn limit(mut self, limit: i64) -> Self {
-        self.limit = Some(limit);
+        self.params.limit = Some(limit);
         self
     }
     pub fn relationship(mut self, relationship: AllPeopleRelationshipSpecs) -> Self {
-        self.relationship = Some(relationship);
+        self.params.relationship = Some(relationship);
         self
     }
     pub fn starting_after(mut self, starting_after: &str) -> Self {
-        self.starting_after = Some(starting_after.to_owned());
+        self.params.starting_after = Some(starting_after.to_owned());
         self
     }
 }
-impl<'a> ::std::future::IntoFuture for GetAccountsAccountPeopleRequest<'a> {
+impl<'a> ::std::future::IntoFuture
+for FluentRequest<'a, GetAccountsAccountPeopleRequest> {
     type Output = httpclient::InMemoryResult<PersonList>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(self.send())
+        Box::pin(async {
+            let url = &format!(
+                "/v1/accounts/{account}/people", account = self.params.account
+            );
+            let mut r = self.client.client.get(url);
+            r = r.set_query(self.params);
+            r = self.client.authenticate(r);
+            let res = r.await?;
+            res.json().map_err(Into::into)
+        })
     }
 }

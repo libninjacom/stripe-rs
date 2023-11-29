@@ -1,26 +1,27 @@
 use serde_json::json;
 use crate::model::*;
-use crate::StripeClient;
+use crate::FluentRequest;
+use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
+use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
-#[derive(Clone)]
-pub struct PostQuotesRequest<'a> {
-    pub(crate) http_client: &'a StripeClient,
-}
-impl<'a> PostQuotesRequest<'a> {
-    pub async fn send(self) -> ::httpclient::InMemoryResult<Quote> {
-        let mut r = self.http_client.client.post("/v1/quotes");
-        r = self.http_client.authenticate(r);
-        let res = r.await?;
-        res.json().map_err(Into::into)
-    }
-}
-impl<'a> ::std::future::IntoFuture for PostQuotesRequest<'a> {
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PostQuotesRequest {}
+impl PostQuotesRequest {}
+impl FluentRequest<'_, PostQuotesRequest> {}
+impl<'a> ::std::future::IntoFuture for FluentRequest<'a, PostQuotesRequest> {
     type Output = httpclient::InMemoryResult<Quote>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(self.send())
+        Box::pin(async {
+            let url = "/v1/quotes";
+            let mut r = self.client.client.post(url);
+            r = r.set_query(self.params);
+            r = self.client.authenticate(r);
+            let res = r.await?;
+            res.json().map_err(Into::into)
+        })
     }
 }

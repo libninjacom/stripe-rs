@@ -1,46 +1,41 @@
 use serde_json::json;
 use crate::model::*;
-use crate::StripeClient;
+use crate::FluentRequest;
+use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
+use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
-#[derive(Clone)]
-pub struct GetTreasuryOutboundTransfersOutboundTransferRequest<'a> {
-    pub(crate) http_client: &'a StripeClient,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GetTreasuryOutboundTransfersOutboundTransferRequest {
     pub expand: Option<Vec<String>>,
     pub outbound_transfer: String,
 }
-impl<'a> GetTreasuryOutboundTransfersOutboundTransferRequest<'a> {
-    pub async fn send(self) -> ::httpclient::InMemoryResult<TreasuryOutboundTransfer> {
-        let mut r = self
-            .http_client
-            .client
-            .get(
-                &format!(
-                    "/v1/treasury/outbound_transfers/{outbound_transfer}",
-                    outbound_transfer = self.outbound_transfer
-                ),
-            );
-        if let Some(ref unwrapped) = self.expand {
-            for item in unwrapped {
-                r = r.query("expand[]", &item.to_string());
-            }
-        }
-        r = self.http_client.authenticate(r);
-        let res = r.await?;
-        res.json().map_err(Into::into)
-    }
+impl GetTreasuryOutboundTransfersOutboundTransferRequest {}
+impl FluentRequest<'_, GetTreasuryOutboundTransfersOutboundTransferRequest> {
     pub fn expand(mut self, expand: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
-        self.expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
+        self
+            .params
+            .expand = Some(expand.into_iter().map(|s| s.as_ref().to_owned()).collect());
         self
     }
 }
 impl<'a> ::std::future::IntoFuture
-for GetTreasuryOutboundTransfersOutboundTransferRequest<'a> {
+for FluentRequest<'a, GetTreasuryOutboundTransfersOutboundTransferRequest> {
     type Output = httpclient::InMemoryResult<TreasuryOutboundTransfer>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(self.send())
+        Box::pin(async {
+            let url = &format!(
+                "/v1/treasury/outbound_transfers/{outbound_transfer}", outbound_transfer
+                = self.params.outbound_transfer
+            );
+            let mut r = self.client.client.get(url);
+            r = r.set_query(self.params);
+            r = self.client.authenticate(r);
+            let res = r.await?;
+            res.json().map_err(Into::into)
+        })
     }
 }
