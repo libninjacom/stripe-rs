@@ -3,13 +3,18 @@
 //! Library created with [`libninja`](https://www.libninja.com).
 #![allow(non_camel_case_types)]
 #![allow(unused)]
+
 pub mod model;
 pub mod request;
+
 use crate::model::*;
+use crate::request::{FluentRequest, GetSubscriptionsRequest};
+
 pub struct StripeClient {
     pub client: httpclient::Client,
     authentication: StripeAuthentication,
 }
+
 impl StripeClient {
     pub fn from_env() -> Self {
         Self {
@@ -18,6 +23,7 @@ impl StripeClient {
         }
     }
 }
+
 impl StripeClient {
     pub fn new(url: &str, authentication: StripeAuthentication) -> Self {
         let client = httpclient::Client::new().base_url(url);
@@ -79,11 +85,11 @@ impl StripeClient {
         }
     }
     /**<p>With <a href="/docs/connect">Connect</a>, you can create Stripe accounts for your users.
-To do this, you’ll first need to <a href="https://dashboard.stripe.com/account/applications/settings">register your platform</a>.</p>
+    To do this, you’ll first need to <a href="https://dashboard.stripe.com/account/applications/settings">register your platform</a>.</p>
 
-<p>If you’ve already collected information for your connected accounts, you <a href="/docs/connect/best-practices#onboarding">can prefill that information</a> when
-creating the account. Connect Onboarding won’t ask for the prefilled information during account onboarding.
-You can prefill any information on the account.</p>*/
+    <p>If you’ve already collected information for your connected accounts, you <a href="/docs/connect/best-practices#onboarding">can prefill that information</a> when
+    creating the account. Connect Onboarding won’t ask for the prefilled information during account onboarding.
+    You can prefill any information on the account.</p>*/
     pub fn post_accounts(&self) -> request::PostAccountsRequest {
         request::PostAccountsRequest {
             http_client: &self,
@@ -101,15 +107,15 @@ You can prefill any information on the account.</p>*/
         }
     }
     /**<p>Updates a <a href="/docs/connect/accounts">connected account</a> by setting the values of the parameters passed. Any parameters not provided are
-left unchanged.</p>
+    left unchanged.</p>
 
-<p>For Custom accounts, you can update any information on the account. For other accounts, you can update all information until that
-account has started to go through Connect Onboarding. Once you create an <a href="/docs/api/account_links">Account Link</a>
-for a Standard or Express account, some parameters can no longer be changed. These are marked as <strong>Custom Only</strong> or <strong>Custom and Express</strong>
-below.</p>
+    <p>For Custom accounts, you can update any information on the account. For other accounts, you can update all information until that
+    account has started to go through Connect Onboarding. Once you create an <a href="/docs/api/account_links">Account Link</a>
+    for a Standard or Express account, some parameters can no longer be changed. These are marked as <strong>Custom Only</strong> or <strong>Custom and Express</strong>
+    below.</p>
 
-<p>To update your own account, use the <a href="https://dashboard.stripe.com/settings/account">Dashboard</a>. Refer to our
-<a href="/docs/connect/updating-accounts">Connect</a> documentation to learn more about updating accounts.</p>*/
+    <p>To update your own account, use the <a href="https://dashboard.stripe.com/settings/account">Dashboard</a>. Refer to our
+    <a href="/docs/connect/updating-accounts">Connect</a> documentation to learn more about updating accounts.</p>*/
     pub fn post_accounts_account(
         &self,
         account: &str,
@@ -121,9 +127,9 @@ below.</p>
     }
     /**<p>With <a href="/docs/connect">Connect</a>, you can delete accounts you manage.</p>
 
-<p>Accounts created using test-mode keys can be deleted at any time. Standard accounts created using live-mode keys cannot be deleted. Custom or Express accounts created using live-mode keys can only be deleted once all balances are zero.</p>
+    <p>Accounts created using test-mode keys can be deleted at any time. Standard accounts created using live-mode keys cannot be deleted. Custom or Express accounts created using live-mode keys can only be deleted once all balances are zero.</p>
 
-<p>If you want to delete your own account, use the <a href="https://dashboard.stripe.com/settings/account">account information tab in your account settings</a> instead.</p>*/
+    <p>If you want to delete your own account, use the <a href="https://dashboard.stripe.com/settings/account">account information tab in your account settings</a> instead.</p>*/
     pub fn delete_accounts_account(
         &self,
         account: &str,
@@ -158,7 +164,7 @@ below.</p>
     }
     /**<p>Updates the metadata, account holder name, account holder type of a bank account belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and optionally sets it as the default for its currency. Other bank account details are not editable by design.</p>
 
-<p>You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>*/
+    <p>You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>*/
     pub fn post_accounts_account_bank_accounts_id(
         &self,
         account: &str,
@@ -258,7 +264,7 @@ below.</p>
     }
     /**<p>Updates the metadata, account holder name, account holder type of a bank account belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and optionally sets it as the default for its currency. Other bank account details are not editable by design.</p>
 
-<p>You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>*/
+    <p>You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>*/
     pub fn post_accounts_account_external_accounts_id(
         &self,
         account: &str,
@@ -284,7 +290,7 @@ below.</p>
     }
     /**<p>Creates a single-use login link for an Express account to access their Stripe dashboard.</p>
 
-<p><strong>You may only create login links for <a href="/docs/connect/express-accounts">Express accounts</a> connected to your platform</strong>.</p>*/
+    <p><strong>You may only create login links for <a href="/docs/connect/express-accounts">Express accounts</a> connected to your platform</strong>.</p>*/
     pub fn post_accounts_account_login_links(
         &self,
         account: &str,
@@ -420,7 +426,7 @@ below.</p>
     }
     /**<p>With <a href="/docs/connect">Connect</a>, you may flag accounts as suspicious.</p>
 
-<p>Test-mode Custom and Express accounts can be rejected at any time. Accounts created using live-mode keys may only be rejected once all balances are zero.</p>*/
+    <p>Test-mode Custom and Express accounts can be rejected at any time. Accounts created using live-mode keys may only be rejected once all balances are zero.</p>*/
     pub fn post_accounts_account_reject(
         &self,
         account: &str,
@@ -495,7 +501,7 @@ below.</p>
     }
     /**<p>Updates the specified application fee refund by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
 
-<p>This request only accepts metadata as an argument.</p>*/
+    <p>This request only accepts metadata as an argument.</p>*/
     pub fn post_application_fees_fee_refunds_id(
         &self,
         fee: &str,
@@ -542,14 +548,14 @@ below.</p>
         }
     }
     /**<p>Refunds an application fee that has previously been collected but not yet refunded.
-Funds will be refunded to the Stripe account from which the fee was originally collected.</p>
+    Funds will be refunded to the Stripe account from which the fee was originally collected.</p>
 
-<p>You can optionally refund only part of an application fee.
-You can do so multiple times, until the entire fee has been refunded.</p>
+    <p>You can optionally refund only part of an application fee.
+    You can do so multiple times, until the entire fee has been refunded.</p>
 
-<p>Once entirely refunded, an application fee can’t be refunded again.
-This method will raise an error when called on an already-refunded application fee,
-or when trying to refund more money than is left on an application fee.</p>*/
+    <p>Once entirely refunded, an application fee can’t be refunded again.
+    This method will raise an error when called on an already-refunded application fee,
+    or when trying to refund more money than is left on an application fee.</p>*/
     pub fn post_application_fees_id_refunds(
         &self,
         id: &str,
@@ -596,7 +602,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
         }
     }
     /**<p>Retrieves the current account balance, based on the authentication that was used to make the request.
- For a sample request, see <a href="/docs/connect/account-balances#accounting-for-negative-balances">Accounting for negative balances</a>.</p>*/
+     For a sample request, see <a href="/docs/connect/account-balances#accounting-for-negative-balances">Accounting for negative balances</a>.</p>*/
     pub fn get_balance(&self) -> request::GetBalanceRequest {
         request::GetBalanceRequest {
             http_client: &self,
@@ -605,7 +611,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
     }
     /**<p>Returns a list of transactions that have contributed to the Stripe account balance (e.g., charges, transfers, and so forth). The transactions are returned in sorted order, with the most recent transactions appearing first.</p>
 
-<p>Note that this endpoint was previously called “Balance history” and used the path <code>/v1/balance/history</code>.</p>*/
+    <p>Note that this endpoint was previously called “Balance history” and used the path <code>/v1/balance/history</code>.</p>*/
     pub fn get_balance_history(&self) -> request::GetBalanceHistoryRequest {
         request::GetBalanceHistoryRequest {
             http_client: &self,
@@ -622,7 +628,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
     }
     /**<p>Retrieves the balance transaction with the given ID.</p>
 
-<p>Note that this endpoint previously used the path <code>/v1/balance/history/:id</code>.</p>*/
+    <p>Note that this endpoint previously used the path <code>/v1/balance/history/:id</code>.</p>*/
     pub fn get_balance_history_id(
         &self,
         id: &str,
@@ -635,7 +641,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
     }
     /**<p>Returns a list of transactions that have contributed to the Stripe account balance (e.g., charges, transfers, and so forth). The transactions are returned in sorted order, with the most recent transactions appearing first.</p>
 
-<p>Note that this endpoint was previously called “Balance history” and used the path <code>/v1/balance/history</code>.</p>*/
+    <p>Note that this endpoint was previously called “Balance history” and used the path <code>/v1/balance/history</code>.</p>*/
     pub fn get_balance_transactions(&self) -> request::GetBalanceTransactionsRequest {
         request::GetBalanceTransactionsRequest {
             http_client: &self,
@@ -652,7 +658,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
     }
     /**<p>Retrieves the balance transaction with the given ID.</p>
 
-<p>Note that this endpoint previously used the path <code>/v1/balance/history/:id</code>.</p>*/
+    <p>Note that this endpoint previously used the path <code>/v1/balance/history/:id</code>.</p>*/
     pub fn get_balance_transactions_id(
         &self,
         id: &str,
@@ -729,17 +735,17 @@ or when trying to refund more money than is left on an application fee.</p>*/
         }
     }
     /**<p>Use the <a href="/docs/api/payment_intents">Payment Intents API</a> to initiate a new payment instead
-of using this method. Confirmation of the PaymentIntent creates the <code>Charge</code>
-object used to request payment, so this method is limited to legacy integrations.</p>*/
+    of using this method. Confirmation of the PaymentIntent creates the <code>Charge</code>
+    object used to request payment, so this method is limited to legacy integrations.</p>*/
     pub fn post_charges(&self) -> request::PostChargesRequest {
         request::PostChargesRequest {
             http_client: &self,
         }
     }
     /**<p>Search for charges you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
-Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
-conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
-to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
+    Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
+    conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
+    to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
     pub fn get_charges_search(&self, query: &str) -> request::GetChargesSearchRequest {
         request::GetChargesSearchRequest {
             http_client: &self,
@@ -769,9 +775,9 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>Capture the payment of an existing, uncaptured charge that was created with the <code>capture</code> option set to false.</p>
 
-<p>Uncaptured payments expire a set number of days after they are created (<a href="/docs/charges/placing-a-hold">7 by default</a>), after which they are marked as refunded and capture attempts will fail.</p>
+    <p>Uncaptured payments expire a set number of days after they are created (<a href="/docs/charges/placing-a-hold">7 by default</a>), after which they are marked as refunded and capture attempts will fail.</p>
 
-<p>Don’t use this method to capture a PaymentIntent-initiated charge. Use <a href="/docs/api/payment_intents/capture">Capture a PaymentIntent</a>.</p>*/
+    <p>Don’t use this method to capture a PaymentIntent-initiated charge. Use <a href="/docs/api/payment_intents/capture">Capture a PaymentIntent</a>.</p>*/
     pub fn post_charges_charge_capture(
         &self,
         charge: &str,
@@ -812,15 +818,15 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>When you create a new refund, you must specify either a Charge or a PaymentIntent object.</p>
 
-<p>This action refunds a previously created charge that’s not refunded yet.
-Funds are refunded to the credit or debit card that’s originally charged.</p>
+    <p>This action refunds a previously created charge that’s not refunded yet.
+    Funds are refunded to the credit or debit card that’s originally charged.</p>
 
-<p>You can optionally refund only part of a charge.
-You can repeat this until the entire charge is refunded.</p>
+    <p>You can optionally refund only part of a charge.
+    You can repeat this until the entire charge is refunded.</p>
 
-<p>After you entirely refund a charge, you can’t refund it again.
-This method raises an error when it’s called on an already-refunded charge,
-or when you attempt to refund more money than is left on a charge.</p>*/
+    <p>After you entirely refund a charge, you can’t refund it again.
+    This method raises an error when it’s called on an already-refunded charge,
+    or when you attempt to refund more money than is left on a charge.</p>*/
     pub fn post_charges_charge_refund(
         &self,
         charge: &str,
@@ -846,15 +852,15 @@ or when you attempt to refund more money than is left on a charge.</p>*/
     }
     /**<p>When you create a new refund, you must specify a Charge or a PaymentIntent object on which to create it.</p>
 
-<p>Creating a new refund will refund a charge that has previously been created but not yet refunded.
-Funds will be refunded to the credit or debit card that was originally charged.</p>
+    <p>Creating a new refund will refund a charge that has previously been created but not yet refunded.
+    Funds will be refunded to the credit or debit card that was originally charged.</p>
 
-<p>You can optionally refund only part of a charge.
-You can do so multiple times, until the entire charge has been refunded.</p>
+    <p>You can optionally refund only part of a charge.
+    You can do so multiple times, until the entire charge has been refunded.</p>
 
-<p>Once entirely refunded, a charge can’t be refunded again.
-This method will raise an error when called on an already-refunded charge,
-or when trying to refund more money than is left on a charge.</p>*/
+    <p>Once entirely refunded, a charge can’t be refunded again.
+    This method will raise an error when called on an already-refunded charge,
+    or when trying to refund more money than is left on a charge.</p>*/
     pub fn post_charges_charge_refunds(
         &self,
         charge: &str,
@@ -924,7 +930,7 @@ or when trying to refund more money than is left on a charge.</p>*/
     }
     /**<p>A Session can be expired when it is in one of these statuses: <code>open</code> </p>
 
-<p>After it expires, a customer can’t complete a Session and customers loading the Session see a message saying the Session is expired.</p>*/
+    <p>After it expires, a customer can’t complete a Session and customers loading the Session see a message saying the Session is expired.</p>*/
     pub fn post_checkout_sessions_session_expire(
         &self,
         session: &str,
@@ -949,7 +955,7 @@ or when trying to refund more money than is left on a charge.</p>*/
         }
     }
     /**<p>Lists all Climate order objects. The orders are returned sorted by creation date, with the
-most recently created orders appearing first.</p>*/
+    most recently created orders appearing first.</p>*/
     pub fn get_climate_orders(&self) -> request::GetClimateOrdersRequest {
         request::GetClimateOrdersRequest {
             http_client: &self,
@@ -960,7 +966,7 @@ most recently created orders appearing first.</p>*/
         }
     }
     /**<p>Creates a Climate order object for a given Climate product. The order will be processed immediately
-after creation and payment will be deducted your Stripe balance.</p>*/
+    after creation and payment will be deducted your Stripe balance.</p>*/
     pub fn post_climate_orders(&self) -> request::PostClimateOrdersRequest {
         request::PostClimateOrdersRequest {
             http_client: &self,
@@ -988,9 +994,9 @@ after creation and payment will be deducted your Stripe balance.</p>*/
         }
     }
     /**<p>Cancels a Climate order. You can cancel an order within 30 days of creation. Stripe refunds the
-reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> for user-triggered cancellations. Frontier
-might cancel reservations if suppliers fail to deliver. If Frontier cancels the reservation, Stripe
-provides 90 days advance notice and refunds the <code>amount_total</code>.</p>*/
+    reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> for user-triggered cancellations. Frontier
+    might cancel reservations if suppliers fail to deliver. If Frontier cancels the reservation, Stripe
+    provides 90 days advance notice and refunds the <code>amount_total</code>.</p>*/
     pub fn post_climate_orders_order_cancel(
         &self,
         order: &str,
@@ -1022,7 +1028,7 @@ provides 90 days advance notice and refunds the <code>amount_total</code>.</p>*/
         }
     }
     /**<p>Lists all Climate order objects. The orders are returned sorted by creation date, with the
-most recently created orders appearing first.</p>*/
+    most recently created orders appearing first.</p>*/
     pub fn get_climate_reservations(&self) -> request::GetClimateReservationsRequest {
         request::GetClimateReservationsRequest {
             http_client: &self,
@@ -1033,7 +1039,7 @@ most recently created orders appearing first.</p>*/
         }
     }
     /**<p>Creates a Climate order object for a given Climate product. The order will be processed immediately
-after creation and payment will be deducted your Stripe balance.</p>*/
+    after creation and payment will be deducted your Stripe balance.</p>*/
     pub fn post_climate_reservations(&self) -> request::PostClimateReservationsRequest {
         request::PostClimateReservationsRequest {
             http_client: &self,
@@ -1061,9 +1067,9 @@ after creation and payment will be deducted your Stripe balance.</p>*/
         }
     }
     /**<p>Cancels a Climate order. You can cancel an order within 30 days of creation. Stripe refunds the
-reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> for user-triggered cancellations. Frontier
-might cancel reservations if suppliers fail to deliver. If Frontier cancels the reservation, Stripe
-provides 90 days advance notice and refunds the <code>amount_total</code>.</p>*/
+    reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> for user-triggered cancellations. Frontier
+    might cancel reservations if suppliers fail to deliver. If Frontier cancels the reservation, Stripe
+    provides 90 days advance notice and refunds the <code>amount_total</code>.</p>*/
     pub fn post_climate_reservations_order_cancel(
         &self,
         order: &str,
@@ -1074,7 +1080,7 @@ provides 90 days advance notice and refunds the <code>amount_total</code>.</p>*/
         }
     }
     /**<p>Confirms a Climate order. When you confirm your order, we immediately deduct the funds from your
-Stripe balance.</p>*/
+    Stripe balance.</p>*/
     pub fn post_climate_reservations_order_confirm(
         &self,
         order: &str,
@@ -1139,7 +1145,7 @@ Stripe balance.</p>*/
     }
     /**<p>You can create coupons easily via the <a href="https://dashboard.stripe.com/coupons">coupon management</a> page of the Stripe dashboard. Coupon creation is also accessible via the API if you need to create coupons on the fly.</p>
 
-<p>A coupon has either a <code>percent_off</code> or an <code>amount_off</code> and <code>currency</code>. If you set an <code>amount_off</code>, that amount will be subtracted from any invoice’s subtotal. For example, an invoice with a subtotal of <currency>100</currency> will have a final total of <currency>0</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it and an invoice with a subtotal of <currency>300</currency> will have a final total of <currency>100</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it.</p>*/
+    <p>A coupon has either a <code>percent_off</code> or an <code>amount_off</code> and <code>currency</code>. If you set an <code>amount_off</code>, that amount will be subtracted from any invoice’s subtotal. For example, an invoice with a subtotal of <currency>100</currency> will have a final total of <currency>0</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it and an invoice with a subtotal of <currency>300</currency> will have a final total of <currency>100</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it.</p>*/
     pub fn post_coupons(&self) -> request::PostCouponsRequest {
         request::PostCouponsRequest {
             http_client: &self,
@@ -1186,19 +1192,19 @@ Stripe balance.</p>*/
         }
     }
     /**<p>Issue a credit note to adjust the amount of a finalized invoice. For a <code>status=open</code> invoice, a credit note reduces
-its <code>amount_due</code>. For a <code>status=paid</code> invoice, a credit note does not affect its <code>amount_due</code>. Instead, it can result
-in any combination of the following:</p>
+    its <code>amount_due</code>. For a <code>status=paid</code> invoice, a credit note does not affect its <code>amount_due</code>. Instead, it can result
+    in any combination of the following:</p>
 
-<ul>
-<li>Refund: create a new refund (using <code>refund_amount</code>) or link an existing refund (using <code>refund</code>).</li>
-<li>Customer balance credit: credit the customer’s balance (using <code>credit_amount</code>) which will be automatically applied to their next invoice when it’s finalized.</li>
-<li>Outside of Stripe credit: record the amount that is or will be credited outside of Stripe (using <code>out_of_band_amount</code>).</li>
-</ul>
+    <ul>
+    <li>Refund: create a new refund (using <code>refund_amount</code>) or link an existing refund (using <code>refund</code>).</li>
+    <li>Customer balance credit: credit the customer’s balance (using <code>credit_amount</code>) which will be automatically applied to their next invoice when it’s finalized.</li>
+    <li>Outside of Stripe credit: record the amount that is or will be credited outside of Stripe (using <code>out_of_band_amount</code>).</li>
+    </ul>
 
-<p>For post-payment credit notes the sum of the refund, credit and outside of Stripe amounts must equal the credit note total.</p>
+    <p>For post-payment credit notes the sum of the refund, credit and outside of Stripe amounts must equal the credit note total.</p>
 
-<p>You may issue multiple credit notes for an invoice. Each credit note will increment the invoice’s <code>pre_payment_credit_notes_amount</code>
-or <code>post_payment_credit_notes_amount</code> depending on its <code>status</code> at the time of credit note creation.</p>*/
+    <p>You may issue multiple credit notes for an invoice. Each credit note will increment the invoice’s <code>pre_payment_credit_notes_amount</code>
+    or <code>post_payment_credit_notes_amount</code> depending on its <code>status</code> at the time of credit note creation.</p>*/
     pub fn post_credit_notes(&self) -> request::PostCreditNotesRequest {
         request::PostCreditNotesRequest {
             http_client: &self,
@@ -1291,16 +1297,18 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
         }
     }
     ///<p>Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first.</p>
-    pub fn get_customers(&self) -> request::GetCustomersRequest {
-        request::GetCustomersRequest {
-            http_client: &self,
-            created: None,
-            email: None,
-            ending_before: None,
-            expand: None,
-            limit: None,
-            starting_after: None,
-            test_clock: None,
+    pub fn get_customers(&self) -> FluentRequest<request::GetCustomersRequest> {
+        FluentRequest {
+            http_client: &self.client,
+            params: request::GetCustomersRequest {
+                created: None,
+                email: None,
+                ending_before: None,
+                expand: None,
+                limit: None,
+                starting_after: None,
+                test_clock: None,
+            },
         }
     }
     ///<p>Creates a new customer object.</p>
@@ -1310,9 +1318,9 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
         }
     }
     /**<p>Search for customers you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
-Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
-conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
-to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
+    Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
+    conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
+    to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
     pub fn get_customers_search(
         &self,
         query: &str,
@@ -1338,7 +1346,7 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>Updates the specified customer by setting the values of the parameters passed. Any parameters not provided will be left unchanged. For example, if you pass the <strong>source</strong> parameter, that becomes the customer’s active source (e.g., a card) to be used for all charges in the future. When you update a customer to a new valid card source by passing the <strong>source</strong> parameter: for each of the customer’s current subscriptions, if the subscription bills automatically and is in the <code>past_due</code> state, then the latest open invoice for the subscription with automatic collection enabled will be retried. This retry will not count as an automatic retry, and will not affect the next regularly scheduled payment for the invoice. Changing the <strong>default_source</strong> for a customer will not trigger this behavior.</p>
 
-<p>This request accepts mostly the same arguments as the customer creation call.</p>*/
+    <p>This request accepts mostly the same arguments as the customer creation call.</p>*/
     pub fn post_customers_customer(
         &self,
         customer: &str,
@@ -1423,9 +1431,9 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>When you create a new credit card, you must specify a customer or recipient on which to create it.</p>
 
-<p>If the card’s owner has no default card, then the new card will become the default.
-However, if the owner already has a default, then it will not change.
-To change the default, you should <a href="/docs/api#update_customer">update the customer</a> to have a new <code>default_source</code>.</p>*/
+    <p>If the card’s owner has no default card, then the new card will become the default.
+    However, if the owner already has a default, then it will not change.
+    To change the default, you should <a href="/docs/api#update_customer">update the customer</a> to have a new <code>default_source</code>.</p>*/
     pub fn post_customers_customer_bank_accounts(
         &self,
         customer: &str,
@@ -1485,8 +1493,8 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         }
     }
     /**<p>You can see a list of the cards belonging to a customer.
-Note that the 10 most recent sources are always available on the <code>Customer</code> object.
-If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional cards.</p>*/
+    Note that the 10 most recent sources are always available on the <code>Customer</code> object.
+    If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional cards.</p>*/
     pub fn get_customers_customer_cards(
         &self,
         customer: &str,
@@ -1502,9 +1510,9 @@ If you need more than those 10, you can use this API method and the <code>limit<
     }
     /**<p>When you create a new credit card, you must specify a customer or recipient on which to create it.</p>
 
-<p>If the card’s owner has no default card, then the new card will become the default.
-However, if the owner already has a default, then it will not change.
-To change the default, you should <a href="/docs/api#update_customer">update the customer</a> to have a new <code>default_source</code>.</p>*/
+    <p>If the card’s owner has no default card, then the new card will become the default.
+    However, if the owner already has a default, then it will not change.
+    To change the default, you should <a href="/docs/api#update_customer">update the customer</a> to have a new <code>default_source</code>.</p>*/
     pub fn post_customers_customer_cards(
         &self,
         customer: &str,
@@ -1620,8 +1628,8 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         }
     }
     /**<p>Retrieve funding instructions for a customer cash balance. If funding instructions do not yet exist for the customer, new
-funding instructions will be created. If funding instructions have already been created for a given customer, the same
-funding instructions will be retrieved. In other words, we will return the same funding instructions each time.</p>*/
+    funding instructions will be created. If funding instructions have already been created for a given customer, the same
+    funding instructions will be retrieved. In other words, we will return the same funding instructions each time.</p>*/
     pub fn post_customers_customer_funding_instructions(
         &self,
         customer: &str,
@@ -1676,9 +1684,9 @@ funding instructions will be retrieved. In other words, we will return the same 
     }
     /**<p>When you create a new credit card, you must specify a customer or recipient on which to create it.</p>
 
-<p>If the card’s owner has no default card, then the new card will become the default.
-However, if the owner already has a default, then it will not change.
-To change the default, you should <a href="/docs/api#update_customer">update the customer</a> to have a new <code>default_source</code>.</p>*/
+    <p>If the card’s owner has no default card, then the new card will become the default.
+    However, if the owner already has a default, then it will not change.
+    To change the default, you should <a href="/docs/api#update_customer">update the customer</a> to have a new <code>default_source</code>.</p>*/
     pub fn post_customers_customer_sources(
         &self,
         customer: &str,
@@ -1788,9 +1796,9 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     }
     /**<p>Cancels a customer’s subscription. If you set the <code>at_period_end</code> parameter to <code>true</code>, the subscription will remain active until the end of the period, at which point it will be canceled and not renewed. Otherwise, with the default <code>false</code> value, the subscription is terminated immediately. In either case, the customer will not be charged again for the subscription.</p>
 
-<p>Note, however, that any pending invoice items that you’ve created will still be charged for at the end of the period, unless manually <a href="#delete_invoiceitem">deleted</a>. If you’ve set the subscription to cancel at the end of the period, any pending prorations will also be left in place and collected at the end of the period. But if the subscription is set to cancel immediately, pending prorations will be removed.</p>
+    <p>Note, however, that any pending invoice items that you’ve created will still be charged for at the end of the period, unless manually <a href="#delete_invoiceitem">deleted</a>. If you’ve set the subscription to cancel at the end of the period, any pending prorations will also be left in place and collected at the end of the period. But if the subscription is set to cancel immediately, pending prorations will be removed.</p>
 
-<p>By default, upon subscription cancellation, Stripe will stop automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>*/
+    <p>By default, upon subscription cancellation, Stripe will stop automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>*/
     pub fn delete_customers_customer_subscriptions_subscription_exposed_id(
         &self,
         customer: &str,
@@ -1901,7 +1909,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     }
     /**<p>When you get a dispute, contacting your customer is always the best first step. If that doesn’t work, you can submit evidence to help us resolve the dispute in your favor. You can do this in your <a href="https://dashboard.stripe.com/disputes">dashboard</a>, but if you prefer, you can use the API to submit evidence programmatically.</p>
 
-<p>Depending on your dispute type, different evidence fields will give you a better chance of winning your dispute. To figure out which evidence fields to provide, see our <a href="/docs/disputes/categories">guide to dispute types</a>.</p>*/
+    <p>Depending on your dispute type, different evidence fields will give you a better chance of winning your dispute. To figure out which evidence fields to provide, see our <a href="/docs/disputes/categories">guide to dispute types</a>.</p>*/
     pub fn post_disputes_dispute(
         &self,
         dispute: &str,
@@ -1913,7 +1921,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     }
     /**<p>Closing the dispute for a charge indicates that you do not have any evidence to submit and are essentially dismissing the dispute, acknowledging it as lost.</p>
 
-<p>The status of the dispute will change from <code>needs_response</code> to <code>lost</code>. <em>Closing a dispute is irreversible</em>.</p>*/
+    <p>The status of the dispute will change from <code>needs_response</code> to <code>lost</code>. <em>Closing a dispute is irreversible</em>.</p>*/
     pub fn post_disputes_dispute_close(
         &self,
         dispute: &str,
@@ -2030,7 +2038,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     }
     /**<p>To upload a file to Stripe, you need to send a request of type <code>multipart/form-data</code>. Include the file you want to upload in the request, and the parameters for creating a file.</p>
 
-<p>All of Stripe’s officially supported Client libraries support sending <code>multipart/form-data</code>.</p>*/
+    <p>All of Stripe’s officially supported Client libraries support sending <code>multipart/form-data</code>.</p>*/
     pub fn post_files(&self) -> request::PostFilesRequest {
         request::PostFilesRequest {
             http_client: &self,
@@ -2166,11 +2174,11 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     }
     /**<p>Creates a VerificationSession object.</p>
 
-<p>After the VerificationSession is created, display a verification modal using the session <code>client_secret</code> or send your users to the session’s <code>url</code>.</p>
+    <p>After the VerificationSession is created, display a verification modal using the session <code>client_secret</code> or send your users to the session’s <code>url</code>.</p>
 
-<p>If your API key is in test mode, verification checks won’t actually process, though everything else will occur as if in live mode.</p>
+    <p>If your API key is in test mode, verification checks won’t actually process, though everything else will occur as if in live mode.</p>
 
-<p>Related guide: <a href="/docs/identity/verify-identity-documents">Verify your users’ identity documents</a></p>*/
+    <p>Related guide: <a href="/docs/identity/verify-identity-documents">Verify your users’ identity documents</a></p>*/
     pub fn post_identity_verification_sessions(
         &self,
     ) -> request::PostIdentityVerificationSessionsRequest {
@@ -2180,8 +2188,8 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     }
     /**<p>Retrieves the details of a VerificationSession that was previously created.</p>
 
-<p>When the session status is <code>requires_input</code>, you can use this method to retrieve a valid
-<code>client_secret</code> or <code>url</code> to allow re-submission.</p>*/
+    <p>When the session status is <code>requires_input</code>, you can use this method to retrieve a valid
+    <code>client_secret</code> or <code>url</code> to allow re-submission.</p>*/
     pub fn get_identity_verification_sessions_session(
         &self,
         session: &str,
@@ -2194,8 +2202,8 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     }
     /**<p>Updates a VerificationSession object.</p>
 
-<p>When the session status is <code>requires_input</code>, you can use this method to update the
-verification check and options.</p>*/
+    <p>When the session status is <code>requires_input</code>, you can use this method to update the
+    verification check and options.</p>*/
     pub fn post_identity_verification_sessions_session(
         &self,
         session: &str,
@@ -2207,7 +2215,7 @@ verification check and options.</p>*/
     }
     /**<p>A VerificationSession object can be canceled when it is in <code>requires_input</code> <a href="/docs/identity/how-sessions-work">status</a>.</p>
 
-<p>Once canceled, future submission attempts are disabled. This cannot be undone. <a href="/docs/identity/verification-sessions#cancel">Learn more</a>.</p>*/
+    <p>Once canceled, future submission attempts are disabled. This cannot be undone. <a href="/docs/identity/verification-sessions#cancel">Learn more</a>.</p>*/
     pub fn post_identity_verification_sessions_session_cancel(
         &self,
         session: &str,
@@ -2218,24 +2226,24 @@ verification check and options.</p>*/
         }
     }
     /**<p>Redact a VerificationSession to remove all collected information from Stripe. This will redact
-the VerificationSession and all objects related to it, including VerificationReports, Events,
-request logs, etc.</p>
+    the VerificationSession and all objects related to it, including VerificationReports, Events,
+    request logs, etc.</p>
 
-<p>A VerificationSession object can be redacted when it is in <code>requires_input</code> or <code>verified</code>
-<a href="/docs/identity/how-sessions-work">status</a>. Redacting a VerificationSession in <code>requires_action</code>
-state will automatically cancel it.</p>
+    <p>A VerificationSession object can be redacted when it is in <code>requires_input</code> or <code>verified</code>
+    <a href="/docs/identity/how-sessions-work">status</a>. Redacting a VerificationSession in <code>requires_action</code>
+    state will automatically cancel it.</p>
 
-<p>The redaction process may take up to four days. When the redaction process is in progress, the
-VerificationSession’s <code>redaction.status</code> field will be set to <code>processing</code>; when the process is
-finished, it will change to <code>redacted</code> and an <code>identity.verification_session.redacted</code> event
-will be emitted.</p>
+    <p>The redaction process may take up to four days. When the redaction process is in progress, the
+    VerificationSession’s <code>redaction.status</code> field will be set to <code>processing</code>; when the process is
+    finished, it will change to <code>redacted</code> and an <code>identity.verification_session.redacted</code> event
+    will be emitted.</p>
 
-<p>Redaction is irreversible. Redacted objects are still accessible in the Stripe API, but all the
-fields that contain personal data will be replaced by the string <code>[redacted]</code> or a similar
-placeholder. The <code>metadata</code> field will also be erased. Redacted objects cannot be updated or
-used for any purpose.</p>
+    <p>Redaction is irreversible. Redacted objects are still accessible in the Stripe API, but all the
+    fields that contain personal data will be replaced by the string <code>[redacted]</code> or a similar
+    placeholder. The <code>metadata</code> field will also be erased. Redacted objects cannot be updated or
+    used for any purpose.</p>
 
-<p><a href="/docs/identity/verification-sessions#redact">Learn more</a>.</p>*/
+    <p><a href="/docs/identity/verification-sessions#redact">Learn more</a>.</p>*/
     pub fn post_identity_verification_sessions_session_redact(
         &self,
         session: &str,
@@ -2319,9 +2327,9 @@ used for any purpose.</p>
         }
     }
     /**<p>Search for invoices you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
-Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
-conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
-to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
+    Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
+    conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
+    to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
     pub fn get_invoices_search(&self, query: &str) -> request::GetInvoicesSearchRequest {
         request::GetInvoicesSearchRequest {
             http_client: &self,
@@ -2333,9 +2341,9 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>At any time, you can preview the upcoming invoice for a customer. This will show you all the charges that are pending, including subscription renewal charges, invoice item charges, etc. It will also show you any discounts that are applicable to the invoice.</p>
 
-<p>Note that when you are viewing an upcoming invoice, you are simply viewing a preview – the invoice has not yet been created. As such, the upcoming invoice will not show up in invoice listing calls, and you cannot use the API to pay or edit the invoice. If you want to change the amount that your customer will be billed, you can add, remove, or update pending invoice items, or update the customer’s discount.</p>
+    <p>Note that when you are viewing an upcoming invoice, you are simply viewing a preview – the invoice has not yet been created. As such, the upcoming invoice will not show up in invoice listing calls, and you cannot use the API to pay or edit the invoice. If you want to change the amount that your customer will be billed, you can add, remove, or update pending invoice items, or update the customer’s discount.</p>
 
-<p>You can preview the effects of updating a subscription, including a preview of what proration will take place. To ensure that the actual proration is calculated exactly the same as the previewed proration, you should pass a <code>proration_date</code> parameter when doing the actual subscription update. The value passed in should be the same as the <code>subscription_proration_date</code> returned on the upcoming invoice resource. The recommended way to get only the prorations being previewed is to consider only proration line items where <code>period[start]</code> is equal to the <code>subscription_proration_date</code> on the upcoming invoice resource.</p>*/
+    <p>You can preview the effects of updating a subscription, including a preview of what proration will take place. To ensure that the actual proration is calculated exactly the same as the previewed proration, you should pass a <code>proration_date</code> parameter when doing the actual subscription update. The value passed in should be the same as the <code>subscription_proration_date</code> returned on the upcoming invoice resource. The recommended way to get only the prorations being previewed is to consider only proration line items where <code>period[start]</code> is equal to the <code>subscription_proration_date</code> on the upcoming invoice resource.</p>*/
     pub fn get_invoices_upcoming(&self) -> request::GetInvoicesUpcomingRequest {
         request::GetInvoicesUpcomingRequest {
             http_client: &self,
@@ -2408,11 +2416,11 @@ to an hour behind during outages. Search functionality is not available to merch
         }
     }
     /**<p>Draft invoices are fully editable. Once an invoice is <a href="/docs/billing/invoices/workflow#finalized">finalized</a>,
-monetary values, as well as <code>collection_method</code>, become uneditable.</p>
+    monetary values, as well as <code>collection_method</code>, become uneditable.</p>
 
-<p>If you would like to stop the Stripe Billing engine from automatically finalizing, reattempting payments on,
-sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automatically reconciling</a> invoices, pass
-<code>auto_advance=false</code>.</p>*/
+    <p>If you would like to stop the Stripe Billing engine from automatically finalizing, reattempting payments on,
+    sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automatically reconciling</a> invoices, pass
+    <code>auto_advance=false</code>.</p>*/
     pub fn post_invoices_invoice(
         &self,
         invoice: &str,
@@ -2457,9 +2465,9 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         }
     }
     /**<p>Updates an invoice’s line item. Some fields, such as <code>tax_amounts</code>, only live on the invoice line item,
-so they can only be updated through this endpoint. Other fields, such as <code>amount</code>, live on both the invoice
-item and the invoice line item, so updates on this endpoint will propagate to the invoice item as well.
-Updating an invoice’s line item is only possible before the invoice is finalized.</p>*/
+    so they can only be updated through this endpoint. Other fields, such as <code>amount</code>, live on both the invoice
+    item and the invoice line item, so updates on this endpoint will propagate to the invoice item as well.
+    Updating an invoice’s line item is only possible before the invoice is finalized.</p>*/
     pub fn post_invoices_invoice_lines_line_item_id(
         &self,
         invoice: &str,
@@ -2493,7 +2501,7 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
     }
     /**<p>Stripe will automatically send invoices to customers according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to manually send an invoice to your customer out of the normal schedule, you can do so. When sending invoices that have already been paid, there will be no reference to the payment in the email.</p>
 
-<p>Requests made in test-mode result in no emails being sent, despite sending an <code>invoice.sent</code> event.</p>*/
+    <p>Requests made in test-mode result in no emails being sent, despite sending an <code>invoice.sent</code> event.</p>*/
     pub fn post_invoices_invoice_send(
         &self,
         invoice: &str,
@@ -2551,7 +2559,7 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
         }
     }
     /**<p>[Deprecated] Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow.
-This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">respond directly to the webhook request to approve an authorization</a>.</p>*/
+    This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">respond directly to the webhook request to approve an authorization</a>.</p>*/
     pub fn post_issuing_authorizations_authorization_approve(
         &self,
         authorization: &str,
@@ -2562,7 +2570,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
         }
     }
     /**<p>[Deprecated] Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.
-This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">respond directly to the webhook request to decline an authorization</a>.</p>*/
+    This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">respond directly to the webhook request to decline an authorization</a>.</p>*/
     pub fn post_issuing_authorizations_authorization_decline(
         &self,
         authorization: &str,
@@ -2910,23 +2918,23 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     }
     /**<p>Creates a PaymentIntent object.</p>
 
-<p>After the PaymentIntent is created, attach a payment method and <a href="/docs/api/payment_intents/confirm">confirm</a>
-to continue the payment. Learn more about <a href="/docs/payments/payment-intents">the available payment flows
-with the Payment Intents API</a>.</p>
+    <p>After the PaymentIntent is created, attach a payment method and <a href="/docs/api/payment_intents/confirm">confirm</a>
+    to continue the payment. Learn more about <a href="/docs/payments/payment-intents">the available payment flows
+    with the Payment Intents API</a>.</p>
 
-<p>When you use <code>confirm=true</code> during creation, it’s equivalent to creating
-and confirming the PaymentIntent in the same call. You can use any parameters
-available in the <a href="/docs/api/payment_intents/confirm">confirm API</a> when you supply
-<code>confirm=true</code>.</p>*/
+    <p>When you use <code>confirm=true</code> during creation, it’s equivalent to creating
+    and confirming the PaymentIntent in the same call. You can use any parameters
+    available in the <a href="/docs/api/payment_intents/confirm">confirm API</a> when you supply
+    <code>confirm=true</code>.</p>*/
     pub fn post_payment_intents(&self) -> request::PostPaymentIntentsRequest {
         request::PostPaymentIntentsRequest {
             http_client: &self,
         }
     }
     /**<p>Search for PaymentIntents you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
-Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
-conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
-to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
+    Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
+    conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
+    to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
     pub fn get_payment_intents_search(
         &self,
         query: &str,
@@ -2941,9 +2949,9 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>Retrieves the details of a PaymentIntent that has previously been created. </p>
 
-<p>You can retrieve a PaymentIntent client-side using a publishable key when the <code>client_secret</code> is in the query string. </p>
+    <p>You can retrieve a PaymentIntent client-side using a publishable key when the <code>client_secret</code> is in the query string. </p>
 
-<p>If you retrieve a PaymentIntent with a publishable key, it only returns a subset of properties. Refer to the <a href="#payment_intent_object">payment intent</a> object reference for more details.</p>*/
+    <p>If you retrieve a PaymentIntent with a publishable key, it only returns a subset of properties. Refer to the <a href="#payment_intent_object">payment intent</a> object reference for more details.</p>*/
     pub fn get_payment_intents_intent(
         &self,
         intent: &str,
@@ -2957,11 +2965,11 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>Updates properties on a PaymentIntent object without confirming.</p>
 
-<p>Depending on which properties you update, you might need to confirm the
-PaymentIntent again. For example, updating the <code>payment_method</code>
-always requires you to confirm the PaymentIntent again. If you prefer to
-update and confirm at the same time, we recommend updating properties through
-the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>*/
+    <p>Depending on which properties you update, you might need to confirm the
+    PaymentIntent again. For example, updating the <code>payment_method</code>
+    always requires you to confirm the PaymentIntent again. If you prefer to
+    update and confirm at the same time, we recommend updating properties through
+    the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>*/
     pub fn post_payment_intents_intent(
         &self,
         intent: &str,
@@ -2983,9 +2991,9 @@ the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>*/
     }
     /**<p>You can cancel a PaymentIntent object when it’s in one of these statuses: <code>requires_payment_method</code>, <code>requires_capture</code>, <code>requires_confirmation</code>, <code>requires_action</code> or, <a href="/docs/payments/intents">in rare cases</a>, <code>processing</code>. </p>
 
-<p>After it’s canceled, no additional charges are made by the PaymentIntent and any operations on the PaymentIntent fail with an error. For PaymentIntents with a <code>status</code> of <code>requires_capture</code>, the remaining <code>amount_capturable</code> is automatically refunded. </p>
+    <p>After it’s canceled, no additional charges are made by the PaymentIntent and any operations on the PaymentIntent fail with an error. For PaymentIntents with a <code>status</code> of <code>requires_capture</code>, the remaining <code>amount_capturable</code> is automatically refunded. </p>
 
-<p>You can’t cancel the PaymentIntent for a Checkout Session. <a href="/docs/api/checkout/sessions/expire">Expire the Checkout Session</a> instead.</p>*/
+    <p>You can’t cancel the PaymentIntent for a Checkout Session. <a href="/docs/api/checkout/sessions/expire">Expire the Checkout Session</a> instead.</p>*/
     pub fn post_payment_intents_intent_cancel(
         &self,
         intent: &str,
@@ -2997,9 +3005,9 @@ the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>*/
     }
     /**<p>Capture the funds of an existing uncaptured PaymentIntent when its status is <code>requires_capture</code>.</p>
 
-<p>Uncaptured PaymentIntents are cancelled a set number of days (7 by default) after their creation.</p>
+    <p>Uncaptured PaymentIntents are cancelled a set number of days (7 by default) after their creation.</p>
 
-<p>Learn more about <a href="/docs/payments/capture-later">separate authorization and capture</a>.</p>*/
+    <p>Learn more about <a href="/docs/payments/capture-later">separate authorization and capture</a>.</p>*/
     pub fn post_payment_intents_intent_capture(
         &self,
         intent: &str,
@@ -3010,28 +3018,28 @@ the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>*/
         }
     }
     /**<p>Confirm that your customer intends to pay with current or provided
-payment method. Upon confirmation, the PaymentIntent will attempt to initiate
-a payment.
-If the selected payment method requires additional authentication steps, the
-PaymentIntent will transition to the <code>requires_action</code> status and
-suggest additional actions via <code>next_action</code>. If payment fails,
-the PaymentIntent transitions to the <code>requires_payment_method</code> status or the
-<code>canceled</code> status if the confirmation limit is reached. If
-payment succeeds, the PaymentIntent will transition to the <code>succeeded</code>
-status (or <code>requires_capture</code>, if <code>capture_method</code> is set to <code>manual</code>).
-If the <code>confirmation_method</code> is <code>automatic</code>, payment may be attempted
-using our <a href="/docs/stripe-js/reference#stripe-handle-card-payment">client SDKs</a>
-and the PaymentIntent’s <a href="#payment_intent_object-client_secret">client_secret</a>.
-After <code>next_action</code>s are handled by the client, no additional
-confirmation is required to complete the payment.
-If the <code>confirmation_method</code> is <code>manual</code>, all payment attempts must be
-initiated using a secret key.
-If any actions are required for the payment, the PaymentIntent will
-return to the <code>requires_confirmation</code> state
-after those actions are completed. Your server needs to then
-explicitly re-confirm the PaymentIntent to initiate the next payment
-attempt. Read the <a href="/docs/payments/payment-intents/web-manual">expanded documentation</a>
-to learn more about manual confirmation.</p>*/
+    payment method. Upon confirmation, the PaymentIntent will attempt to initiate
+    a payment.
+    If the selected payment method requires additional authentication steps, the
+    PaymentIntent will transition to the <code>requires_action</code> status and
+    suggest additional actions via <code>next_action</code>. If payment fails,
+    the PaymentIntent transitions to the <code>requires_payment_method</code> status or the
+    <code>canceled</code> status if the confirmation limit is reached. If
+    payment succeeds, the PaymentIntent will transition to the <code>succeeded</code>
+    status (or <code>requires_capture</code>, if <code>capture_method</code> is set to <code>manual</code>).
+    If the <code>confirmation_method</code> is <code>automatic</code>, payment may be attempted
+    using our <a href="/docs/stripe-js/reference#stripe-handle-card-payment">client SDKs</a>
+    and the PaymentIntent’s <a href="#payment_intent_object-client_secret">client_secret</a>.
+    After <code>next_action</code>s are handled by the client, no additional
+    confirmation is required to complete the payment.
+    If the <code>confirmation_method</code> is <code>manual</code>, all payment attempts must be
+    initiated using a secret key.
+    If any actions are required for the payment, the PaymentIntent will
+    return to the <code>requires_confirmation</code> state
+    after those actions are completed. Your server needs to then
+    explicitly re-confirm the PaymentIntent to initiate the next payment
+    attempt. Read the <a href="/docs/payments/payment-intents/web-manual">expanded documentation</a>
+    to learn more about manual confirmation.</p>*/
     pub fn post_payment_intents_intent_confirm(
         &self,
         intent: &str,
@@ -3042,29 +3050,29 @@ to learn more about manual confirmation.</p>*/
         }
     }
     /**<p>Perform an incremental authorization on an eligible
-<a href="/docs/api/payment_intents/object">PaymentIntent</a>. To be eligible, the
-PaymentIntent’s status must be <code>requires_capture</code> and
-<a href="/docs/api/charges/object#charge_object-payment_method_details-card_present-incremental_authorization_supported">incremental_authorization_supported</a>
-must be <code>true</code>.</p>
+    <a href="/docs/api/payment_intents/object">PaymentIntent</a>. To be eligible, the
+    PaymentIntent’s status must be <code>requires_capture</code> and
+    <a href="/docs/api/charges/object#charge_object-payment_method_details-card_present-incremental_authorization_supported">incremental_authorization_supported</a>
+    must be <code>true</code>.</p>
 
-<p>Incremental authorizations attempt to increase the authorized amount on
-your customer’s card to the new, higher <code>amount</code> provided. Similar to the
-initial authorization, incremental authorizations can be declined. A
-single PaymentIntent can call this endpoint multiple times to further
-increase the authorized amount.</p>
+    <p>Incremental authorizations attempt to increase the authorized amount on
+    your customer’s card to the new, higher <code>amount</code> provided. Similar to the
+    initial authorization, incremental authorizations can be declined. A
+    single PaymentIntent can call this endpoint multiple times to further
+    increase the authorized amount.</p>
 
-<p>If the incremental authorization succeeds, the PaymentIntent object
-returns with the updated
-<a href="/docs/api/payment_intents/object#payment_intent_object-amount">amount</a>.
-If the incremental authorization fails, a
-<a href="/docs/error-codes#card-declined">card_declined</a> error returns, and no other
-fields on the PaymentIntent or Charge update. The PaymentIntent
-object remains capturable for the previously authorized amount.</p>
+    <p>If the incremental authorization succeeds, the PaymentIntent object
+    returns with the updated
+    <a href="/docs/api/payment_intents/object#payment_intent_object-amount">amount</a>.
+    If the incremental authorization fails, a
+    <a href="/docs/error-codes#card-declined">card_declined</a> error returns, and no other
+    fields on the PaymentIntent or Charge update. The PaymentIntent
+    object remains capturable for the previously authorized amount.</p>
 
-<p>Each PaymentIntent can have a maximum of 10 incremental authorization attempts, including declines.
-After it’s captured, a PaymentIntent can no longer be incremented.</p>
+    <p>Each PaymentIntent can have a maximum of 10 incremental authorization attempts, including declines.
+    After it’s captured, a PaymentIntent can no longer be incremented.</p>
 
-<p>Learn more about <a href="/docs/terminal/features/incremental-authorizations">incremental authorizations</a>.</p>*/
+    <p>Learn more about <a href="/docs/terminal/features/incremental-authorizations">incremental authorizations</a>.</p>*/
     pub fn post_payment_intents_intent_increment_authorization(
         &self,
         intent: &str,
@@ -3217,11 +3225,11 @@ After it’s captured, a PaymentIntent can no longer be incremented.</p>
         }
     }
     /**<p>Some payment methods such as Apple Pay require additional steps to verify a domain. If the requirements weren’t satisfied when the domain was created, the payment method will be inactive on the domain.
-The payment method doesn’t appear in Elements for this domain until it is active.</p>
+    The payment method doesn’t appear in Elements for this domain until it is active.</p>
 
-<p>To activate a payment method on an existing payment method domain, complete the required validation steps specific to the payment method, and then validate the payment method domain with this endpoint.</p>
+    <p>To activate a payment method on an existing payment method domain, complete the required validation steps specific to the payment method, and then validate the payment method domain with this endpoint.</p>
 
-<p>Related guides: <a href="/docs/payments/payment-methods/pmd-registration">Payment method domains</a>.</p>*/
+    <p>Related guides: <a href="/docs/payments/payment-methods/pmd-registration">Payment method domains</a>.</p>*/
     pub fn post_payment_method_domains_payment_method_domain_validate(
         &self,
         payment_method_domain: &str,
@@ -3245,7 +3253,7 @@ The payment method doesn’t appear in Elements for this domain until it is acti
     }
     /**<p>Creates a PaymentMethod object. Read the <a href="/docs/stripe-js/reference#stripe-create-payment-method">Stripe.js reference</a> to learn how to create PaymentMethods via Stripe.js.</p>
 
-<p>Instead of creating a PaymentMethod directly, we recommend using the <a href="/docs/payments/accept-a-payment">PaymentIntents</a> API to accept a payment immediately or the <a href="/docs/payments/save-and-reuse">SetupIntent</a> API to collect payment method details ahead of a future payment.</p>*/
+    <p>Instead of creating a PaymentMethod directly, we recommend using the <a href="/docs/payments/accept-a-payment">PaymentIntents</a> API to accept a payment immediately or the <a href="/docs/payments/save-and-reuse">SetupIntent</a> API to collect payment method details ahead of a future payment.</p>*/
     pub fn post_payment_methods(&self) -> request::PostPaymentMethodsRequest {
         request::PostPaymentMethodsRequest {
             http_client: &self,
@@ -3274,17 +3282,17 @@ The payment method doesn’t appear in Elements for this domain until it is acti
     }
     /**<p>Attaches a PaymentMethod object to a Customer.</p>
 
-<p>To attach a new PaymentMethod to a customer for future payments, we recommend you use a <a href="/docs/api/setup_intents">SetupIntent</a>
-or a PaymentIntent with <a href="/docs/api/payment_intents/create#create_payment_intent-setup_future_usage">setup_future_usage</a>.
-These approaches will perform any necessary steps to set up the PaymentMethod for future payments. Using the <code>/v1/payment_methods/:id/attach</code>
-endpoint without first using a SetupIntent or PaymentIntent with <code>setup_future_usage</code> does not optimize the PaymentMethod for
-future use, which makes later declines and payment friction more likely.
-See <a href="/docs/payments/payment-intents#future-usage">Optimizing cards for future payments</a> for more information about setting up
-future payments.</p>
+    <p>To attach a new PaymentMethod to a customer for future payments, we recommend you use a <a href="/docs/api/setup_intents">SetupIntent</a>
+    or a PaymentIntent with <a href="/docs/api/payment_intents/create#create_payment_intent-setup_future_usage">setup_future_usage</a>.
+    These approaches will perform any necessary steps to set up the PaymentMethod for future payments. Using the <code>/v1/payment_methods/:id/attach</code>
+    endpoint without first using a SetupIntent or PaymentIntent with <code>setup_future_usage</code> does not optimize the PaymentMethod for
+    future use, which makes later declines and payment friction more likely.
+    See <a href="/docs/payments/payment-intents#future-usage">Optimizing cards for future payments</a> for more information about setting up
+    future payments.</p>
 
-<p>To use this PaymentMethod as the default for invoice or subscription payments,
-set <a href="/docs/api/customers/update#update_customer-invoice_settings-default_payment_method"><code>invoice_settings.default_payment_method</code></a>,
-on the Customer to the PaymentMethod’s ID.</p>*/
+    <p>To use this PaymentMethod as the default for invoice or subscription payments,
+    set <a href="/docs/api/customers/update#update_customer-invoice_settings-default_payment_method"><code>invoice_settings.default_payment_method</code></a>,
+    on the Customer to the PaymentMethod’s ID.</p>*/
     pub fn post_payment_methods_payment_method_attach(
         &self,
         payment_method: &str,
@@ -3320,9 +3328,9 @@ on the Customer to the PaymentMethod’s ID.</p>*/
     }
     /**<p>To send funds to your own bank account, create a new payout object. Your <a href="#balance">Stripe balance</a> must cover the payout amount. If it doesn’t, you receive an “Insufficient Funds” error.</p>
 
-<p>If your API key is in test mode, money won’t actually be sent, though every other action occurs as if you’re in live mode.</p>
+    <p>If your API key is in test mode, money won’t actually be sent, though every other action occurs as if you’re in live mode.</p>
 
-<p>If you create a manual payout on a Stripe account that uses multiple payment source types, you need to specify the source type balance that the payout draws from. The <a href="#balance_object">balance object</a> details available and pending amounts by source type.</p>*/
+    <p>If you create a manual payout on a Stripe account that uses multiple payment source types, you need to specify the source type balance that the payout draws from. The <a href="#balance_object">balance object</a> details available and pending amounts by source type.</p>*/
     pub fn post_payouts(&self) -> request::PostPayoutsRequest {
         request::PostPayoutsRequest {
             http_client: &self,
@@ -3358,7 +3366,7 @@ on the Customer to the PaymentMethod’s ID.</p>*/
     }
     /**<p>Reverses a payout by debiting the destination bank account. At this time, you can only reverse payouts for connected accounts to US bank accounts. If the payout is in the <code>pending</code> status, use <code>/v1/payouts/:id/cancel</code> instead.</p>
 
-<p>By requesting a reversal through <code>/v1/payouts/:id/reverse</code>, you confirm that the authorized signatory of the selected bank account authorizes the debit on the bank account and that no other authorization is required.</p>*/
+    <p>By requesting a reversal through <code>/v1/payouts/:id/reverse</code>, you confirm that the authorized signatory of the selected bank account authorizes the debit on the bank account and that no other authorization is required.</p>*/
     pub fn post_payouts_payout_reverse(
         &self,
         payout: &str,
@@ -3433,9 +3441,9 @@ on the Customer to the PaymentMethod’s ID.</p>*/
         }
     }
     /**<p>Search for prices you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
-Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
-conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
-to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
+    Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
+    conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
+    to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
     pub fn get_prices_search(&self, query: &str) -> request::GetPricesSearchRequest {
         request::GetPricesSearchRequest {
             http_client: &self,
@@ -3482,9 +3490,9 @@ to an hour behind during outages. Search functionality is not available to merch
         }
     }
     /**<p>Search for products you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
-Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
-conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
-to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
+    Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
+    conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
+    to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
     pub fn get_products_search(&self, query: &str) -> request::GetProductsSearchRequest {
         request::GetProductsSearchRequest {
             http_client: &self,
@@ -3677,7 +3685,7 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>Retrieves the details of an early fraud warning that has previously been created. </p>
 
-<p>Please refer to the <a href="#early_fraud_warning_object">early fraud warning</a> object reference for more details.</p>*/
+    <p>Please refer to the <a href="#early_fraud_warning_object">early fraud warning</a> object reference for more details.</p>*/
     pub fn get_radar_early_fraud_warnings_early_fraud_warning(
         &self,
         early_fraud_warning: &str,
@@ -3798,15 +3806,15 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>When you create a new refund, you must specify a Charge or a PaymentIntent object on which to create it.</p>
 
-<p>Creating a new refund will refund a charge that has previously been created but not yet refunded.
-Funds will be refunded to the credit or debit card that was originally charged.</p>
+    <p>Creating a new refund will refund a charge that has previously been created but not yet refunded.
+    Funds will be refunded to the credit or debit card that was originally charged.</p>
 
-<p>You can optionally refund only part of a charge.
-You can do so multiple times, until the entire charge has been refunded.</p>
+    <p>You can optionally refund only part of a charge.
+    You can do so multiple times, until the entire charge has been refunded.</p>
 
-<p>Once entirely refunded, a charge can’t be refunded again.
-This method will raise an error when called on an already-refunded charge,
-or when trying to refund more money than is left on a charge.</p>*/
+    <p>Once entirely refunded, a charge can’t be refunded again.
+    This method will raise an error when called on an already-refunded charge,
+    or when trying to refund more money than is left on a charge.</p>*/
     pub fn post_refunds(&self) -> request::PostRefundsRequest {
         request::PostRefundsRequest {
             http_client: &self,
@@ -3822,7 +3830,7 @@ or when trying to refund more money than is left on a charge.</p>*/
     }
     /**<p>Updates the refund that you specify by setting the values of the passed parameters. Any parameters that you don’t provide remain unchanged.</p>
 
-<p>This request only accepts <code>metadata</code> as an argument.</p>*/
+    <p>This request only accepts <code>metadata</code> as an argument.</p>*/
     pub fn post_refunds_refund(
         &self,
         refund: &str,
@@ -3834,7 +3842,7 @@ or when trying to refund more money than is left on a charge.</p>*/
     }
     /**<p>Cancels a refund with a status of <code>requires_action</code>.</p>
 
-<p>You can’t cancel refunds in other states. Only refunds for payment methods that require customer action can enter the <code>requires_action</code> state.</p>*/
+    <p>You can’t cancel refunds in other states. Only refunds for payment methods that require customer action can enter the <code>requires_action</code> state.</p>*/
     pub fn post_refunds_refund_cancel(
         &self,
         refund: &str,
@@ -3950,8 +3958,8 @@ or when trying to refund more money than is left on a charge.</p>*/
     }
     /**<p>Creates a SetupIntent object.</p>
 
-<p>After you create the SetupIntent, attach a payment method and <a href="/docs/api/setup_intents/confirm">confirm</a>
-it to collect any required permissions to charge the payment method later.</p>*/
+    <p>After you create the SetupIntent, attach a payment method and <a href="/docs/api/setup_intents/confirm">confirm</a>
+    it to collect any required permissions to charge the payment method later.</p>*/
     pub fn post_setup_intents(&self) -> request::PostSetupIntentsRequest {
         request::PostSetupIntentsRequest {
             http_client: &self,
@@ -3959,9 +3967,9 @@ it to collect any required permissions to charge the payment method later.</p>*/
     }
     /**<p>Retrieves the details of a SetupIntent that has previously been created. </p>
 
-<p>Client-side retrieval using a publishable key is allowed when the <code>client_secret</code> is provided in the query string. </p>
+    <p>Client-side retrieval using a publishable key is allowed when the <code>client_secret</code> is provided in the query string. </p>
 
-<p>When retrieved with a publishable key, only a subset of properties will be returned. Please refer to the <a href="#setup_intent_object">SetupIntent</a> object reference for more details.</p>*/
+    <p>When retrieved with a publishable key, only a subset of properties will be returned. Please refer to the <a href="#setup_intent_object">SetupIntent</a> object reference for more details.</p>*/
     pub fn get_setup_intents_intent(
         &self,
         intent: &str,
@@ -3985,7 +3993,7 @@ it to collect any required permissions to charge the payment method later.</p>*/
     }
     /**<p>You can cancel a SetupIntent object when it’s in one of these statuses: <code>requires_payment_method</code>, <code>requires_confirmation</code>, or <code>requires_action</code>. </p>
 
-<p>After you cancel it, setup is abandoned and any operations on the SetupIntent fail with an error.</p>*/
+    <p>After you cancel it, setup is abandoned and any operations on the SetupIntent fail with an error.</p>*/
     pub fn post_setup_intents_intent_cancel(
         &self,
         intent: &str,
@@ -3996,19 +4004,19 @@ it to collect any required permissions to charge the payment method later.</p>*/
         }
     }
     /**<p>Confirm that your customer intends to set up the current or
-provided payment method. For example, you would confirm a SetupIntent
-when a customer hits the “Save” button on a payment method management
-page on your website.</p>
+    provided payment method. For example, you would confirm a SetupIntent
+    when a customer hits the “Save” button on a payment method management
+    page on your website.</p>
 
-<p>If the selected payment method does not require any additional
-steps from the customer, the SetupIntent will transition to the
-<code>succeeded</code> status.</p>
+    <p>If the selected payment method does not require any additional
+    steps from the customer, the SetupIntent will transition to the
+    <code>succeeded</code> status.</p>
 
-<p>Otherwise, it will transition to the <code>requires_action</code> status and
-suggest additional actions via <code>next_action</code>. If setup fails,
-the SetupIntent will transition to the
-<code>requires_payment_method</code> status or the <code>canceled</code> status if the
-confirmation limit is reached.</p>*/
+    <p>Otherwise, it will transition to the <code>requires_action</code> status and
+    suggest additional actions via <code>next_action</code>. If setup fails,
+    the SetupIntent will transition to the
+    <code>requires_payment_method</code> status or the <code>canceled</code> status if the
+    confirmation limit is reached.</p>*/
     pub fn post_setup_intents_intent_confirm(
         &self,
         intent: &str,
@@ -4108,7 +4116,7 @@ confirmation limit is reached.</p>*/
     }
     /**<p>Updates the specified source by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
 
-<p>This request accepts the <code>metadata</code> and <code>owner</code> as arguments. It is also possible to update type specific information for selected payment methods. Please refer to our <a href="/docs/sources">payment method guides</a> for more detail.</p>*/
+    <p>This request accepts the <code>metadata</code> and <code>owner</code> as arguments. It is also possible to update type specific information for selected payment methods. Please refer to our <a href="/docs/sources">payment method guides</a> for more detail.</p>*/
     pub fn post_sources_source(
         &self,
         source: &str,
@@ -4221,7 +4229,7 @@ confirmation limit is reached.</p>*/
     }
     /**<p>For the specified subscription item, returns a list of summary objects. Each object in the list provides usage information that’s been summarized from multiple usage records and over a subscription billing period (e.g., 15 usage records in the month of September).</p>
 
-<p>The list is sorted in reverse-chronological order (newest first). The first list item represents the most current usage period that hasn’t ended yet. Since new usage records can still be added, the returned summary information for the subscription item’s ID should be seen as unstable until the subscription billing period ends.</p>*/
+    <p>The list is sorted in reverse-chronological order (newest first). The first list item represents the most current usage period that hasn’t ended yet. Since new usage records can still be added, the returned summary information for the subscription item’s ID should be seen as unstable until the subscription billing period ends.</p>*/
     pub fn get_subscription_items_subscription_item_usage_record_summaries(
         &self,
         subscription_item: &str,
@@ -4237,11 +4245,11 @@ confirmation limit is reached.</p>*/
     }
     /**<p>Creates a usage record for a specified subscription item and date, and fills it with a quantity.</p>
 
-<p>Usage records provide <code>quantity</code> information that Stripe uses to track how much a customer is using your service. With usage information and the pricing model set up by the <a href="https://stripe.com/docs/billing/subscriptions/metered-billing">metered billing</a> plan, Stripe helps you send accurate invoices to your customers.</p>
+    <p>Usage records provide <code>quantity</code> information that Stripe uses to track how much a customer is using your service. With usage information and the pricing model set up by the <a href="https://stripe.com/docs/billing/subscriptions/metered-billing">metered billing</a> plan, Stripe helps you send accurate invoices to your customers.</p>
 
-<p>The default calculation for usage is to add up all the <code>quantity</code> values of the usage records within a billing period. You can change this default behavior with the billing plan’s <code>aggregate_usage</code> <a href="/docs/api/plans/create#create_plan-aggregate_usage">parameter</a>. When there is more than one usage record with the same timestamp, Stripe adds the <code>quantity</code> values together. In most cases, this is the desired resolution, however, you can change this behavior with the <code>action</code> parameter.</p>
+    <p>The default calculation for usage is to add up all the <code>quantity</code> values of the usage records within a billing period. You can change this default behavior with the billing plan’s <code>aggregate_usage</code> <a href="/docs/api/plans/create#create_plan-aggregate_usage">parameter</a>. When there is more than one usage record with the same timestamp, Stripe adds the <code>quantity</code> values together. In most cases, this is the desired resolution, however, you can change this behavior with the <code>action</code> parameter.</p>
 
-<p>The default pricing model for metered billing is <a href="/docs/api/plans/object#plan_object-billing_scheme">per-unit pricing</a>. For finer granularity, you can configure metered billing to have a <a href="https://stripe.com/docs/billing/subscriptions/tiers">tiered pricing</a> model.</p>*/
+    <p>The default pricing model for metered billing is <a href="/docs/api/plans/object#plan_object-billing_scheme">per-unit pricing</a>. For finer granularity, you can configure metered billing to have a <a href="https://stripe.com/docs/billing/subscriptions/tiers">tiered pricing</a> model.</p>*/
     pub fn post_subscription_items_subscription_item_usage_records(
         &self,
         subscription_item: &str,
@@ -4319,40 +4327,42 @@ confirmation limit is reached.</p>*/
         }
     }
     ///<p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
-    pub fn get_subscriptions(&self) -> request::GetSubscriptionsRequest {
-        request::GetSubscriptionsRequest {
-            http_client: &self,
-            automatic_tax: None,
-            collection_method: None,
-            created: None,
-            current_period_end: None,
-            current_period_start: None,
-            customer: None,
-            ending_before: None,
-            expand: None,
-            limit: None,
-            price: None,
-            starting_after: None,
-            status: None,
-            test_clock: None,
+    pub fn get_subscriptions(&self) -> FluentRequest<'_, request::GetSubscriptionsRequest> {
+        FluentRequest {
+            http_client: &self.client,
+            params: GetSubscriptionsRequest {
+                automatic_tax: None,
+                collection_method: None,
+                created: None,
+                current_period_end: None,
+                current_period_start: None,
+                customer: None,
+                ending_before: None,
+                expand: None,
+                limit: None,
+                price: None,
+                starting_after: None,
+                status: None,
+                test_clock: None,
+            },
         }
     }
     /**<p>Creates a new subscription on an existing customer. Each customer can have up to 500 active or scheduled subscriptions.</p>
 
-<p>When you create a subscription with <code>collection_method=charge_automatically</code>, the first invoice is finalized as part of the request.
-The <code>payment_behavior</code> parameter determines the exact behavior of the initial payment.</p>
+    <p>When you create a subscription with <code>collection_method=charge_automatically</code>, the first invoice is finalized as part of the request.
+    The <code>payment_behavior</code> parameter determines the exact behavior of the initial payment.</p>
 
-<p>To start subscriptions where the first invoice always begins in a <code>draft</code> status, use <a href="/docs/billing/subscriptions/subscription-schedules#managing">subscription schedules</a> instead.
-Schedules provide the flexibility to model more complex billing configurations that change over time.</p>*/
+    <p>To start subscriptions where the first invoice always begins in a <code>draft</code> status, use <a href="/docs/billing/subscriptions/subscription-schedules#managing">subscription schedules</a> instead.
+    Schedules provide the flexibility to model more complex billing configurations that change over time.</p>*/
     pub fn post_subscriptions(&self) -> request::PostSubscriptionsRequest {
         request::PostSubscriptionsRequest {
             http_client: &self,
         }
     }
     /**<p>Search for subscriptions you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
-Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
-conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
-to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
+    Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
+    conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
+    to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
     pub fn get_subscriptions_search(
         &self,
         query: &str,
@@ -4377,26 +4387,26 @@ to an hour behind during outages. Search functionality is not available to merch
         }
     }
     /**<p>Updates an existing subscription to match the specified parameters.
-When changing prices or quantities, we optionally prorate the price we charge next month to make up for any price changes.
-To preview how the proration is calculated, use the <a href="/docs/api/invoices/upcoming">upcoming invoice</a> endpoint.</p>
+    When changing prices or quantities, we optionally prorate the price we charge next month to make up for any price changes.
+    To preview how the proration is calculated, use the <a href="/docs/api/invoices/upcoming">upcoming invoice</a> endpoint.</p>
 
-<p>By default, we prorate subscription changes. For example, if a customer signs up on May 1 for a <currency>100</currency> price, they’ll be billed <currency>100</currency> immediately. If on May 15 they switch to a <currency>200</currency> price, then on June 1 they’ll be billed <currency>250</currency> (<currency>200</currency> for a renewal of her subscription, plus a <currency>50</currency> prorating adjustment for half of the previous month’s <currency>100</currency> difference). Similarly, a downgrade generates a credit that is applied to the next invoice. We also prorate when you make quantity changes.</p>
+    <p>By default, we prorate subscription changes. For example, if a customer signs up on May 1 for a <currency>100</currency> price, they’ll be billed <currency>100</currency> immediately. If on May 15 they switch to a <currency>200</currency> price, then on June 1 they’ll be billed <currency>250</currency> (<currency>200</currency> for a renewal of her subscription, plus a <currency>50</currency> prorating adjustment for half of the previous month’s <currency>100</currency> difference). Similarly, a downgrade generates a credit that is applied to the next invoice. We also prorate when you make quantity changes.</p>
 
-<p>Switching prices does not normally change the billing date or generate an immediate charge unless:</p>
+    <p>Switching prices does not normally change the billing date or generate an immediate charge unless:</p>
 
-<ul>
-<li>The billing interval is changed (for example, from monthly to yearly).</li>
-<li>The subscription moves from free to paid, or paid to free.</li>
-<li>A trial starts or ends.</li>
-</ul>
+    <ul>
+    <li>The billing interval is changed (for example, from monthly to yearly).</li>
+    <li>The subscription moves from free to paid, or paid to free.</li>
+    <li>A trial starts or ends.</li>
+    </ul>
 
-<p>In these cases, we apply a credit for the unused time on the previous price, immediately charge the customer using the new price, and reset the billing date.</p>
+    <p>In these cases, we apply a credit for the unused time on the previous price, immediately charge the customer using the new price, and reset the billing date.</p>
 
-<p>If you want to charge for an upgrade immediately, pass <code>proration_behavior</code> as <code>always_invoice</code> to create prorations, automatically invoice the customer for those proration adjustments, and attempt to collect payment. If you pass <code>create_prorations</code>, the prorations are created but not automatically invoiced. If you want to bill the customer for the prorations before the subscription’s renewal date, you need to manually <a href="/docs/api/invoices/create">invoice the customer</a>.</p>
+    <p>If you want to charge for an upgrade immediately, pass <code>proration_behavior</code> as <code>always_invoice</code> to create prorations, automatically invoice the customer for those proration adjustments, and attempt to collect payment. If you pass <code>create_prorations</code>, the prorations are created but not automatically invoiced. If you want to bill the customer for the prorations before the subscription’s renewal date, you need to manually <a href="/docs/api/invoices/create">invoice the customer</a>.</p>
 
-<p>If you don’t want to prorate, set the <code>proration_behavior</code> option to <code>none</code>. With this option, the customer is billed <currency>100</currency> on May 1 and <currency>200</currency> on June 1. Similarly, if you set <code>proration_behavior</code> to <code>none</code> when switching between different billing intervals (for example, from monthly to yearly), we don’t generate any credits for the old subscription’s unused time. We still reset the billing date and bill immediately for the new subscription.</p>
+    <p>If you don’t want to prorate, set the <code>proration_behavior</code> option to <code>none</code>. With this option, the customer is billed <currency>100</currency> on May 1 and <currency>200</currency> on June 1. Similarly, if you set <code>proration_behavior</code> to <code>none</code> when switching between different billing intervals (for example, from monthly to yearly), we don’t generate any credits for the old subscription’s unused time. We still reset the billing date and bill immediately for the new subscription.</p>
 
-<p>Updating the quantity on a subscription many times in an hour may result in <a href="/docs/rate-limits">rate limiting</a>. If you need to bill for a frequently changing quantity, consider integrating <a href="/docs/billing/subscriptions/usage-based">usage-based billing</a> instead.</p>*/
+    <p>Updating the quantity on a subscription many times in an hour may result in <a href="/docs/rate-limits">rate limiting</a>. If you need to bill for a frequently changing quantity, consider integrating <a href="/docs/billing/subscriptions/usage-based">usage-based billing</a> instead.</p>*/
     pub fn post_subscriptions_subscription_exposed_id(
         &self,
         subscription_exposed_id: &str,
@@ -4408,9 +4418,9 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     }
     /**<p>Cancels a customer’s subscription immediately. The customer will not be charged again for the subscription.</p>
 
-<p>Note, however, that any pending invoice items that you’ve created will still be charged for at the end of the period, unless manually <a href="#delete_invoiceitem">deleted</a>. If you’ve set the subscription to cancel at the end of the period, any pending prorations will also be left in place and collected at the end of the period. But if the subscription is set to cancel immediately, pending prorations will be removed.</p>
+    <p>Note, however, that any pending invoice items that you’ve created will still be charged for at the end of the period, unless manually <a href="#delete_invoiceitem">deleted</a>. If you’ve set the subscription to cancel at the end of the period, any pending prorations will also be left in place and collected at the end of the period. But if the subscription is set to cancel immediately, pending prorations will be removed.</p>
 
-<p>By default, upon subscription cancellation, Stripe will stop automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>*/
+    <p>By default, upon subscription cancellation, Stripe will stop automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>*/
     pub fn delete_subscriptions_subscription_exposed_id(
         &self,
         subscription_exposed_id: &str,
@@ -4479,7 +4489,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     }
     /**<p>Updates an existing Tax <code>Registration</code> object.</p>
 
-<p>A registration cannot be deleted after it has been created. If you wish to end a registration you may do so by setting <code>expires_at</code>.</p>*/
+    <p>A registration cannot be deleted after it has been created. If you wish to end a registration you may do so by setting <code>expires_at</code>.</p>*/
     pub fn post_tax_registrations_id(
         &self,
         id: &str,
@@ -4672,7 +4682,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
         }
     }
     /**<p>Creates a new <code>Location</code> object.
-For further details, including which address fields are required in each country, see the <a href="/docs/terminal/fleet/locations">Manage locations</a> guide.</p>*/
+    For further details, including which address fields are required in each country, see the <a href="/docs/terminal/fleet/locations">Manage locations</a> guide.</p>*/
     pub fn post_terminal_locations(&self) -> request::PostTerminalLocationsRequest {
         request::PostTerminalLocationsRequest {
             http_client: &self,
@@ -5112,7 +5122,7 @@ For further details, including which address fields are required in each country
         }
     }
     /**<p>Creates a single-use token that represents a bank account’s details.
-You can use this token with any API method in place of a bank account dictionary. You can only use this token once. To do so, attach it to a <a href="#accounts">Custom account</a>.</p>*/
+    You can use this token with any API method in place of a bank account dictionary. You can only use this token once. To do so, attach it to a <a href="#accounts">Custom account</a>.</p>*/
     pub fn post_tokens(&self) -> request::PostTokensRequest {
         request::PostTokensRequest {
             http_client: &self,
@@ -5205,9 +5215,9 @@ You can use this token with any API method in place of a bank account dictionary
     }
     /**<p>When you create a new reversal, you must specify a transfer to create it on.</p>
 
-<p>When reversing transfers, you can optionally reverse part of the transfer. You can do so as many times as you wish until the entire transfer has been reversed.</p>
+    <p>When reversing transfers, you can optionally reverse part of the transfer. You can do so as many times as you wish until the entire transfer has been reversed.</p>
 
-<p>Once entirely reversed, a transfer can’t be reversed again. This method will return an error when called on an already-reversed transfer, or when trying to reverse more money than is left on a transfer.</p>*/
+    <p>Once entirely reversed, a transfer can’t be reversed again. This method will return an error when called on an already-reversed transfer, or when trying to reverse more money than is left on a transfer.</p>*/
     pub fn post_transfers_id_reversals(
         &self,
         id: &str,
@@ -5230,7 +5240,7 @@ You can use this token with any API method in place of a bank account dictionary
     }
     /**<p>Updates the specified transfer by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
 
-<p>This request accepts only metadata as an argument.</p>*/
+    <p>This request accepts only metadata as an argument.</p>*/
     pub fn post_transfers_transfer(
         &self,
         transfer: &str,
@@ -5255,7 +5265,7 @@ You can use this token with any API method in place of a bank account dictionary
     }
     /**<p>Updates the specified reversal by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
 
-<p>This request only accepts metadata and description as arguments.</p>*/
+    <p>This request only accepts metadata and description as arguments.</p>*/
     pub fn post_transfers_transfer_reversals_id(
         &self,
         id: &str,
@@ -5693,10 +5703,12 @@ You can use this token with any API method in place of a bank account dictionary
         }
     }
 }
+
 pub enum StripeAuthentication {
     BasicAuth { basic_auth: String },
     BearerAuth { bearer_auth: String },
 }
+
 impl StripeAuthentication {
     pub fn from_env() -> Self {
         Self::BasicAuth {

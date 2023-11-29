@@ -10,7 +10,7 @@ pub struct ClimateProduct {
     pub id: String,
     pub livemode: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(with = "rust_decimal::serde::str")]
+    #[serde(with = "rust_decimal::serde::str_option")]
     pub metric_tons_available: Option<rust_decimal::Decimal>,
     pub name: String,
     pub object: String,

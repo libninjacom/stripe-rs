@@ -1,6 +1,7 @@
 use serde_json::json;
 use crate::model::*;
 use crate::StripeClient;
+use httpclient::InMemoryResponseExt;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
@@ -12,7 +13,7 @@ impl<'a> PostTerminalReadersRequest<'a> {
     pub async fn send(self) -> ::httpclient::InMemoryResult<TerminalReader> {
         let mut r = self.http_client.client.post("/v1/terminal/readers");
         r = self.http_client.authenticate(r);
-        let res = r.send_awaiting_body().await?;
+        let res = r.await?;
         res.json().map_err(Into::into)
     }
 }

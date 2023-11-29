@@ -1,6 +1,7 @@
 use serde_json::json;
 use crate::model::*;
 use crate::StripeClient;
+use httpclient::InMemoryResponseExt;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
@@ -16,7 +17,7 @@ impl<'a> PostRefundsRefundCancelRequest<'a> {
             .client
             .post(&format!("/v1/refunds/{refund}/cancel", refund = self.refund));
         r = self.http_client.authenticate(r);
-        let res = r.send_awaiting_body().await?;
+        let res = r.await?;
         res.json().map_err(Into::into)
     }
 }
