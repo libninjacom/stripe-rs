@@ -6,30 +6,28 @@
 pub mod model;
 pub mod request;
 use crate::model::*;
-
 pub struct StripeClient {
-    pub(crate) client: httpclient::Client,
+    pub client: httpclient::Client,
     authentication: StripeAuthentication,
 }
 impl StripeClient {
     pub fn from_env() -> Self {
-        let url = "https://api.stripe.com/".to_string();
         Self {
-            client: httpclient::Client::new(Some(url)),
+            client: httpclient::Client::new().base_url("https://api.stripe.com/"),
             authentication: StripeAuthentication::from_env(),
         }
     }
 }
 impl StripeClient {
     pub fn new(url: &str, authentication: StripeAuthentication) -> Self {
-        let client = httpclient::Client::new(Some(url.to_string()));
+        let client = httpclient::Client::new().base_url(url);
         Self { client, authentication }
     }
     pub fn with_authentication(mut self, authentication: StripeAuthentication) -> Self {
         self.authentication = authentication;
         self
     }
-    pub fn authenticate<'a>(
+    pub(crate) fn authenticate<'a>(
         &self,
         mut r: httpclient::RequestBuilder<'a>,
     ) -> httpclient::RequestBuilder<'a> {
@@ -53,20 +51,26 @@ impl StripeClient {
     ///<p>Retrieves the details of an account.</p>
     pub fn get_account(&self) -> request::GetAccountRequest {
         request::GetAccountRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
         }
     }
     ///<p>Creates an AccountLink object that includes a single-use Stripe URL that the platform can redirect their user to in order to take them through the Connect Onboarding flow.</p>
     pub fn post_account_links(&self) -> request::PostAccountLinksRequest {
         request::PostAccountLinksRequest {
-            client: &self,
+            http_client: &self,
+        }
+    }
+    ///<p>Creates a AccountSession object that includes a single-use token that the platform can use on their front-end to grant client-side API access.</p>
+    pub fn post_account_sessions(&self) -> request::PostAccountSessionsRequest {
+        request::PostAccountSessionsRequest {
+            http_client: &self,
         }
     }
     ///<p>Returns a list of accounts connected to your platform via <a href="/docs/connect">Connect</a>. If you’re not a platform, the list is empty.</p>
     pub fn get_accounts(&self) -> request::GetAccountsRequest {
         request::GetAccountsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -75,10 +79,14 @@ impl StripeClient {
         }
     }
     /**<p>With <a href="/docs/connect">Connect</a>, you can create Stripe accounts for your users.
-To do this, you’ll first need to <a href="https://dashboard.stripe.com/account/applications/settings">register your platform</a>.</p>*/
+To do this, you’ll first need to <a href="https://dashboard.stripe.com/account/applications/settings">register your platform</a>.</p>
+
+<p>If you’ve already collected information for your connected accounts, you <a href="/docs/connect/best-practices#onboarding">can prefill that information</a> when
+creating the account. Connect Onboarding won’t ask for the prefilled information during account onboarding.
+You can prefill any information on the account.</p>*/
     pub fn post_accounts(&self) -> request::PostAccountsRequest {
         request::PostAccountsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of an account.</p>
@@ -87,20 +95,27 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         account: &str,
     ) -> request::GetAccountsAccountRequest {
         request::GetAccountsAccountRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             expand: None,
         }
     }
-    /**<p>Updates a <a href="/docs/connect/accounts">connected account</a> by setting the values of the parameters passed. Any parameters not provided are left unchanged. Most parameters can be changed only for Custom accounts. (These are marked <strong>Custom Only</strong> below.) Parameters marked <strong>Custom and Express</strong> are not supported for Standard accounts.</p>
+    /**<p>Updates a <a href="/docs/connect/accounts">connected account</a> by setting the values of the parameters passed. Any parameters not provided are
+left unchanged.</p>
 
-<p>To update your own account, use the <a href="https://dashboard.stripe.com/account">Dashboard</a>. Refer to our <a href="/docs/connect/updating-accounts">Connect</a> documentation to learn more about updating accounts.</p>*/
+<p>For Custom accounts, you can update any information on the account. For other accounts, you can update all information until that
+account has started to go through Connect Onboarding. Once you create an <a href="/docs/api/account_links">Account Link</a>
+for a Standard or Express account, some parameters can no longer be changed. These are marked as <strong>Custom Only</strong> or <strong>Custom and Express</strong>
+below.</p>
+
+<p>To update your own account, use the <a href="https://dashboard.stripe.com/settings/account">Dashboard</a>. Refer to our
+<a href="/docs/connect/updating-accounts">Connect</a> documentation to learn more about updating accounts.</p>*/
     pub fn post_accounts_account(
         &self,
         account: &str,
     ) -> request::PostAccountsAccountRequest {
         request::PostAccountsAccountRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
@@ -108,13 +123,13 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
 
 <p>Accounts created using test-mode keys can be deleted at any time. Standard accounts created using live-mode keys cannot be deleted. Custom or Express accounts created using live-mode keys can only be deleted once all balances are zero.</p>
 
-<p>If you want to delete your own account, use the <a href="https://dashboard.stripe.com/account">account information tab in your account settings</a> instead.</p>*/
+<p>If you want to delete your own account, use the <a href="https://dashboard.stripe.com/settings/account">account information tab in your account settings</a> instead.</p>*/
     pub fn delete_accounts_account(
         &self,
         account: &str,
     ) -> request::DeleteAccountsAccountRequest {
         request::DeleteAccountsAccountRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
@@ -124,7 +139,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         account: &str,
     ) -> request::PostAccountsAccountBankAccountsRequest {
         request::PostAccountsAccountBankAccountsRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
@@ -135,7 +150,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         id: &str,
     ) -> request::GetAccountsAccountBankAccountsIdRequest {
         request::GetAccountsAccountBankAccountsIdRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             expand: None,
             id: id.to_owned(),
@@ -150,7 +165,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         id: &str,
     ) -> request::PostAccountsAccountBankAccountsIdRequest {
         request::PostAccountsAccountBankAccountsIdRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             id: id.to_owned(),
         }
@@ -162,7 +177,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         id: &str,
     ) -> request::DeleteAccountsAccountBankAccountsIdRequest {
         request::DeleteAccountsAccountBankAccountsIdRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             id: id.to_owned(),
         }
@@ -173,7 +188,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         account: &str,
     ) -> request::GetAccountsAccountCapabilitiesRequest {
         request::GetAccountsAccountCapabilitiesRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             expand: None,
         }
@@ -185,20 +200,20 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         capability: &str,
     ) -> request::GetAccountsAccountCapabilitiesCapabilityRequest {
         request::GetAccountsAccountCapabilitiesCapabilityRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             capability: capability.to_owned(),
             expand: None,
         }
     }
-    ///<p>Updates an existing Account Capability.</p>
+    ///<p>Updates an existing Account Capability. Request or remove a capability by updating its <code>requested</code> parameter.</p>
     pub fn post_accounts_account_capabilities_capability(
         &self,
         account: &str,
         capability: &str,
     ) -> request::PostAccountsAccountCapabilitiesCapabilityRequest {
         request::PostAccountsAccountCapabilitiesCapabilityRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             capability: capability.to_owned(),
         }
@@ -209,11 +224,12 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         account: &str,
     ) -> request::GetAccountsAccountExternalAccountsRequest {
         request::GetAccountsAccountExternalAccountsRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             ending_before: None,
             expand: None,
             limit: None,
+            object: None,
             starting_after: None,
         }
     }
@@ -223,7 +239,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         account: &str,
     ) -> request::PostAccountsAccountExternalAccountsRequest {
         request::PostAccountsAccountExternalAccountsRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
@@ -234,7 +250,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         id: &str,
     ) -> request::GetAccountsAccountExternalAccountsIdRequest {
         request::GetAccountsAccountExternalAccountsIdRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             expand: None,
             id: id.to_owned(),
@@ -249,7 +265,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         id: &str,
     ) -> request::PostAccountsAccountExternalAccountsIdRequest {
         request::PostAccountsAccountExternalAccountsIdRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             id: id.to_owned(),
         }
@@ -261,7 +277,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         id: &str,
     ) -> request::DeleteAccountsAccountExternalAccountsIdRequest {
         request::DeleteAccountsAccountExternalAccountsIdRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             id: id.to_owned(),
         }
@@ -274,7 +290,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         account: &str,
     ) -> request::PostAccountsAccountLoginLinksRequest {
         request::PostAccountsAccountLoginLinksRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
@@ -284,7 +300,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         account: &str,
     ) -> request::GetAccountsAccountPeopleRequest {
         request::GetAccountsAccountPeopleRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             ending_before: None,
             expand: None,
@@ -299,7 +315,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         account: &str,
     ) -> request::PostAccountsAccountPeopleRequest {
         request::PostAccountsAccountPeopleRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
@@ -310,7 +326,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         person: &str,
     ) -> request::GetAccountsAccountPeoplePersonRequest {
         request::GetAccountsAccountPeoplePersonRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             expand: None,
             person: person.to_owned(),
@@ -323,7 +339,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         person: &str,
     ) -> request::PostAccountsAccountPeoplePersonRequest {
         request::PostAccountsAccountPeoplePersonRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             person: person.to_owned(),
         }
@@ -335,7 +351,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         person: &str,
     ) -> request::DeleteAccountsAccountPeoplePersonRequest {
         request::DeleteAccountsAccountPeoplePersonRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             person: person.to_owned(),
         }
@@ -346,7 +362,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         account: &str,
     ) -> request::GetAccountsAccountPersonsRequest {
         request::GetAccountsAccountPersonsRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             ending_before: None,
             expand: None,
@@ -361,7 +377,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         account: &str,
     ) -> request::PostAccountsAccountPersonsRequest {
         request::PostAccountsAccountPersonsRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
@@ -372,7 +388,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         person: &str,
     ) -> request::GetAccountsAccountPersonsPersonRequest {
         request::GetAccountsAccountPersonsPersonRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             expand: None,
             person: person.to_owned(),
@@ -385,7 +401,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         person: &str,
     ) -> request::PostAccountsAccountPersonsPersonRequest {
         request::PostAccountsAccountPersonsPersonRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             person: person.to_owned(),
         }
@@ -397,7 +413,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         person: &str,
     ) -> request::DeleteAccountsAccountPersonsPersonRequest {
         request::DeleteAccountsAccountPersonsPersonRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             person: person.to_owned(),
         }
@@ -410,14 +426,14 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         account: &str,
     ) -> request::PostAccountsAccountRejectRequest {
         request::PostAccountsAccountRejectRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
     ///<p>List apple pay domains.</p>
     pub fn get_apple_pay_domains(&self) -> request::GetApplePayDomainsRequest {
         request::GetApplePayDomainsRequest {
-            client: &self,
+            http_client: &self,
             domain_name: None,
             ending_before: None,
             expand: None,
@@ -428,7 +444,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
     ///<p>Create an apple pay domain.</p>
     pub fn post_apple_pay_domains(&self) -> request::PostApplePayDomainsRequest {
         request::PostApplePayDomainsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieve an apple pay domain.</p>
@@ -437,7 +453,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         domain: &str,
     ) -> request::GetApplePayDomainsDomainRequest {
         request::GetApplePayDomainsDomainRequest {
-            client: &self,
+            http_client: &self,
             domain: domain.to_owned(),
             expand: None,
         }
@@ -448,14 +464,14 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         domain: &str,
     ) -> request::DeleteApplePayDomainsDomainRequest {
         request::DeleteApplePayDomainsDomainRequest {
-            client: &self,
+            http_client: &self,
             domain: domain.to_owned(),
         }
     }
     ///<p>Returns a list of application fees you’ve previously collected. The application fees are returned in sorted order, with the most recent fees appearing first.</p>
     pub fn get_application_fees(&self) -> request::GetApplicationFeesRequest {
         request::GetApplicationFeesRequest {
-            client: &self,
+            http_client: &self,
             charge: None,
             created: None,
             ending_before: None,
@@ -471,7 +487,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         id: &str,
     ) -> request::GetApplicationFeesFeeRefundsIdRequest {
         request::GetApplicationFeesFeeRefundsIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             fee: fee.to_owned(),
             id: id.to_owned(),
@@ -486,7 +502,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         id: &str,
     ) -> request::PostApplicationFeesFeeRefundsIdRequest {
         request::PostApplicationFeesFeeRefundsIdRequest {
-            client: &self,
+            http_client: &self,
             fee: fee.to_owned(),
             id: id.to_owned(),
         }
@@ -497,7 +513,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         id: &str,
     ) -> request::GetApplicationFeesIdRequest {
         request::GetApplicationFeesIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -507,7 +523,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         id: &str,
     ) -> request::PostApplicationFeesIdRefundRequest {
         request::PostApplicationFeesIdRefundRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
@@ -517,7 +533,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
         id: &str,
     ) -> request::GetApplicationFeesIdRefundsRequest {
         request::GetApplicationFeesIdRefundsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             id: id.to_owned(),
@@ -539,17 +555,14 @@ or when trying to refund more money than is left on an application fee.</p>*/
         id: &str,
     ) -> request::PostApplicationFeesIdRefundsRequest {
         request::PostApplicationFeesIdRefundsRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
     ///<p>List all secrets stored on the given scope.</p>
-    pub fn get_apps_secrets(
-        &self,
-        scope: serde_json::Value,
-    ) -> request::GetAppsSecretsRequest {
+    pub fn get_apps_secrets(&self, scope: ScopeParam) -> request::GetAppsSecretsRequest {
         request::GetAppsSecretsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -560,23 +573,23 @@ or when trying to refund more money than is left on an application fee.</p>*/
     ///<p>Create or replace a secret in the secret store.</p>
     pub fn post_apps_secrets(&self) -> request::PostAppsSecretsRequest {
         request::PostAppsSecretsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Deletes a secret from the secret store by name and scope.</p>
     pub fn post_apps_secrets_delete(&self) -> request::PostAppsSecretsDeleteRequest {
         request::PostAppsSecretsDeleteRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Finds a secret in the secret store by name and scope.</p>
     pub fn get_apps_secrets_find(
         &self,
         name: &str,
-        scope: serde_json::Value,
+        scope: ScopeParam,
     ) -> request::GetAppsSecretsFindRequest {
         request::GetAppsSecretsFindRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             name: name.to_owned(),
             scope,
@@ -586,7 +599,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
  For a sample request, see <a href="/docs/connect/account-balances#accounting-for-negative-balances">Accounting for negative balances</a>.</p>*/
     pub fn get_balance(&self) -> request::GetBalanceRequest {
         request::GetBalanceRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
         }
     }
@@ -595,7 +608,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
 <p>Note that this endpoint was previously called “Balance history” and used the path <code>/v1/balance/history</code>.</p>*/
     pub fn get_balance_history(&self) -> request::GetBalanceHistoryRequest {
         request::GetBalanceHistoryRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             currency: None,
             ending_before: None,
@@ -615,7 +628,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
         id: &str,
     ) -> request::GetBalanceHistoryIdRequest {
         request::GetBalanceHistoryIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -625,7 +638,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
 <p>Note that this endpoint was previously called “Balance history” and used the path <code>/v1/balance/history</code>.</p>*/
     pub fn get_balance_transactions(&self) -> request::GetBalanceTransactionsRequest {
         request::GetBalanceTransactionsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             currency: None,
             ending_before: None,
@@ -645,7 +658,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
         id: &str,
     ) -> request::GetBalanceTransactionsIdRequest {
         request::GetBalanceTransactionsIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -655,7 +668,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
         &self,
     ) -> request::GetBillingPortalConfigurationsRequest {
         request::GetBillingPortalConfigurationsRequest {
-            client: &self,
+            http_client: &self,
             active: None,
             ending_before: None,
             expand: None,
@@ -669,7 +682,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
         &self,
     ) -> request::PostBillingPortalConfigurationsRequest {
         request::PostBillingPortalConfigurationsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves a configuration that describes the functionality of the customer portal.</p>
@@ -678,7 +691,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
         configuration: &str,
     ) -> request::GetBillingPortalConfigurationsConfigurationRequest {
         request::GetBillingPortalConfigurationsConfigurationRequest {
-            client: &self,
+            http_client: &self,
             configuration: configuration.to_owned(),
             expand: None,
         }
@@ -689,7 +702,7 @@ or when trying to refund more money than is left on an application fee.</p>*/
         configuration: &str,
     ) -> request::PostBillingPortalConfigurationsConfigurationRequest {
         request::PostBillingPortalConfigurationsConfigurationRequest {
-            client: &self,
+            http_client: &self,
             configuration: configuration.to_owned(),
         }
     }
@@ -698,13 +711,13 @@ or when trying to refund more money than is left on an application fee.</p>*/
         &self,
     ) -> request::PostBillingPortalSessionsRequest {
         request::PostBillingPortalSessionsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Returns a list of charges you’ve previously created. The charges are returned in sorted order, with the most recent charges appearing first.</p>
     pub fn get_charges(&self) -> request::GetChargesRequest {
         request::GetChargesRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             customer: None,
             ending_before: None,
@@ -715,10 +728,12 @@ or when trying to refund more money than is left on an application fee.</p>*/
             transfer_group: None,
         }
     }
-    ///<p>To charge a credit card or other payment source, you create a <code>Charge</code> object. If your API key is in test mode, the supplied payment source (e.g., card) won’t actually be charged, although everything else will occur as if in live mode. (Stripe assumes that the charge would have completed successfully).</p>
+    /**<p>Use the <a href="/docs/api/payment_intents">Payment Intents API</a> to initiate a new payment instead
+of using this method. Confirmation of the PaymentIntent creates the <code>Charge</code>
+object used to request payment, so this method is limited to legacy integrations.</p>*/
     pub fn post_charges(&self) -> request::PostChargesRequest {
         request::PostChargesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     /**<p>Search for charges you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -727,7 +742,7 @@ conditions, data is searchable in less than a minute. Occasionally, propagation 
 to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
     pub fn get_charges_search(&self, query: &str) -> request::GetChargesSearchRequest {
         request::GetChargesSearchRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             limit: None,
             page: None,
@@ -737,7 +752,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Retrieves the details of a charge that has previously been created. Supply the unique charge ID that was returned from your previous request, and Stripe will return the corresponding charge information. The same information is returned when creating or refunding the charge.</p>
     pub fn get_charges_charge(&self, charge: &str) -> request::GetChargesChargeRequest {
         request::GetChargesChargeRequest {
-            client: &self,
+            http_client: &self,
             charge: charge.to_owned(),
             expand: None,
         }
@@ -748,19 +763,21 @@ to an hour behind during outages. Search functionality is not available to merch
         charge: &str,
     ) -> request::PostChargesChargeRequest {
         request::PostChargesChargeRequest {
-            client: &self,
+            http_client: &self,
             charge: charge.to_owned(),
         }
     }
-    /**<p>Capture the payment of an existing, uncaptured, charge. This is the second half of the two-step payment flow, where first you <a href="#create_charge">created a charge</a> with the capture option set to false.</p>
+    /**<p>Capture the payment of an existing, uncaptured charge that was created with the <code>capture</code> option set to false.</p>
 
-<p>Uncaptured payments expire a set number of days after they are created (<a href="/docs/charges/placing-a-hold">7 by default</a>). If they are not captured by that point in time, they will be marked as refunded and will no longer be capturable.</p>*/
+<p>Uncaptured payments expire a set number of days after they are created (<a href="/docs/charges/placing-a-hold">7 by default</a>), after which they are marked as refunded and capture attempts will fail.</p>
+
+<p>Don’t use this method to capture a PaymentIntent-initiated charge. Use <a href="/docs/api/payment_intents/capture">Capture a PaymentIntent</a>.</p>*/
     pub fn post_charges_charge_capture(
         &self,
         charge: &str,
     ) -> request::PostChargesChargeCaptureRequest {
         request::PostChargesChargeCaptureRequest {
-            client: &self,
+            http_client: &self,
             charge: charge.to_owned(),
         }
     }
@@ -770,7 +787,7 @@ to an hour behind during outages. Search functionality is not available to merch
         charge: &str,
     ) -> request::GetChargesChargeDisputeRequest {
         request::GetChargesChargeDisputeRequest {
-            client: &self,
+            http_client: &self,
             charge: charge.to_owned(),
             expand: None,
         }
@@ -780,7 +797,7 @@ to an hour behind during outages. Search functionality is not available to merch
         charge: &str,
     ) -> request::PostChargesChargeDisputeRequest {
         request::PostChargesChargeDisputeRequest {
-            client: &self,
+            http_client: &self,
             charge: charge.to_owned(),
         }
     }
@@ -789,8 +806,42 @@ to an hour behind during outages. Search functionality is not available to merch
         charge: &str,
     ) -> request::PostChargesChargeDisputeCloseRequest {
         request::PostChargesChargeDisputeCloseRequest {
-            client: &self,
+            http_client: &self,
             charge: charge.to_owned(),
+        }
+    }
+    /**<p>When you create a new refund, you must specify either a Charge or a PaymentIntent object.</p>
+
+<p>This action refunds a previously created charge that’s not refunded yet.
+Funds are refunded to the credit or debit card that’s originally charged.</p>
+
+<p>You can optionally refund only part of a charge.
+You can repeat this until the entire charge is refunded.</p>
+
+<p>After you entirely refund a charge, you can’t refund it again.
+This method raises an error when it’s called on an already-refunded charge,
+or when you attempt to refund more money than is left on a charge.</p>*/
+    pub fn post_charges_charge_refund(
+        &self,
+        charge: &str,
+    ) -> request::PostChargesChargeRefundRequest {
+        request::PostChargesChargeRefundRequest {
+            http_client: &self,
+            charge: charge.to_owned(),
+        }
+    }
+    ///<p>You can see a list of the refunds belonging to a specific charge. Note that the 10 most recent refunds are always available by default on the charge object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional refunds.</p>
+    pub fn get_charges_charge_refunds(
+        &self,
+        charge: &str,
+    ) -> request::GetChargesChargeRefundsRequest {
+        request::GetChargesChargeRefundsRequest {
+            http_client: &self,
+            charge: charge.to_owned(),
+            ending_before: None,
+            expand: None,
+            limit: None,
+            starting_after: None,
         }
     }
     /**<p>When you create a new refund, you must specify a Charge or a PaymentIntent object on which to create it.</p>
@@ -804,36 +855,12 @@ You can do so multiple times, until the entire charge has been refunded.</p>
 <p>Once entirely refunded, a charge can’t be refunded again.
 This method will raise an error when called on an already-refunded charge,
 or when trying to refund more money than is left on a charge.</p>*/
-    pub fn post_charges_charge_refund(
-        &self,
-        charge: &str,
-    ) -> request::PostChargesChargeRefundRequest {
-        request::PostChargesChargeRefundRequest {
-            client: &self,
-            charge: charge.to_owned(),
-        }
-    }
-    ///<p>You can see a list of the refunds belonging to a specific charge. Note that the 10 most recent refunds are always available by default on the charge object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional refunds.</p>
-    pub fn get_charges_charge_refunds(
-        &self,
-        charge: &str,
-    ) -> request::GetChargesChargeRefundsRequest {
-        request::GetChargesChargeRefundsRequest {
-            client: &self,
-            charge: charge.to_owned(),
-            ending_before: None,
-            expand: None,
-            limit: None,
-            starting_after: None,
-        }
-    }
-    ///<p>Create a refund.</p>
     pub fn post_charges_charge_refunds(
         &self,
         charge: &str,
     ) -> request::PostChargesChargeRefundsRequest {
         request::PostChargesChargeRefundsRequest {
-            client: &self,
+            http_client: &self,
             charge: charge.to_owned(),
         }
     }
@@ -844,7 +871,7 @@ or when trying to refund more money than is left on a charge.</p>*/
         refund: &str,
     ) -> request::GetChargesChargeRefundsRefundRequest {
         request::GetChargesChargeRefundsRefundRequest {
-            client: &self,
+            http_client: &self,
             charge: charge.to_owned(),
             expand: None,
             refund: refund.to_owned(),
@@ -857,7 +884,7 @@ or when trying to refund more money than is left on a charge.</p>*/
         refund: &str,
     ) -> request::PostChargesChargeRefundsRefundRequest {
         request::PostChargesChargeRefundsRefundRequest {
-            client: &self,
+            http_client: &self,
             charge: charge.to_owned(),
             refund: refund.to_owned(),
         }
@@ -865,21 +892,23 @@ or when trying to refund more money than is left on a charge.</p>*/
     ///<p>Returns a list of Checkout Sessions.</p>
     pub fn get_checkout_sessions(&self) -> request::GetCheckoutSessionsRequest {
         request::GetCheckoutSessionsRequest {
-            client: &self,
+            http_client: &self,
             customer: None,
             customer_details: None,
             ending_before: None,
             expand: None,
             limit: None,
             payment_intent: None,
+            payment_link: None,
             starting_after: None,
+            status: None,
             subscription: None,
         }
     }
     ///<p>Creates a Session object.</p>
     pub fn post_checkout_sessions(&self) -> request::PostCheckoutSessionsRequest {
         request::PostCheckoutSessionsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves a Session object.</p>
@@ -888,7 +917,7 @@ or when trying to refund more money than is left on a charge.</p>*/
         session: &str,
     ) -> request::GetCheckoutSessionsSessionRequest {
         request::GetCheckoutSessionsSessionRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             session: session.to_owned(),
         }
@@ -901,7 +930,7 @@ or when trying to refund more money than is left on a charge.</p>*/
         session: &str,
     ) -> request::PostCheckoutSessionsSessionExpireRequest {
         request::PostCheckoutSessionsSessionExpireRequest {
-            client: &self,
+            http_client: &self,
             session: session.to_owned(),
         }
     }
@@ -911,7 +940,7 @@ or when trying to refund more money than is left on a charge.</p>*/
         session: &str,
     ) -> request::GetCheckoutSessionsSessionLineItemsRequest {
         request::GetCheckoutSessionsSessionLineItemsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -919,10 +948,167 @@ or when trying to refund more money than is left on a charge.</p>*/
             starting_after: None,
         }
     }
+    /**<p>Lists all Climate order objects. The orders are returned sorted by creation date, with the
+most recently created orders appearing first.</p>*/
+    pub fn get_climate_orders(&self) -> request::GetClimateOrdersRequest {
+        request::GetClimateOrdersRequest {
+            http_client: &self,
+            ending_before: None,
+            expand: None,
+            limit: None,
+            starting_after: None,
+        }
+    }
+    /**<p>Creates a Climate order object for a given Climate product. The order will be processed immediately
+after creation and payment will be deducted your Stripe balance.</p>*/
+    pub fn post_climate_orders(&self) -> request::PostClimateOrdersRequest {
+        request::PostClimateOrdersRequest {
+            http_client: &self,
+        }
+    }
+    ///<p>Retrieves the details of a Climate order object with the given ID.</p>
+    pub fn get_climate_orders_order(
+        &self,
+        order: &str,
+    ) -> request::GetClimateOrdersOrderRequest {
+        request::GetClimateOrdersOrderRequest {
+            http_client: &self,
+            expand: None,
+            order: order.to_owned(),
+        }
+    }
+    ///<p>Updates the specified order by setting the values of the parameters passed.</p>
+    pub fn post_climate_orders_order(
+        &self,
+        order: &str,
+    ) -> request::PostClimateOrdersOrderRequest {
+        request::PostClimateOrdersOrderRequest {
+            http_client: &self,
+            order: order.to_owned(),
+        }
+    }
+    /**<p>Cancels a Climate order. You can cancel an order within 30 days of creation. Stripe refunds the
+reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> for user-triggered cancellations. Frontier
+might cancel reservations if suppliers fail to deliver. If Frontier cancels the reservation, Stripe
+provides 90 days advance notice and refunds the <code>amount_total</code>.</p>*/
+    pub fn post_climate_orders_order_cancel(
+        &self,
+        order: &str,
+    ) -> request::PostClimateOrdersOrderCancelRequest {
+        request::PostClimateOrdersOrderCancelRequest {
+            http_client: &self,
+            order: order.to_owned(),
+        }
+    }
+    ///<p>Lists all available Climate product objects.</p>
+    pub fn get_climate_products(&self) -> request::GetClimateProductsRequest {
+        request::GetClimateProductsRequest {
+            http_client: &self,
+            ending_before: None,
+            expand: None,
+            limit: None,
+            starting_after: None,
+        }
+    }
+    ///<p>Retrieves the details of a Climate product with the given ID.</p>
+    pub fn get_climate_products_product(
+        &self,
+        product: &str,
+    ) -> request::GetClimateProductsProductRequest {
+        request::GetClimateProductsProductRequest {
+            http_client: &self,
+            expand: None,
+            product: product.to_owned(),
+        }
+    }
+    /**<p>Lists all Climate order objects. The orders are returned sorted by creation date, with the
+most recently created orders appearing first.</p>*/
+    pub fn get_climate_reservations(&self) -> request::GetClimateReservationsRequest {
+        request::GetClimateReservationsRequest {
+            http_client: &self,
+            ending_before: None,
+            expand: None,
+            limit: None,
+            starting_after: None,
+        }
+    }
+    /**<p>Creates a Climate order object for a given Climate product. The order will be processed immediately
+after creation and payment will be deducted your Stripe balance.</p>*/
+    pub fn post_climate_reservations(&self) -> request::PostClimateReservationsRequest {
+        request::PostClimateReservationsRequest {
+            http_client: &self,
+        }
+    }
+    ///<p>Retrieves the details of a Climate order object with the given ID.</p>
+    pub fn get_climate_reservations_order(
+        &self,
+        order: &str,
+    ) -> request::GetClimateReservationsOrderRequest {
+        request::GetClimateReservationsOrderRequest {
+            http_client: &self,
+            expand: None,
+            order: order.to_owned(),
+        }
+    }
+    ///<p>Updates the specified order by setting the values of the parameters passed.</p>
+    pub fn post_climate_reservations_order(
+        &self,
+        order: &str,
+    ) -> request::PostClimateReservationsOrderRequest {
+        request::PostClimateReservationsOrderRequest {
+            http_client: &self,
+            order: order.to_owned(),
+        }
+    }
+    /**<p>Cancels a Climate order. You can cancel an order within 30 days of creation. Stripe refunds the
+reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> for user-triggered cancellations. Frontier
+might cancel reservations if suppliers fail to deliver. If Frontier cancels the reservation, Stripe
+provides 90 days advance notice and refunds the <code>amount_total</code>.</p>*/
+    pub fn post_climate_reservations_order_cancel(
+        &self,
+        order: &str,
+    ) -> request::PostClimateReservationsOrderCancelRequest {
+        request::PostClimateReservationsOrderCancelRequest {
+            http_client: &self,
+            order: order.to_owned(),
+        }
+    }
+    /**<p>Confirms a Climate order. When you confirm your order, we immediately deduct the funds from your
+Stripe balance.</p>*/
+    pub fn post_climate_reservations_order_confirm(
+        &self,
+        order: &str,
+    ) -> request::PostClimateReservationsOrderConfirmRequest {
+        request::PostClimateReservationsOrderConfirmRequest {
+            http_client: &self,
+            order: order.to_owned(),
+        }
+    }
+    ///<p>Lists all available Climate supplier objects.</p>
+    pub fn get_climate_suppliers(&self) -> request::GetClimateSuppliersRequest {
+        request::GetClimateSuppliersRequest {
+            http_client: &self,
+            ending_before: None,
+            expand: None,
+            limit: None,
+            starting_after: None,
+        }
+    }
+    ///<p>Retrieves a Climate supplier object.</p>
+    pub fn get_climate_suppliers_supplier(
+        &self,
+        supplier: &str,
+    ) -> request::GetClimateSuppliersSupplierRequest {
+        request::GetClimateSuppliersSupplierRequest {
+            http_client: &self,
+            expand: None,
+            supplier: supplier.to_owned(),
+        }
+    }
     ///<p>Lists all Country Spec objects available in the API.</p>
     pub fn get_country_specs(&self) -> request::GetCountrySpecsRequest {
         request::GetCountrySpecsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -935,7 +1121,7 @@ or when trying to refund more money than is left on a charge.</p>*/
         country: &str,
     ) -> request::GetCountrySpecsCountryRequest {
         request::GetCountrySpecsCountryRequest {
-            client: &self,
+            http_client: &self,
             country: country.to_owned(),
             expand: None,
         }
@@ -943,7 +1129,7 @@ or when trying to refund more money than is left on a charge.</p>*/
     ///<p>Returns a list of your coupons.</p>
     pub fn get_coupons(&self) -> request::GetCouponsRequest {
         request::GetCouponsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -956,13 +1142,13 @@ or when trying to refund more money than is left on a charge.</p>*/
 <p>A coupon has either a <code>percent_off</code> or an <code>amount_off</code> and <code>currency</code>. If you set an <code>amount_off</code>, that amount will be subtracted from any invoice’s subtotal. For example, an invoice with a subtotal of <currency>100</currency> will have a final total of <currency>0</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it and an invoice with a subtotal of <currency>300</currency> will have a final total of <currency>100</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it.</p>*/
     pub fn post_coupons(&self) -> request::PostCouponsRequest {
         request::PostCouponsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the coupon with the given ID.</p>
     pub fn get_coupons_coupon(&self, coupon: &str) -> request::GetCouponsCouponRequest {
         request::GetCouponsCouponRequest {
-            client: &self,
+            http_client: &self,
             coupon: coupon.to_owned(),
             expand: None,
         }
@@ -973,7 +1159,7 @@ or when trying to refund more money than is left on a charge.</p>*/
         coupon: &str,
     ) -> request::PostCouponsCouponRequest {
         request::PostCouponsCouponRequest {
-            client: &self,
+            http_client: &self,
             coupon: coupon.to_owned(),
         }
     }
@@ -983,14 +1169,14 @@ or when trying to refund more money than is left on a charge.</p>*/
         coupon: &str,
     ) -> request::DeleteCouponsCouponRequest {
         request::DeleteCouponsCouponRequest {
-            client: &self,
+            http_client: &self,
             coupon: coupon.to_owned(),
         }
     }
     ///<p>Returns a list of credit notes.</p>
     pub fn get_credit_notes(&self) -> request::GetCreditNotesRequest {
         request::GetCreditNotesRequest {
-            client: &self,
+            http_client: &self,
             customer: None,
             ending_before: None,
             expand: None,
@@ -1015,7 +1201,7 @@ in any combination of the following:</p>
 or <code>post_payment_credit_notes_amount</code> depending on its <code>status</code> at the time of credit note creation.</p>*/
     pub fn post_credit_notes(&self) -> request::PostCreditNotesRequest {
         request::PostCreditNotesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Get a preview of a credit note without creating it.</p>
@@ -1024,9 +1210,10 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
         invoice: &str,
     ) -> request::GetCreditNotesPreviewRequest {
         request::GetCreditNotesPreviewRequest {
-            client: &self,
+            http_client: &self,
             amount: None,
             credit_amount: None,
+            effective_at: None,
             expand: None,
             invoice: invoice.to_owned(),
             lines: None,
@@ -1036,6 +1223,7 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
             reason: None,
             refund: None,
             refund_amount: None,
+            shipping_cost: None,
         }
     }
     ///<p>When retrieving a credit note preview, you’ll get a <strong>lines</strong> property containing the first handful of those items. This URL you can retrieve the full (paginated) list of line items.</p>
@@ -1044,9 +1232,10 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
         invoice: &str,
     ) -> request::GetCreditNotesPreviewLinesRequest {
         request::GetCreditNotesPreviewLinesRequest {
-            client: &self,
+            http_client: &self,
             amount: None,
             credit_amount: None,
+            effective_at: None,
             ending_before: None,
             expand: None,
             invoice: invoice.to_owned(),
@@ -1058,6 +1247,7 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
             reason: None,
             refund: None,
             refund_amount: None,
+            shipping_cost: None,
             starting_after: None,
         }
     }
@@ -1067,7 +1257,7 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
         credit_note: &str,
     ) -> request::GetCreditNotesCreditNoteLinesRequest {
         request::GetCreditNotesCreditNoteLinesRequest {
-            client: &self,
+            http_client: &self,
             credit_note: credit_note.to_owned(),
             ending_before: None,
             expand: None,
@@ -1078,7 +1268,7 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
     ///<p>Retrieves the credit note object with the given identifier.</p>
     pub fn get_credit_notes_id(&self, id: &str) -> request::GetCreditNotesIdRequest {
         request::GetCreditNotesIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -1086,7 +1276,7 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
     ///<p>Updates an existing credit note.</p>
     pub fn post_credit_notes_id(&self, id: &str) -> request::PostCreditNotesIdRequest {
         request::PostCreditNotesIdRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
@@ -1096,14 +1286,14 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
         id: &str,
     ) -> request::PostCreditNotesIdVoidRequest {
         request::PostCreditNotesIdVoidRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
     ///<p>Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first.</p>
     pub fn get_customers(&self) -> request::GetCustomersRequest {
         request::GetCustomersRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             email: None,
             ending_before: None,
@@ -1116,7 +1306,7 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
     ///<p>Creates a new customer object.</p>
     pub fn post_customers(&self) -> request::PostCustomersRequest {
         request::PostCustomersRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     /**<p>Search for customers you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -1128,7 +1318,7 @@ to an hour behind during outages. Search functionality is not available to merch
         query: &str,
     ) -> request::GetCustomersSearchRequest {
         request::GetCustomersSearchRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             limit: None,
             page: None,
@@ -1141,7 +1331,7 @@ to an hour behind during outages. Search functionality is not available to merch
         customer: &str,
     ) -> request::GetCustomersCustomerRequest {
         request::GetCustomersCustomerRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
         }
@@ -1154,7 +1344,7 @@ to an hour behind during outages. Search functionality is not available to merch
         customer: &str,
     ) -> request::PostCustomersCustomerRequest {
         request::PostCustomersCustomerRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
         }
     }
@@ -1164,7 +1354,7 @@ to an hour behind during outages. Search functionality is not available to merch
         customer: &str,
     ) -> request::DeleteCustomersCustomerRequest {
         request::DeleteCustomersCustomerRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
         }
     }
@@ -1174,7 +1364,7 @@ to an hour behind during outages. Search functionality is not available to merch
         customer: &str,
     ) -> request::GetCustomersCustomerBalanceTransactionsRequest {
         request::GetCustomersCustomerBalanceTransactionsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             ending_before: None,
             expand: None,
@@ -1188,7 +1378,7 @@ to an hour behind during outages. Search functionality is not available to merch
         customer: &str,
     ) -> request::PostCustomersCustomerBalanceTransactionsRequest {
         request::PostCustomersCustomerBalanceTransactionsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
         }
     }
@@ -1199,7 +1389,7 @@ to an hour behind during outages. Search functionality is not available to merch
         transaction: &str,
     ) -> request::GetCustomersCustomerBalanceTransactionsTransactionRequest {
         request::GetCustomersCustomerBalanceTransactionsTransactionRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
             transaction: transaction.to_owned(),
@@ -1212,7 +1402,7 @@ to an hour behind during outages. Search functionality is not available to merch
         transaction: &str,
     ) -> request::PostCustomersCustomerBalanceTransactionsTransactionRequest {
         request::PostCustomersCustomerBalanceTransactionsTransactionRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             transaction: transaction.to_owned(),
         }
@@ -1223,7 +1413,7 @@ to an hour behind during outages. Search functionality is not available to merch
         customer: &str,
     ) -> request::GetCustomersCustomerBankAccountsRequest {
         request::GetCustomersCustomerBankAccountsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             ending_before: None,
             expand: None,
@@ -1241,7 +1431,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         customer: &str,
     ) -> request::PostCustomersCustomerBankAccountsRequest {
         request::PostCustomersCustomerBankAccountsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
         }
     }
@@ -1252,7 +1442,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         id: &str,
     ) -> request::GetCustomersCustomerBankAccountsIdRequest {
         request::GetCustomersCustomerBankAccountsIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
             id: id.to_owned(),
@@ -1265,7 +1455,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         id: &str,
     ) -> request::PostCustomersCustomerBankAccountsIdRequest {
         request::PostCustomersCustomerBankAccountsIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             id: id.to_owned(),
         }
@@ -1277,7 +1467,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         id: &str,
     ) -> request::DeleteCustomersCustomerBankAccountsIdRequest {
         request::DeleteCustomersCustomerBankAccountsIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             id: id.to_owned(),
         }
@@ -1289,7 +1479,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         id: &str,
     ) -> request::PostCustomersCustomerBankAccountsIdVerifyRequest {
         request::PostCustomersCustomerBankAccountsIdVerifyRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             id: id.to_owned(),
         }
@@ -1302,7 +1492,7 @@ If you need more than those 10, you can use this API method and the <code>limit<
         customer: &str,
     ) -> request::GetCustomersCustomerCardsRequest {
         request::GetCustomersCustomerCardsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             ending_before: None,
             expand: None,
@@ -1320,7 +1510,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         customer: &str,
     ) -> request::PostCustomersCustomerCardsRequest {
         request::PostCustomersCustomerCardsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
         }
     }
@@ -1331,7 +1521,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         id: &str,
     ) -> request::GetCustomersCustomerCardsIdRequest {
         request::GetCustomersCustomerCardsIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
             id: id.to_owned(),
@@ -1344,7 +1534,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         id: &str,
     ) -> request::PostCustomersCustomerCardsIdRequest {
         request::PostCustomersCustomerCardsIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             id: id.to_owned(),
         }
@@ -1356,7 +1546,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         id: &str,
     ) -> request::DeleteCustomersCustomerCardsIdRequest {
         request::DeleteCustomersCustomerCardsIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             id: id.to_owned(),
         }
@@ -1367,7 +1557,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         customer: &str,
     ) -> request::GetCustomersCustomerCashBalanceRequest {
         request::GetCustomersCustomerCashBalanceRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
         }
@@ -1378,7 +1568,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         customer: &str,
     ) -> request::PostCustomersCustomerCashBalanceRequest {
         request::PostCustomersCustomerCashBalanceRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
         }
     }
@@ -1388,7 +1578,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         customer: &str,
     ) -> request::GetCustomersCustomerCashBalanceTransactionsRequest {
         request::GetCustomersCustomerCashBalanceTransactionsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             ending_before: None,
             expand: None,
@@ -1403,7 +1593,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         transaction: &str,
     ) -> request::GetCustomersCustomerCashBalanceTransactionsTransactionRequest {
         request::GetCustomersCustomerCashBalanceTransactionsTransactionRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
             transaction: transaction.to_owned(),
@@ -1414,7 +1604,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         customer: &str,
     ) -> request::GetCustomersCustomerDiscountRequest {
         request::GetCustomersCustomerDiscountRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
         }
@@ -1425,7 +1615,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         customer: &str,
     ) -> request::DeleteCustomersCustomerDiscountRequest {
         request::DeleteCustomersCustomerDiscountRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
         }
     }
@@ -1437,7 +1627,7 @@ funding instructions will be retrieved. In other words, we will return the same 
         customer: &str,
     ) -> request::PostCustomersCustomerFundingInstructionsRequest {
         request::PostCustomersCustomerFundingInstructionsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
         }
     }
@@ -1445,16 +1635,15 @@ funding instructions will be retrieved. In other words, we will return the same 
     pub fn get_customers_customer_payment_methods(
         &self,
         customer: &str,
-        type_: &str,
     ) -> request::GetCustomersCustomerPaymentMethodsRequest {
         request::GetCustomersCustomerPaymentMethodsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             ending_before: None,
             expand: None,
             limit: None,
             starting_after: None,
-            type_: type_.to_owned(),
+            type_: None,
         }
     }
     ///<p>Retrieves a PaymentMethod object for a given Customer.</p>
@@ -1464,7 +1653,7 @@ funding instructions will be retrieved. In other words, we will return the same 
         payment_method: &str,
     ) -> request::GetCustomersCustomerPaymentMethodsPaymentMethodRequest {
         request::GetCustomersCustomerPaymentMethodsPaymentMethodRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
             payment_method: payment_method.to_owned(),
@@ -1476,7 +1665,7 @@ funding instructions will be retrieved. In other words, we will return the same 
         customer: &str,
     ) -> request::GetCustomersCustomerSourcesRequest {
         request::GetCustomersCustomerSourcesRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             ending_before: None,
             expand: None,
@@ -1495,7 +1684,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         customer: &str,
     ) -> request::PostCustomersCustomerSourcesRequest {
         request::PostCustomersCustomerSourcesRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
         }
     }
@@ -1506,7 +1695,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         id: &str,
     ) -> request::GetCustomersCustomerSourcesIdRequest {
         request::GetCustomersCustomerSourcesIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
             id: id.to_owned(),
@@ -1519,7 +1708,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         id: &str,
     ) -> request::PostCustomersCustomerSourcesIdRequest {
         request::PostCustomersCustomerSourcesIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             id: id.to_owned(),
         }
@@ -1531,7 +1720,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         id: &str,
     ) -> request::DeleteCustomersCustomerSourcesIdRequest {
         request::DeleteCustomersCustomerSourcesIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             id: id.to_owned(),
         }
@@ -1543,7 +1732,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         id: &str,
     ) -> request::PostCustomersCustomerSourcesIdVerifyRequest {
         request::PostCustomersCustomerSourcesIdVerifyRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             id: id.to_owned(),
         }
@@ -1554,7 +1743,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         customer: &str,
     ) -> request::GetCustomersCustomerSubscriptionsRequest {
         request::GetCustomersCustomerSubscriptionsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             ending_before: None,
             expand: None,
@@ -1568,7 +1757,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         customer: &str,
     ) -> request::PostCustomersCustomerSubscriptionsRequest {
         request::PostCustomersCustomerSubscriptionsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
         }
     }
@@ -1579,7 +1768,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         subscription_exposed_id: &str,
     ) -> request::GetCustomersCustomerSubscriptionsSubscriptionExposedIdRequest {
         request::GetCustomersCustomerSubscriptionsSubscriptionExposedIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
             subscription_exposed_id: subscription_exposed_id.to_owned(),
@@ -1592,7 +1781,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         subscription_exposed_id: &str,
     ) -> request::PostCustomersCustomerSubscriptionsSubscriptionExposedIdRequest {
         request::PostCustomersCustomerSubscriptionsSubscriptionExposedIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             subscription_exposed_id: subscription_exposed_id.to_owned(),
         }
@@ -1608,7 +1797,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         subscription_exposed_id: &str,
     ) -> request::DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdRequest {
         request::DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             subscription_exposed_id: subscription_exposed_id.to_owned(),
         }
@@ -1619,7 +1808,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         subscription_exposed_id: &str,
     ) -> request::GetCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest {
         request::GetCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
             subscription_exposed_id: subscription_exposed_id.to_owned(),
@@ -1632,7 +1821,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         subscription_exposed_id: &str,
     ) -> request::DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest {
         request::DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             subscription_exposed_id: subscription_exposed_id.to_owned(),
         }
@@ -1643,7 +1832,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         customer: &str,
     ) -> request::GetCustomersCustomerTaxIdsRequest {
         request::GetCustomersCustomerTaxIdsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             ending_before: None,
             expand: None,
@@ -1651,37 +1840,37 @@ To change the default, you should <a href="/docs/api#update_customer">update the
             starting_after: None,
         }
     }
-    ///<p>Creates a new <code>TaxID</code> object for a customer.</p>
+    ///<p>Creates a new <code>tax_id</code> object for a customer.</p>
     pub fn post_customers_customer_tax_ids(
         &self,
         customer: &str,
     ) -> request::PostCustomersCustomerTaxIdsRequest {
         request::PostCustomersCustomerTaxIdsRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
         }
     }
-    ///<p>Retrieves the <code>TaxID</code> object with the given identifier.</p>
+    ///<p>Retrieves the <code>tax_id</code> object with the given identifier.</p>
     pub fn get_customers_customer_tax_ids_id(
         &self,
         customer: &str,
         id: &str,
     ) -> request::GetCustomersCustomerTaxIdsIdRequest {
         request::GetCustomersCustomerTaxIdsIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             expand: None,
             id: id.to_owned(),
         }
     }
-    ///<p>Deletes an existing <code>TaxID</code> object.</p>
+    ///<p>Deletes an existing <code>tax_id</code> object.</p>
     pub fn delete_customers_customer_tax_ids_id(
         &self,
         customer: &str,
         id: &str,
     ) -> request::DeleteCustomersCustomerTaxIdsIdRequest {
         request::DeleteCustomersCustomerTaxIdsIdRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
             id: id.to_owned(),
         }
@@ -1689,7 +1878,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     ///<p>Returns a list of your disputes.</p>
     pub fn get_disputes(&self) -> request::GetDisputesRequest {
         request::GetDisputesRequest {
-            client: &self,
+            http_client: &self,
             charge: None,
             created: None,
             ending_before: None,
@@ -1705,7 +1894,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         dispute: &str,
     ) -> request::GetDisputesDisputeRequest {
         request::GetDisputesDisputeRequest {
-            client: &self,
+            http_client: &self,
             dispute: dispute.to_owned(),
             expand: None,
         }
@@ -1718,7 +1907,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         dispute: &str,
     ) -> request::PostDisputesDisputeRequest {
         request::PostDisputesDisputeRequest {
-            client: &self,
+            http_client: &self,
             dispute: dispute.to_owned(),
         }
     }
@@ -1730,14 +1919,14 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         dispute: &str,
     ) -> request::PostDisputesDisputeCloseRequest {
         request::PostDisputesDisputeCloseRequest {
-            client: &self,
+            http_client: &self,
             dispute: dispute.to_owned(),
         }
     }
     ///<p>Creates a short-lived API key for a given resource.</p>
     pub fn post_ephemeral_keys(&self) -> request::PostEphemeralKeysRequest {
         request::PostEphemeralKeysRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Invalidates a short-lived API key for a given resource.</p>
@@ -1746,14 +1935,14 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         key: &str,
     ) -> request::DeleteEphemeralKeysKeyRequest {
         request::DeleteEphemeralKeysKeyRequest {
-            client: &self,
+            http_client: &self,
             key: key.to_owned(),
         }
     }
     ///<p>List events, going back up to 30 days. Each event data is rendered according to Stripe API version at its creation time, specified in <a href="/docs/api/events/object">event object</a> <code>api_version</code> attribute (not according to your current Stripe API version or <code>Stripe-Version</code> header).</p>
     pub fn get_events(&self) -> request::GetEventsRequest {
         request::GetEventsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             delivery_success: None,
             ending_before: None,
@@ -1767,7 +1956,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     ///<p>Retrieves the details of an event. Supply the unique identifier of the event, which you might have received in a webhook.</p>
     pub fn get_events_id(&self, id: &str) -> request::GetEventsIdRequest {
         request::GetEventsIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -1775,7 +1964,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     ///<p>Returns a list of objects that contain the rates at which foreign currencies are converted to one another. Only shows the currencies for which Stripe supports.</p>
     pub fn get_exchange_rates(&self) -> request::GetExchangeRatesRequest {
         request::GetExchangeRatesRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -1788,7 +1977,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         rate_id: &str,
     ) -> request::GetExchangeRatesRateIdRequest {
         request::GetExchangeRatesRateIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             rate_id: rate_id.to_owned(),
         }
@@ -1796,7 +1985,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     ///<p>Returns a list of file links.</p>
     pub fn get_file_links(&self) -> request::GetFileLinksRequest {
         request::GetFileLinksRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -1809,13 +1998,13 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     ///<p>Creates a new file link object.</p>
     pub fn post_file_links(&self) -> request::PostFileLinksRequest {
         request::PostFileLinksRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the file link with the given ID.</p>
     pub fn get_file_links_link(&self, link: &str) -> request::GetFileLinksLinkRequest {
         request::GetFileLinksLinkRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             link: link.to_owned(),
         }
@@ -1823,14 +2012,14 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     ///<p>Updates an existing file link object. Expired links can no longer be updated.</p>
     pub fn post_file_links_link(&self, link: &str) -> request::PostFileLinksLinkRequest {
         request::PostFileLinksLinkRequest {
-            client: &self,
+            http_client: &self,
             link: link.to_owned(),
         }
     }
-    ///<p>Returns a list of the files that your account has access to. The files are returned sorted by creation date, with the most recently created files appearing first.</p>
+    ///<p>Returns a list of the files that your account has access to. Stripe sorts and returns the files by their creation dates, placing the most recently created files at the top.</p>
     pub fn get_files(&self) -> request::GetFilesRequest {
         request::GetFilesRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -1839,18 +2028,18 @@ To change the default, you should <a href="/docs/api#update_customer">update the
             starting_after: None,
         }
     }
-    /**<p>To upload a file to Stripe, you’ll need to send a request of type <code>multipart/form-data</code>. The request should contain the file you would like to upload, as well as the parameters for creating a file.</p>
+    /**<p>To upload a file to Stripe, you need to send a request of type <code>multipart/form-data</code>. Include the file you want to upload in the request, and the parameters for creating a file.</p>
 
-<p>All of Stripe’s officially supported Client libraries should have support for sending <code>multipart/form-data</code>.</p>*/
+<p>All of Stripe’s officially supported Client libraries support sending <code>multipart/form-data</code>.</p>*/
     pub fn post_files(&self) -> request::PostFilesRequest {
         request::PostFilesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
-    ///<p>Retrieves the details of an existing file object. Supply the unique file ID from a file, and Stripe will return the corresponding file object. To access file contents, see the <a href="/docs/file-upload#download-file-contents">File Upload Guide</a>.</p>
+    ///<p>Retrieves the details of an existing file object. After you supply a unique file ID, Stripe returns the corresponding file object. Learn how to <a href="/docs/file-upload#download-file-contents">access file contents</a>.</p>
     pub fn get_files_file(&self, file: &str) -> request::GetFilesFileRequest {
         request::GetFilesFileRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             file: file.to_owned(),
         }
@@ -1860,7 +2049,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         &self,
     ) -> request::GetFinancialConnectionsAccountsRequest {
         request::GetFinancialConnectionsAccountsRequest {
-            client: &self,
+            http_client: &self,
             account_holder: None,
             ending_before: None,
             expand: None,
@@ -1875,7 +2064,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         account: &str,
     ) -> request::GetFinancialConnectionsAccountsAccountRequest {
         request::GetFinancialConnectionsAccountsAccountRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             expand: None,
         }
@@ -1886,7 +2075,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         account: &str,
     ) -> request::PostFinancialConnectionsAccountsAccountDisconnectRequest {
         request::PostFinancialConnectionsAccountsAccountDisconnectRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
@@ -1897,7 +2086,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         ownership: &str,
     ) -> request::GetFinancialConnectionsAccountsAccountOwnersRequest {
         request::GetFinancialConnectionsAccountsAccountOwnersRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             ending_before: None,
             expand: None,
@@ -1912,7 +2101,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         account: &str,
     ) -> request::PostFinancialConnectionsAccountsAccountRefreshRequest {
         request::PostFinancialConnectionsAccountsAccountRefreshRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
@@ -1921,7 +2110,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         &self,
     ) -> request::PostFinancialConnectionsSessionsRequest {
         request::PostFinancialConnectionsSessionsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of a Financial Connections <code>Session</code></p>
@@ -1930,7 +2119,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         session: &str,
     ) -> request::GetFinancialConnectionsSessionsSessionRequest {
         request::GetFinancialConnectionsSessionsSessionRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             session: session.to_owned(),
         }
@@ -1940,7 +2129,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         &self,
     ) -> request::GetIdentityVerificationReportsRequest {
         request::GetIdentityVerificationReportsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -1956,7 +2145,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         report: &str,
     ) -> request::GetIdentityVerificationReportsReportRequest {
         request::GetIdentityVerificationReportsReportRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             report: report.to_owned(),
         }
@@ -1966,7 +2155,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         &self,
     ) -> request::GetIdentityVerificationSessionsRequest {
         request::GetIdentityVerificationSessionsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -1981,12 +2170,12 @@ To change the default, you should <a href="/docs/api#update_customer">update the
 
 <p>If your API key is in test mode, verification checks won’t actually process, though everything else will occur as if in live mode.</p>
 
-<p>Related guide: <a href="/docs/identity/verify-identity-documents">Verify your users’ identity documents</a>.</p>*/
+<p>Related guide: <a href="/docs/identity/verify-identity-documents">Verify your users’ identity documents</a></p>*/
     pub fn post_identity_verification_sessions(
         &self,
     ) -> request::PostIdentityVerificationSessionsRequest {
         request::PostIdentityVerificationSessionsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     /**<p>Retrieves the details of a VerificationSession that was previously created.</p>
@@ -1998,7 +2187,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
         session: &str,
     ) -> request::GetIdentityVerificationSessionsSessionRequest {
         request::GetIdentityVerificationSessionsSessionRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             session: session.to_owned(),
         }
@@ -2012,7 +2201,7 @@ verification check and options.</p>*/
         session: &str,
     ) -> request::PostIdentityVerificationSessionsSessionRequest {
         request::PostIdentityVerificationSessionsSessionRequest {
-            client: &self,
+            http_client: &self,
             session: session.to_owned(),
         }
     }
@@ -2024,7 +2213,7 @@ verification check and options.</p>*/
         session: &str,
     ) -> request::PostIdentityVerificationSessionsSessionCancelRequest {
         request::PostIdentityVerificationSessionsSessionCancelRequest {
-            client: &self,
+            http_client: &self,
             session: session.to_owned(),
         }
     }
@@ -2052,14 +2241,14 @@ used for any purpose.</p>
         session: &str,
     ) -> request::PostIdentityVerificationSessionsSessionRedactRequest {
         request::PostIdentityVerificationSessionsSessionRedactRequest {
-            client: &self,
+            http_client: &self,
             session: session.to_owned(),
         }
     }
     ///<p>Returns a list of your invoice items. Invoice items are returned sorted by creation date, with the most recently created invoice items appearing first.</p>
     pub fn get_invoiceitems(&self) -> request::GetInvoiceitemsRequest {
         request::GetInvoiceitemsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             customer: None,
             ending_before: None,
@@ -2073,7 +2262,7 @@ used for any purpose.</p>
     ///<p>Creates an item to be added to a draft invoice (up to 250 items per invoice). If no invoice is specified, the item will be on the next invoice created for the customer specified.</p>
     pub fn post_invoiceitems(&self) -> request::PostInvoiceitemsRequest {
         request::PostInvoiceitemsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the invoice item with the given ID.</p>
@@ -2082,7 +2271,7 @@ used for any purpose.</p>
         invoiceitem: &str,
     ) -> request::GetInvoiceitemsInvoiceitemRequest {
         request::GetInvoiceitemsInvoiceitemRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             invoiceitem: invoiceitem.to_owned(),
         }
@@ -2093,7 +2282,7 @@ used for any purpose.</p>
         invoiceitem: &str,
     ) -> request::PostInvoiceitemsInvoiceitemRequest {
         request::PostInvoiceitemsInvoiceitemRequest {
-            client: &self,
+            http_client: &self,
             invoiceitem: invoiceitem.to_owned(),
         }
     }
@@ -2103,14 +2292,14 @@ used for any purpose.</p>
         invoiceitem: &str,
     ) -> request::DeleteInvoiceitemsInvoiceitemRequest {
         request::DeleteInvoiceitemsInvoiceitemRequest {
-            client: &self,
+            http_client: &self,
             invoiceitem: invoiceitem.to_owned(),
         }
     }
     ///<p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
     pub fn get_invoices(&self) -> request::GetInvoicesRequest {
         request::GetInvoicesRequest {
-            client: &self,
+            http_client: &self,
             collection_method: None,
             created: None,
             customer: None,
@@ -2126,7 +2315,7 @@ used for any purpose.</p>
     ///<p>This endpoint creates a draft invoice for a given customer. The invoice remains a draft until you <a href="#finalize_invoice">finalize</a> the invoice, which allows you to <a href="#pay_invoice">pay</a> or <a href="#send_invoice">send</a> the invoice to your customers.</p>
     pub fn post_invoices(&self) -> request::PostInvoicesRequest {
         request::PostInvoicesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     /**<p>Search for invoices you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -2135,7 +2324,7 @@ conditions, data is searchable in less than a minute. Occasionally, propagation 
 to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
     pub fn get_invoices_search(&self, query: &str) -> request::GetInvoicesSearchRequest {
         request::GetInvoicesSearchRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             limit: None,
             page: None,
@@ -2149,7 +2338,7 @@ to an hour behind during outages. Search functionality is not available to merch
 <p>You can preview the effects of updating a subscription, including a preview of what proration will take place. To ensure that the actual proration is calculated exactly the same as the previewed proration, you should pass a <code>proration_date</code> parameter when doing the actual subscription update. The value passed in should be the same as the <code>subscription_proration_date</code> returned on the upcoming invoice resource. The recommended way to get only the prorations being previewed is to consider only proration line items where <code>period[start]</code> is equal to the <code>subscription_proration_date</code> on the upcoming invoice resource.</p>*/
     pub fn get_invoices_upcoming(&self) -> request::GetInvoicesUpcomingRequest {
         request::GetInvoicesUpcomingRequest {
-            client: &self,
+            http_client: &self,
             automatic_tax: None,
             coupon: None,
             currency: None,
@@ -2168,6 +2357,7 @@ to an hour behind during outages. Search functionality is not available to merch
             subscription_items: None,
             subscription_proration_behavior: None,
             subscription_proration_date: None,
+            subscription_resume_at: None,
             subscription_start_date: None,
             subscription_trial_end: None,
             subscription_trial_from_plan: None,
@@ -2178,7 +2368,7 @@ to an hour behind during outages. Search functionality is not available to merch
         &self,
     ) -> request::GetInvoicesUpcomingLinesRequest {
         request::GetInvoicesUpcomingLinesRequest {
-            client: &self,
+            http_client: &self,
             automatic_tax: None,
             coupon: None,
             currency: None,
@@ -2200,6 +2390,7 @@ to an hour behind during outages. Search functionality is not available to merch
             subscription_items: None,
             subscription_proration_behavior: None,
             subscription_proration_date: None,
+            subscription_resume_at: None,
             subscription_start_date: None,
             subscription_trial_end: None,
             subscription_trial_from_plan: None,
@@ -2211,7 +2402,7 @@ to an hour behind during outages. Search functionality is not available to merch
         invoice: &str,
     ) -> request::GetInvoicesInvoiceRequest {
         request::GetInvoicesInvoiceRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             invoice: invoice.to_owned(),
         }
@@ -2227,7 +2418,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         invoice: &str,
     ) -> request::PostInvoicesInvoiceRequest {
         request::PostInvoicesInvoiceRequest {
-            client: &self,
+            http_client: &self,
             invoice: invoice.to_owned(),
         }
     }
@@ -2237,7 +2428,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         invoice: &str,
     ) -> request::DeleteInvoicesInvoiceRequest {
         request::DeleteInvoicesInvoiceRequest {
-            client: &self,
+            http_client: &self,
             invoice: invoice.to_owned(),
         }
     }
@@ -2247,7 +2438,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         invoice: &str,
     ) -> request::PostInvoicesInvoiceFinalizeRequest {
         request::PostInvoicesInvoiceFinalizeRequest {
-            client: &self,
+            http_client: &self,
             invoice: invoice.to_owned(),
         }
     }
@@ -2257,12 +2448,27 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         invoice: &str,
     ) -> request::GetInvoicesInvoiceLinesRequest {
         request::GetInvoicesInvoiceLinesRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             invoice: invoice.to_owned(),
             limit: None,
             starting_after: None,
+        }
+    }
+    /**<p>Updates an invoice’s line item. Some fields, such as <code>tax_amounts</code>, only live on the invoice line item,
+so they can only be updated through this endpoint. Other fields, such as <code>amount</code>, live on both the invoice
+item and the invoice line item, so updates on this endpoint will propagate to the invoice item as well.
+Updating an invoice’s line item is only possible before the invoice is finalized.</p>*/
+    pub fn post_invoices_invoice_lines_line_item_id(
+        &self,
+        invoice: &str,
+        line_item_id: &str,
+    ) -> request::PostInvoicesInvoiceLinesLineItemIdRequest {
+        request::PostInvoicesInvoiceLinesLineItemIdRequest {
+            http_client: &self,
+            invoice: invoice.to_owned(),
+            line_item_id: line_item_id.to_owned(),
         }
     }
     ///<p>Marking an invoice as uncollectible is useful for keeping track of bad debts that can be written off for accounting purposes.</p>
@@ -2271,7 +2477,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         invoice: &str,
     ) -> request::PostInvoicesInvoiceMarkUncollectibleRequest {
         request::PostInvoicesInvoiceMarkUncollectibleRequest {
-            client: &self,
+            http_client: &self,
             invoice: invoice.to_owned(),
         }
     }
@@ -2281,7 +2487,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         invoice: &str,
     ) -> request::PostInvoicesInvoicePayRequest {
         request::PostInvoicesInvoicePayRequest {
-            client: &self,
+            http_client: &self,
             invoice: invoice.to_owned(),
         }
     }
@@ -2293,7 +2499,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         invoice: &str,
     ) -> request::PostInvoicesInvoiceSendRequest {
         request::PostInvoicesInvoiceSendRequest {
-            client: &self,
+            http_client: &self,
             invoice: invoice.to_owned(),
         }
     }
@@ -2303,7 +2509,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         invoice: &str,
     ) -> request::PostInvoicesInvoiceVoidRequest {
         request::PostInvoicesInvoiceVoidRequest {
-            client: &self,
+            http_client: &self,
             invoice: invoice.to_owned(),
         }
     }
@@ -2312,7 +2518,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         &self,
     ) -> request::GetIssuingAuthorizationsRequest {
         request::GetIssuingAuthorizationsRequest {
-            client: &self,
+            http_client: &self,
             card: None,
             cardholder: None,
             created: None,
@@ -2329,7 +2535,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         authorization: &str,
     ) -> request::GetIssuingAuthorizationsAuthorizationRequest {
         request::GetIssuingAuthorizationsAuthorizationRequest {
-            client: &self,
+            http_client: &self,
             authorization: authorization.to_owned(),
             expand: None,
         }
@@ -2340,36 +2546,36 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
         authorization: &str,
     ) -> request::PostIssuingAuthorizationsAuthorizationRequest {
         request::PostIssuingAuthorizationsAuthorizationRequest {
-            client: &self,
+            http_client: &self,
             authorization: authorization.to_owned(),
         }
     }
-    /**<p>Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow.
-You can also respond directly to the webhook request to approve an authorization (preferred). More details can be found <a href="https://site-admin.stripe.com/docs/issuing/controls/real-time-authorizations#authorization-handling">here</a>.</p>*/
+    /**<p>[Deprecated] Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow.
+This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">respond directly to the webhook request to approve an authorization</a>.</p>*/
     pub fn post_issuing_authorizations_authorization_approve(
         &self,
         authorization: &str,
     ) -> request::PostIssuingAuthorizationsAuthorizationApproveRequest {
         request::PostIssuingAuthorizationsAuthorizationApproveRequest {
-            client: &self,
+            http_client: &self,
             authorization: authorization.to_owned(),
         }
     }
-    /**<p>Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.
-You can also respond directly to the webhook request to decline an authorization (preferred). More details can be found <a href="https://site-admin.stripe.com/docs/issuing/controls/real-time-authorizations#authorization-handling">here</a>.</p>*/
+    /**<p>[Deprecated] Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.
+This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">respond directly to the webhook request to decline an authorization</a>.</p>*/
     pub fn post_issuing_authorizations_authorization_decline(
         &self,
         authorization: &str,
     ) -> request::PostIssuingAuthorizationsAuthorizationDeclineRequest {
         request::PostIssuingAuthorizationsAuthorizationDeclineRequest {
-            client: &self,
+            http_client: &self,
             authorization: authorization.to_owned(),
         }
     }
     ///<p>Returns a list of Issuing <code>Cardholder</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     pub fn get_issuing_cardholders(&self) -> request::GetIssuingCardholdersRequest {
         request::GetIssuingCardholdersRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             email: None,
             ending_before: None,
@@ -2384,7 +2590,7 @@ You can also respond directly to the webhook request to decline an authorization
     ///<p>Creates a new Issuing <code>Cardholder</code> object that can be issued cards.</p>
     pub fn post_issuing_cardholders(&self) -> request::PostIssuingCardholdersRequest {
         request::PostIssuingCardholdersRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves an Issuing <code>Cardholder</code> object.</p>
@@ -2393,7 +2599,7 @@ You can also respond directly to the webhook request to decline an authorization
         cardholder: &str,
     ) -> request::GetIssuingCardholdersCardholderRequest {
         request::GetIssuingCardholdersCardholderRequest {
-            client: &self,
+            http_client: &self,
             cardholder: cardholder.to_owned(),
             expand: None,
         }
@@ -2404,14 +2610,14 @@ You can also respond directly to the webhook request to decline an authorization
         cardholder: &str,
     ) -> request::PostIssuingCardholdersCardholderRequest {
         request::PostIssuingCardholdersCardholderRequest {
-            client: &self,
+            http_client: &self,
             cardholder: cardholder.to_owned(),
         }
     }
     ///<p>Returns a list of Issuing <code>Card</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     pub fn get_issuing_cards(&self) -> request::GetIssuingCardsRequest {
         request::GetIssuingCardsRequest {
-            client: &self,
+            http_client: &self,
             cardholder: None,
             created: None,
             ending_before: None,
@@ -2428,7 +2634,7 @@ You can also respond directly to the webhook request to decline an authorization
     ///<p>Creates an Issuing <code>Card</code> object.</p>
     pub fn post_issuing_cards(&self) -> request::PostIssuingCardsRequest {
         request::PostIssuingCardsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves an Issuing <code>Card</code> object.</p>
@@ -2437,7 +2643,7 @@ You can also respond directly to the webhook request to decline an authorization
         card: &str,
     ) -> request::GetIssuingCardsCardRequest {
         request::GetIssuingCardsCardRequest {
-            client: &self,
+            http_client: &self,
             card: card.to_owned(),
             expand: None,
         }
@@ -2448,14 +2654,14 @@ You can also respond directly to the webhook request to decline an authorization
         card: &str,
     ) -> request::PostIssuingCardsCardRequest {
         request::PostIssuingCardsCardRequest {
-            client: &self,
+            http_client: &self,
             card: card.to_owned(),
         }
     }
     ///<p>Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     pub fn get_issuing_disputes(&self) -> request::GetIssuingDisputesRequest {
         request::GetIssuingDisputesRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -2468,7 +2674,7 @@ You can also respond directly to the webhook request to decline an authorization
     ///<p>Creates an Issuing <code>Dispute</code> object. Individual pieces of evidence within the <code>evidence</code> object are optional at this point. Stripe only validates that required evidence is present during submission. Refer to <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a> for more details about evidence requirements.</p>
     pub fn post_issuing_disputes(&self) -> request::PostIssuingDisputesRequest {
         request::PostIssuingDisputesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves an Issuing <code>Dispute</code> object.</p>
@@ -2477,7 +2683,7 @@ You can also respond directly to the webhook request to decline an authorization
         dispute: &str,
     ) -> request::GetIssuingDisputesDisputeRequest {
         request::GetIssuingDisputesDisputeRequest {
-            client: &self,
+            http_client: &self,
             dispute: dispute.to_owned(),
             expand: None,
         }
@@ -2488,7 +2694,7 @@ You can also respond directly to the webhook request to decline an authorization
         dispute: &str,
     ) -> request::PostIssuingDisputesDisputeRequest {
         request::PostIssuingDisputesDisputeRequest {
-            client: &self,
+            http_client: &self,
             dispute: dispute.to_owned(),
         }
     }
@@ -2498,14 +2704,14 @@ You can also respond directly to the webhook request to decline an authorization
         dispute: &str,
     ) -> request::PostIssuingDisputesDisputeSubmitRequest {
         request::PostIssuingDisputesDisputeSubmitRequest {
-            client: &self,
+            http_client: &self,
             dispute: dispute.to_owned(),
         }
     }
     ///<p>Returns a list of Issuing <code>Settlement</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     pub fn get_issuing_settlements(&self) -> request::GetIssuingSettlementsRequest {
         request::GetIssuingSettlementsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -2519,7 +2725,7 @@ You can also respond directly to the webhook request to decline an authorization
         settlement: &str,
     ) -> request::GetIssuingSettlementsSettlementRequest {
         request::GetIssuingSettlementsSettlementRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             settlement: settlement.to_owned(),
         }
@@ -2530,14 +2736,48 @@ You can also respond directly to the webhook request to decline an authorization
         settlement: &str,
     ) -> request::PostIssuingSettlementsSettlementRequest {
         request::PostIssuingSettlementsSettlementRequest {
-            client: &self,
+            http_client: &self,
             settlement: settlement.to_owned(),
+        }
+    }
+    ///<p>Lists all Issuing <code>Token</code> objects for a given card.</p>
+    pub fn get_issuing_tokens(&self, card: &str) -> request::GetIssuingTokensRequest {
+        request::GetIssuingTokensRequest {
+            http_client: &self,
+            card: card.to_owned(),
+            created: None,
+            ending_before: None,
+            expand: None,
+            limit: None,
+            starting_after: None,
+            status: None,
+        }
+    }
+    ///<p>Retrieves an Issuing <code>Token</code> object.</p>
+    pub fn get_issuing_tokens_token(
+        &self,
+        token: &str,
+    ) -> request::GetIssuingTokensTokenRequest {
+        request::GetIssuingTokensTokenRequest {
+            http_client: &self,
+            expand: None,
+            token: token.to_owned(),
+        }
+    }
+    ///<p>Attempts to update the specified Issuing <code>Token</code> object to the status specified.</p>
+    pub fn post_issuing_tokens_token(
+        &self,
+        token: &str,
+    ) -> request::PostIssuingTokensTokenRequest {
+        request::PostIssuingTokensTokenRequest {
+            http_client: &self,
+            token: token.to_owned(),
         }
     }
     ///<p>Returns a list of Issuing <code>Transaction</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     pub fn get_issuing_transactions(&self) -> request::GetIssuingTransactionsRequest {
         request::GetIssuingTransactionsRequest {
-            client: &self,
+            http_client: &self,
             card: None,
             cardholder: None,
             created: None,
@@ -2554,7 +2794,7 @@ You can also respond directly to the webhook request to decline an authorization
         transaction: &str,
     ) -> request::GetIssuingTransactionsTransactionRequest {
         request::GetIssuingTransactionsTransactionRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             transaction: transaction.to_owned(),
         }
@@ -2565,14 +2805,14 @@ You can also respond directly to the webhook request to decline an authorization
         transaction: &str,
     ) -> request::PostIssuingTransactionsTransactionRequest {
         request::PostIssuingTransactionsTransactionRequest {
-            client: &self,
+            http_client: &self,
             transaction: transaction.to_owned(),
         }
     }
     ///<p>To launch the Financial Connections authorization flow, create a <code>Session</code>. The session’s <code>client_secret</code> can be used to launch the flow using Stripe.js.</p>
     pub fn post_link_account_sessions(&self) -> request::PostLinkAccountSessionsRequest {
         request::PostLinkAccountSessionsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of a Financial Connections <code>Session</code></p>
@@ -2581,7 +2821,7 @@ You can also respond directly to the webhook request to decline an authorization
         session: &str,
     ) -> request::GetLinkAccountSessionsSessionRequest {
         request::GetLinkAccountSessionsSessionRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             session: session.to_owned(),
         }
@@ -2589,7 +2829,7 @@ You can also respond directly to the webhook request to decline an authorization
     ///<p>Returns a list of Financial Connections <code>Account</code> objects.</p>
     pub fn get_linked_accounts(&self) -> request::GetLinkedAccountsRequest {
         request::GetLinkedAccountsRequest {
-            client: &self,
+            http_client: &self,
             account_holder: None,
             ending_before: None,
             expand: None,
@@ -2604,7 +2844,7 @@ You can also respond directly to the webhook request to decline an authorization
         account: &str,
     ) -> request::GetLinkedAccountsAccountRequest {
         request::GetLinkedAccountsAccountRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             expand: None,
         }
@@ -2615,7 +2855,7 @@ You can also respond directly to the webhook request to decline an authorization
         account: &str,
     ) -> request::PostLinkedAccountsAccountDisconnectRequest {
         request::PostLinkedAccountsAccountDisconnectRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
@@ -2626,7 +2866,7 @@ You can also respond directly to the webhook request to decline an authorization
         ownership: &str,
     ) -> request::GetLinkedAccountsAccountOwnersRequest {
         request::GetLinkedAccountsAccountOwnersRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
             ending_before: None,
             expand: None,
@@ -2641,7 +2881,7 @@ You can also respond directly to the webhook request to decline an authorization
         account: &str,
     ) -> request::PostLinkedAccountsAccountRefreshRequest {
         request::PostLinkedAccountsAccountRefreshRequest {
-            client: &self,
+            http_client: &self,
             account: account.to_owned(),
         }
     }
@@ -2651,7 +2891,7 @@ You can also respond directly to the webhook request to decline an authorization
         mandate: &str,
     ) -> request::GetMandatesMandateRequest {
         request::GetMandatesMandateRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             mandate: mandate.to_owned(),
         }
@@ -2659,7 +2899,7 @@ You can also respond directly to the webhook request to decline an authorization
     ///<p>Returns a list of PaymentIntents.</p>
     pub fn get_payment_intents(&self) -> request::GetPaymentIntentsRequest {
         request::GetPaymentIntentsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             customer: None,
             ending_before: None,
@@ -2671,16 +2911,16 @@ You can also respond directly to the webhook request to decline an authorization
     /**<p>Creates a PaymentIntent object.</p>
 
 <p>After the PaymentIntent is created, attach a payment method and <a href="/docs/api/payment_intents/confirm">confirm</a>
-to continue the payment. You can read more about the different payment flows
-available via the Payment Intents API <a href="/docs/payments/payment-intents">here</a>.</p>
+to continue the payment. Learn more about <a href="/docs/payments/payment-intents">the available payment flows
+with the Payment Intents API</a>.</p>
 
-<p>When <code>confirm=true</code> is used during creation, it is equivalent to creating
-and confirming the PaymentIntent in the same call. You may use any parameters
-available in the <a href="/docs/api/payment_intents/confirm">confirm API</a> when <code>confirm=true</code>
-is supplied.</p>*/
+<p>When you use <code>confirm=true</code> during creation, it’s equivalent to creating
+and confirming the PaymentIntent in the same call. You can use any parameters
+available in the <a href="/docs/api/payment_intents/confirm">confirm API</a> when you supply
+<code>confirm=true</code>.</p>*/
     pub fn post_payment_intents(&self) -> request::PostPaymentIntentsRequest {
         request::PostPaymentIntentsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     /**<p>Search for PaymentIntents you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -2692,7 +2932,7 @@ to an hour behind during outages. Search functionality is not available to merch
         query: &str,
     ) -> request::GetPaymentIntentsSearchRequest {
         request::GetPaymentIntentsSearchRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             limit: None,
             page: None,
@@ -2701,15 +2941,15 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>Retrieves the details of a PaymentIntent that has previously been created. </p>
 
-<p>Client-side retrieval using a publishable key is allowed when the <code>client_secret</code> is provided in the query string. </p>
+<p>You can retrieve a PaymentIntent client-side using a publishable key when the <code>client_secret</code> is in the query string. </p>
 
-<p>When retrieved with a publishable key, only a subset of properties will be returned. Please refer to the <a href="#payment_intent_object">payment intent</a> object reference for more details.</p>*/
+<p>If you retrieve a PaymentIntent with a publishable key, it only returns a subset of properties. Refer to the <a href="#payment_intent_object">payment intent</a> object reference for more details.</p>*/
     pub fn get_payment_intents_intent(
         &self,
         intent: &str,
     ) -> request::GetPaymentIntentsIntentRequest {
         request::GetPaymentIntentsIntentRequest {
-            client: &self,
+            http_client: &self,
             client_secret: None,
             expand: None,
             intent: intent.to_owned(),
@@ -2717,47 +2957,47 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>Updates properties on a PaymentIntent object without confirming.</p>
 
-<p>Depending on which properties you update, you may need to confirm the
-PaymentIntent again. For example, updating the <code>payment_method</code> will
-always require you to confirm the PaymentIntent again. If you prefer to
-update and confirm at the same time, we recommend updating properties via
+<p>Depending on which properties you update, you might need to confirm the
+PaymentIntent again. For example, updating the <code>payment_method</code>
+always requires you to confirm the PaymentIntent again. If you prefer to
+update and confirm at the same time, we recommend updating properties through
 the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>*/
     pub fn post_payment_intents_intent(
         &self,
         intent: &str,
     ) -> request::PostPaymentIntentsIntentRequest {
         request::PostPaymentIntentsIntentRequest {
-            client: &self,
+            http_client: &self,
             intent: intent.to_owned(),
         }
     }
-    ///<p>Manually reconcile the remaining amount for a customer_balance PaymentIntent.</p>
+    ///<p>Manually reconcile the remaining amount for a <code>customer_balance</code> PaymentIntent.</p>
     pub fn post_payment_intents_intent_apply_customer_balance(
         &self,
         intent: &str,
     ) -> request::PostPaymentIntentsIntentApplyCustomerBalanceRequest {
         request::PostPaymentIntentsIntentApplyCustomerBalanceRequest {
-            client: &self,
+            http_client: &self,
             intent: intent.to_owned(),
         }
     }
-    /**<p>A PaymentIntent object can be canceled when it is in one of these statuses: <code>requires_payment_method</code>, <code>requires_capture</code>, <code>requires_confirmation</code>, <code>requires_action</code>, or <code>processing</code>. </p>
+    /**<p>You can cancel a PaymentIntent object when it’s in one of these statuses: <code>requires_payment_method</code>, <code>requires_capture</code>, <code>requires_confirmation</code>, <code>requires_action</code> or, <a href="/docs/payments/intents">in rare cases</a>, <code>processing</code>. </p>
 
-<p>Once canceled, no additional charges will be made by the PaymentIntent and any operations on the PaymentIntent will fail with an error. For PaymentIntents with <code>status=’requires_capture’</code>, the remaining <code>amount_capturable</code> will automatically be refunded. </p>
+<p>After it’s canceled, no additional charges are made by the PaymentIntent and any operations on the PaymentIntent fail with an error. For PaymentIntents with a <code>status</code> of <code>requires_capture</code>, the remaining <code>amount_capturable</code> is automatically refunded. </p>
 
-<p>You cannot cancel the PaymentIntent for a Checkout Session. <a href="/docs/api/checkout/sessions/expire">Expire the Checkout Session</a> instead</p>*/
+<p>You can’t cancel the PaymentIntent for a Checkout Session. <a href="/docs/api/checkout/sessions/expire">Expire the Checkout Session</a> instead.</p>*/
     pub fn post_payment_intents_intent_cancel(
         &self,
         intent: &str,
     ) -> request::PostPaymentIntentsIntentCancelRequest {
         request::PostPaymentIntentsIntentCancelRequest {
-            client: &self,
+            http_client: &self,
             intent: intent.to_owned(),
         }
     }
     /**<p>Capture the funds of an existing uncaptured PaymentIntent when its status is <code>requires_capture</code>.</p>
 
-<p>Uncaptured PaymentIntents will be canceled a set number of days after they are created (7 by default).</p>
+<p>Uncaptured PaymentIntents are cancelled a set number of days (7 by default) after their creation.</p>
 
 <p>Learn more about <a href="/docs/payments/capture-later">separate authorization and capture</a>.</p>*/
     pub fn post_payment_intents_intent_capture(
@@ -2765,7 +3005,7 @@ the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>*/
         intent: &str,
     ) -> request::PostPaymentIntentsIntentCaptureRequest {
         request::PostPaymentIntentsIntentCaptureRequest {
-            client: &self,
+            http_client: &self,
             intent: intent.to_owned(),
         }
     }
@@ -2775,7 +3015,8 @@ a payment.
 If the selected payment method requires additional authentication steps, the
 PaymentIntent will transition to the <code>requires_action</code> status and
 suggest additional actions via <code>next_action</code>. If payment fails,
-the PaymentIntent will transition to the <code>requires_payment_method</code> status. If
+the PaymentIntent transitions to the <code>requires_payment_method</code> status or the
+<code>canceled</code> status if the confirmation limit is reached. If
 payment succeeds, the PaymentIntent will transition to the <code>succeeded</code>
 status (or <code>requires_capture</code>, if <code>capture_method</code> is set to <code>manual</code>).
 If the <code>confirmation_method</code> is <code>automatic</code>, payment may be attempted
@@ -2796,7 +3037,7 @@ to learn more about manual confirmation.</p>*/
         intent: &str,
     ) -> request::PostPaymentIntentsIntentConfirmRequest {
         request::PostPaymentIntentsIntentConfirmRequest {
-            client: &self,
+            http_client: &self,
             intent: intent.to_owned(),
         }
     }
@@ -2807,21 +3048,21 @@ PaymentIntent’s status must be <code>requires_capture</code> and
 must be <code>true</code>.</p>
 
 <p>Incremental authorizations attempt to increase the authorized amount on
-your customer’s card to the new, higher <code>amount</code> provided. As with the
-initial authorization, incremental authorizations may be declined. A
+your customer’s card to the new, higher <code>amount</code> provided. Similar to the
+initial authorization, incremental authorizations can be declined. A
 single PaymentIntent can call this endpoint multiple times to further
 increase the authorized amount.</p>
 
-<p>If the incremental authorization succeeds, the PaymentIntent object is
-returned with the updated
+<p>If the incremental authorization succeeds, the PaymentIntent object
+returns with the updated
 <a href="/docs/api/payment_intents/object#payment_intent_object-amount">amount</a>.
 If the incremental authorization fails, a
-<a href="/docs/error-codes#card-declined">card_declined</a> error is returned, and no
-fields on the PaymentIntent or Charge are updated. The PaymentIntent
+<a href="/docs/error-codes#card-declined">card_declined</a> error returns, and no other
+fields on the PaymentIntent or Charge update. The PaymentIntent
 object remains capturable for the previously authorized amount.</p>
 
 <p>Each PaymentIntent can have a maximum of 10 incremental authorization attempts, including declines.
-Once captured, a PaymentIntent can no longer be incremented.</p>
+After it’s captured, a PaymentIntent can no longer be incremented.</p>
 
 <p>Learn more about <a href="/docs/terminal/features/incremental-authorizations">incremental authorizations</a>.</p>*/
     pub fn post_payment_intents_intent_increment_authorization(
@@ -2829,7 +3070,7 @@ Once captured, a PaymentIntent can no longer be incremented.</p>
         intent: &str,
     ) -> request::PostPaymentIntentsIntentIncrementAuthorizationRequest {
         request::PostPaymentIntentsIntentIncrementAuthorizationRequest {
-            client: &self,
+            http_client: &self,
             intent: intent.to_owned(),
         }
     }
@@ -2839,14 +3080,14 @@ Once captured, a PaymentIntent can no longer be incremented.</p>
         intent: &str,
     ) -> request::PostPaymentIntentsIntentVerifyMicrodepositsRequest {
         request::PostPaymentIntentsIntentVerifyMicrodepositsRequest {
-            client: &self,
+            http_client: &self,
             intent: intent.to_owned(),
         }
     }
     ///<p>Returns a list of your payment links.</p>
     pub fn get_payment_links(&self) -> request::GetPaymentLinksRequest {
         request::GetPaymentLinksRequest {
-            client: &self,
+            http_client: &self,
             active: None,
             ending_before: None,
             expand: None,
@@ -2857,7 +3098,7 @@ Once captured, a PaymentIntent can no longer be incremented.</p>
     ///<p>Creates a payment link.</p>
     pub fn post_payment_links(&self) -> request::PostPaymentLinksRequest {
         request::PostPaymentLinksRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieve a payment link.</p>
@@ -2866,7 +3107,7 @@ Once captured, a PaymentIntent can no longer be incremented.</p>
         payment_link: &str,
     ) -> request::GetPaymentLinksPaymentLinkRequest {
         request::GetPaymentLinksPaymentLinkRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             payment_link: payment_link.to_owned(),
         }
@@ -2877,7 +3118,7 @@ Once captured, a PaymentIntent can no longer be incremented.</p>
         payment_link: &str,
     ) -> request::PostPaymentLinksPaymentLinkRequest {
         request::PostPaymentLinksPaymentLinkRequest {
-            client: &self,
+            http_client: &self,
             payment_link: payment_link.to_owned(),
         }
     }
@@ -2887,7 +3128,7 @@ Once captured, a PaymentIntent can no longer be incremented.</p>
         payment_link: &str,
     ) -> request::GetPaymentLinksPaymentLinkLineItemsRequest {
         request::GetPaymentLinksPaymentLinkLineItemsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -2895,16 +3136,111 @@ Once captured, a PaymentIntent can no longer be incremented.</p>
             starting_after: None,
         }
     }
+    ///<p>List payment method configurations</p>
+    pub fn get_payment_method_configurations(
+        &self,
+    ) -> request::GetPaymentMethodConfigurationsRequest {
+        request::GetPaymentMethodConfigurationsRequest {
+            http_client: &self,
+            application: None,
+            expand: None,
+        }
+    }
+    ///<p>Creates a payment method configuration</p>
+    pub fn post_payment_method_configurations(
+        &self,
+    ) -> request::PostPaymentMethodConfigurationsRequest {
+        request::PostPaymentMethodConfigurationsRequest {
+            http_client: &self,
+        }
+    }
+    ///<p>Retrieve payment method configuration</p>
+    pub fn get_payment_method_configurations_configuration(
+        &self,
+        configuration: &str,
+    ) -> request::GetPaymentMethodConfigurationsConfigurationRequest {
+        request::GetPaymentMethodConfigurationsConfigurationRequest {
+            http_client: &self,
+            configuration: configuration.to_owned(),
+            expand: None,
+        }
+    }
+    ///<p>Update payment method configuration</p>
+    pub fn post_payment_method_configurations_configuration(
+        &self,
+        configuration: &str,
+    ) -> request::PostPaymentMethodConfigurationsConfigurationRequest {
+        request::PostPaymentMethodConfigurationsConfigurationRequest {
+            http_client: &self,
+            configuration: configuration.to_owned(),
+        }
+    }
+    ///<p>Lists the details of existing payment method domains.</p>
+    pub fn get_payment_method_domains(&self) -> request::GetPaymentMethodDomainsRequest {
+        request::GetPaymentMethodDomainsRequest {
+            http_client: &self,
+            domain_name: None,
+            enabled: None,
+            ending_before: None,
+            expand: None,
+            limit: None,
+            starting_after: None,
+        }
+    }
+    ///<p>Creates a payment method domain.</p>
+    pub fn post_payment_method_domains(
+        &self,
+    ) -> request::PostPaymentMethodDomainsRequest {
+        request::PostPaymentMethodDomainsRequest {
+            http_client: &self,
+        }
+    }
+    ///<p>Retrieves the details of an existing payment method domain.</p>
+    pub fn get_payment_method_domains_payment_method_domain(
+        &self,
+        payment_method_domain: &str,
+    ) -> request::GetPaymentMethodDomainsPaymentMethodDomainRequest {
+        request::GetPaymentMethodDomainsPaymentMethodDomainRequest {
+            http_client: &self,
+            expand: None,
+            payment_method_domain: payment_method_domain.to_owned(),
+        }
+    }
+    ///<p>Updates an existing payment method domain.</p>
+    pub fn post_payment_method_domains_payment_method_domain(
+        &self,
+        payment_method_domain: &str,
+    ) -> request::PostPaymentMethodDomainsPaymentMethodDomainRequest {
+        request::PostPaymentMethodDomainsPaymentMethodDomainRequest {
+            http_client: &self,
+            payment_method_domain: payment_method_domain.to_owned(),
+        }
+    }
+    /**<p>Some payment methods such as Apple Pay require additional steps to verify a domain. If the requirements weren’t satisfied when the domain was created, the payment method will be inactive on the domain.
+The payment method doesn’t appear in Elements for this domain until it is active.</p>
+
+<p>To activate a payment method on an existing payment method domain, complete the required validation steps specific to the payment method, and then validate the payment method domain with this endpoint.</p>
+
+<p>Related guides: <a href="/docs/payments/payment-methods/pmd-registration">Payment method domains</a>.</p>*/
+    pub fn post_payment_method_domains_payment_method_domain_validate(
+        &self,
+        payment_method_domain: &str,
+    ) -> request::PostPaymentMethodDomainsPaymentMethodDomainValidateRequest {
+        request::PostPaymentMethodDomainsPaymentMethodDomainValidateRequest {
+            http_client: &self,
+            payment_method_domain: payment_method_domain.to_owned(),
+        }
+    }
     ///<p>Returns a list of PaymentMethods for Treasury flows. If you want to list the PaymentMethods attached to a Customer for payments, you should use the <a href="/docs/api/payment_methods/customer_list">List a Customer’s PaymentMethods</a> API instead.</p>
-    pub fn get_payment_methods(&self, type_: &str) -> request::GetPaymentMethodsRequest {
+    pub fn get_payment_methods(&self) -> request::GetPaymentMethodsRequest {
         request::GetPaymentMethodsRequest {
-            client: &self,
+            http_client: &self,
             customer: None,
             ending_before: None,
             expand: None,
             limit: None,
             starting_after: None,
-            type_: type_.to_owned(),
+            type_: None,
         }
     }
     /**<p>Creates a PaymentMethod object. Read the <a href="/docs/stripe-js/reference#stripe-create-payment-method">Stripe.js reference</a> to learn how to create PaymentMethods via Stripe.js.</p>
@@ -2912,7 +3248,7 @@ Once captured, a PaymentIntent can no longer be incremented.</p>
 <p>Instead of creating a PaymentMethod directly, we recommend using the <a href="/docs/payments/accept-a-payment">PaymentIntents</a> API to accept a payment immediately or the <a href="/docs/payments/save-and-reuse">SetupIntent</a> API to collect payment method details ahead of a future payment.</p>*/
     pub fn post_payment_methods(&self) -> request::PostPaymentMethodsRequest {
         request::PostPaymentMethodsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves a PaymentMethod object attached to the StripeAccount. To retrieve a payment method attached to a Customer, you should use <a href="/docs/api/payment_methods/customer">Retrieve a Customer’s PaymentMethods</a></p>
@@ -2921,7 +3257,7 @@ Once captured, a PaymentIntent can no longer be incremented.</p>
         payment_method: &str,
     ) -> request::GetPaymentMethodsPaymentMethodRequest {
         request::GetPaymentMethodsPaymentMethodRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             payment_method: payment_method.to_owned(),
         }
@@ -2932,7 +3268,7 @@ Once captured, a PaymentIntent can no longer be incremented.</p>
         payment_method: &str,
     ) -> request::PostPaymentMethodsPaymentMethodRequest {
         request::PostPaymentMethodsPaymentMethodRequest {
-            client: &self,
+            http_client: &self,
             payment_method: payment_method.to_owned(),
         }
     }
@@ -2954,7 +3290,7 @@ on the Customer to the PaymentMethod’s ID.</p>*/
         payment_method: &str,
     ) -> request::PostPaymentMethodsPaymentMethodAttachRequest {
         request::PostPaymentMethodsPaymentMethodAttachRequest {
-            client: &self,
+            http_client: &self,
             payment_method: payment_method.to_owned(),
         }
     }
@@ -2964,14 +3300,14 @@ on the Customer to the PaymentMethod’s ID.</p>*/
         payment_method: &str,
     ) -> request::PostPaymentMethodsPaymentMethodDetachRequest {
         request::PostPaymentMethodsPaymentMethodDetachRequest {
-            client: &self,
+            http_client: &self,
             payment_method: payment_method.to_owned(),
         }
     }
-    ///<p>Returns a list of existing payouts sent to third-party bank accounts or that Stripe has sent you. The payouts are returned in sorted order, with the most recently created payouts appearing first.</p>
+    ///<p>Returns a list of existing payouts sent to third-party bank accounts or payouts that Stripe sent to you. The payouts return in sorted order, with the most recently created payouts appearing first.</p>
     pub fn get_payouts(&self) -> request::GetPayoutsRequest {
         request::GetPayoutsRequest {
-            client: &self,
+            http_client: &self,
             arrival_date: None,
             created: None,
             destination: None,
@@ -2982,60 +3318,60 @@ on the Customer to the PaymentMethod’s ID.</p>*/
             status: None,
         }
     }
-    /**<p>To send funds to your own bank account, you create a new payout object. Your <a href="#balance">Stripe balance</a> must be able to cover the payout amount, or you’ll receive an “Insufficient Funds” error.</p>
+    /**<p>To send funds to your own bank account, create a new payout object. Your <a href="#balance">Stripe balance</a> must cover the payout amount. If it doesn’t, you receive an “Insufficient Funds” error.</p>
 
-<p>If your API key is in test mode, money won’t actually be sent, though everything else will occur as if in live mode.</p>
+<p>If your API key is in test mode, money won’t actually be sent, though every other action occurs as if you’re in live mode.</p>
 
-<p>If you are creating a manual payout on a Stripe account that uses multiple payment source types, you’ll need to specify the source type balance that the payout should draw from. The <a href="#balance_object">balance object</a> details available and pending amounts by source type.</p>*/
+<p>If you create a manual payout on a Stripe account that uses multiple payment source types, you need to specify the source type balance that the payout draws from. The <a href="#balance_object">balance object</a> details available and pending amounts by source type.</p>*/
     pub fn post_payouts(&self) -> request::PostPayoutsRequest {
         request::PostPayoutsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
-    ///<p>Retrieves the details of an existing payout. Supply the unique payout ID from either a payout creation request or the payout list, and Stripe will return the corresponding payout information.</p>
+    ///<p>Retrieves the details of an existing payout. Supply the unique payout ID from either a payout creation request or the payout list. Stripe returns the corresponding payout information.</p>
     pub fn get_payouts_payout(&self, payout: &str) -> request::GetPayoutsPayoutRequest {
         request::GetPayoutsPayoutRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             payout: payout.to_owned(),
         }
     }
-    ///<p>Updates the specified payout by setting the values of the parameters passed. Any parameters not provided will be left unchanged. This request accepts only the metadata as arguments.</p>
+    ///<p>Updates the specified payout by setting the values of the parameters you pass. We don’t change parameters that you don’t provide. This request only accepts the metadata as arguments.</p>
     pub fn post_payouts_payout(
         &self,
         payout: &str,
     ) -> request::PostPayoutsPayoutRequest {
         request::PostPayoutsPayoutRequest {
-            client: &self,
+            http_client: &self,
             payout: payout.to_owned(),
         }
     }
-    ///<p>A previously created payout can be canceled if it has not yet been paid out. Funds will be refunded to your available balance. You may not cancel automatic Stripe payouts.</p>
+    ///<p>You can cancel a previously created payout if it hasn’t been paid out yet. Stripe refunds the funds to your available balance. You can’t cancel automatic Stripe payouts.</p>
     pub fn post_payouts_payout_cancel(
         &self,
         payout: &str,
     ) -> request::PostPayoutsPayoutCancelRequest {
         request::PostPayoutsPayoutCancelRequest {
-            client: &self,
+            http_client: &self,
             payout: payout.to_owned(),
         }
     }
-    /**<p>Reverses a payout by debiting the destination bank account. Only payouts for connected accounts to US bank accounts may be reversed at this time. If the payout is in the <code>pending</code> status, <code>/v1/payouts/:id/cancel</code> should be used instead.</p>
+    /**<p>Reverses a payout by debiting the destination bank account. At this time, you can only reverse payouts for connected accounts to US bank accounts. If the payout is in the <code>pending</code> status, use <code>/v1/payouts/:id/cancel</code> instead.</p>
 
-<p>By requesting a reversal via <code>/v1/payouts/:id/reverse</code>, you confirm that the authorized signatory of the selected bank account has authorized the debit on the bank account and that no other authorization is required.</p>*/
+<p>By requesting a reversal through <code>/v1/payouts/:id/reverse</code>, you confirm that the authorized signatory of the selected bank account authorizes the debit on the bank account and that no other authorization is required.</p>*/
     pub fn post_payouts_payout_reverse(
         &self,
         payout: &str,
     ) -> request::PostPayoutsPayoutReverseRequest {
         request::PostPayoutsPayoutReverseRequest {
-            client: &self,
+            http_client: &self,
             payout: payout.to_owned(),
         }
     }
     ///<p>Returns a list of your plans.</p>
     pub fn get_plans(&self) -> request::GetPlansRequest {
         request::GetPlansRequest {
-            client: &self,
+            http_client: &self,
             active: None,
             created: None,
             ending_before: None,
@@ -3048,13 +3384,13 @@ on the Customer to the PaymentMethod’s ID.</p>*/
     ///<p>You can now model subscriptions more flexibly using the <a href="#prices">Prices API</a>. It replaces the Plans API and is backwards compatible to simplify your migration.</p>
     pub fn post_plans(&self) -> request::PostPlansRequest {
         request::PostPlansRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the plan with the given ID.</p>
     pub fn get_plans_plan(&self, plan: &str) -> request::GetPlansPlanRequest {
         request::GetPlansPlanRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             plan: plan.to_owned(),
         }
@@ -3062,21 +3398,21 @@ on the Customer to the PaymentMethod’s ID.</p>*/
     ///<p>Updates the specified plan by setting the values of the parameters passed. Any parameters not provided are left unchanged. By design, you cannot change a plan’s ID, amount, currency, or billing cycle.</p>
     pub fn post_plans_plan(&self, plan: &str) -> request::PostPlansPlanRequest {
         request::PostPlansPlanRequest {
-            client: &self,
+            http_client: &self,
             plan: plan.to_owned(),
         }
     }
     ///<p>Deleting plans means new subscribers can’t be added. Existing subscribers aren’t affected.</p>
     pub fn delete_plans_plan(&self, plan: &str) -> request::DeletePlansPlanRequest {
         request::DeletePlansPlanRequest {
-            client: &self,
+            http_client: &self,
             plan: plan.to_owned(),
         }
     }
-    ///<p>Returns a list of your prices.</p>
+    ///<p>Returns a list of your active prices, excluding <a href="/docs/products-prices/pricing-models#inline-pricing">inline prices</a>. For the list of inactive prices, set <code>active</code> to false.</p>
     pub fn get_prices(&self) -> request::GetPricesRequest {
         request::GetPricesRequest {
-            client: &self,
+            http_client: &self,
             active: None,
             created: None,
             currency: None,
@@ -3093,7 +3429,7 @@ on the Customer to the PaymentMethod’s ID.</p>*/
     ///<p>Creates a new price for an existing product. The price can be recurring or one-time.</p>
     pub fn post_prices(&self) -> request::PostPricesRequest {
         request::PostPricesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     /**<p>Search for prices you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -3102,7 +3438,7 @@ conditions, data is searchable in less than a minute. Occasionally, propagation 
 to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
     pub fn get_prices_search(&self, query: &str) -> request::GetPricesSearchRequest {
         request::GetPricesSearchRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             limit: None,
             page: None,
@@ -3112,7 +3448,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Retrieves the price with the given ID.</p>
     pub fn get_prices_price(&self, price: &str) -> request::GetPricesPriceRequest {
         request::GetPricesPriceRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             price: price.to_owned(),
         }
@@ -3120,14 +3456,14 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Updates the specified price by setting the values of the parameters passed. Any parameters not provided are left unchanged.</p>
     pub fn post_prices_price(&self, price: &str) -> request::PostPricesPriceRequest {
         request::PostPricesPriceRequest {
-            client: &self,
+            http_client: &self,
             price: price.to_owned(),
         }
     }
     ///<p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p>
     pub fn get_products(&self) -> request::GetProductsRequest {
         request::GetProductsRequest {
-            client: &self,
+            http_client: &self,
             active: None,
             created: None,
             ending_before: None,
@@ -3142,7 +3478,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Creates a new product object.</p>
     pub fn post_products(&self) -> request::PostProductsRequest {
         request::PostProductsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     /**<p>Search for products you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -3151,7 +3487,7 @@ conditions, data is searchable in less than a minute. Occasionally, propagation 
 to an hour behind during outages. Search functionality is not available to merchants in India.</p>*/
     pub fn get_products_search(&self, query: &str) -> request::GetProductsSearchRequest {
         request::GetProductsSearchRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             limit: None,
             page: None,
@@ -3161,7 +3497,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Retrieves the details of an existing product. Supply the unique product ID from either a product creation request or the product list, and Stripe will return the corresponding product information.</p>
     pub fn get_products_id(&self, id: &str) -> request::GetProductsIdRequest {
         request::GetProductsIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -3169,21 +3505,21 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Updates the specific product by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
     pub fn post_products_id(&self, id: &str) -> request::PostProductsIdRequest {
         request::PostProductsIdRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
     ///<p>Delete a product. Deleting a product is only possible if it has no prices associated with it. Additionally, deleting a product with <code>type=good</code> is only possible if it has no SKUs associated with it.</p>
     pub fn delete_products_id(&self, id: &str) -> request::DeleteProductsIdRequest {
         request::DeleteProductsIdRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
     ///<p>Returns a list of your promotion codes.</p>
     pub fn get_promotion_codes(&self) -> request::GetPromotionCodesRequest {
         request::GetPromotionCodesRequest {
-            client: &self,
+            http_client: &self,
             active: None,
             code: None,
             coupon: None,
@@ -3198,7 +3534,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>A promotion code points to a coupon. You can optionally restrict the code to a specific customer, redemption limit, and expiration date.</p>
     pub fn post_promotion_codes(&self) -> request::PostPromotionCodesRequest {
         request::PostPromotionCodesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the promotion code with the given ID. In order to retrieve a promotion code by the customer-facing <code>code</code> use <a href="/docs/api/promotion_codes/list">list</a> with the desired <code>code</code>.</p>
@@ -3207,7 +3543,7 @@ to an hour behind during outages. Search functionality is not available to merch
         promotion_code: &str,
     ) -> request::GetPromotionCodesPromotionCodeRequest {
         request::GetPromotionCodesPromotionCodeRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             promotion_code: promotion_code.to_owned(),
         }
@@ -3218,14 +3554,14 @@ to an hour behind during outages. Search functionality is not available to merch
         promotion_code: &str,
     ) -> request::PostPromotionCodesPromotionCodeRequest {
         request::PostPromotionCodesPromotionCodeRequest {
-            client: &self,
+            http_client: &self,
             promotion_code: promotion_code.to_owned(),
         }
     }
     ///<p>Returns a list of your quotes.</p>
     pub fn get_quotes(&self) -> request::GetQuotesRequest {
         request::GetQuotesRequest {
-            client: &self,
+            http_client: &self,
             customer: None,
             ending_before: None,
             expand: None,
@@ -3238,13 +3574,13 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>A quote models prices and services for a customer. Default options for <code>header</code>, <code>description</code>, <code>footer</code>, and <code>expires_at</code> can be set in the dashboard via the <a href="https://dashboard.stripe.com/settings/billing/quote">quote template</a>.</p>
     pub fn post_quotes(&self) -> request::PostQuotesRequest {
         request::PostQuotesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the quote with the given ID.</p>
     pub fn get_quotes_quote(&self, quote: &str) -> request::GetQuotesQuoteRequest {
         request::GetQuotesQuoteRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             quote: quote.to_owned(),
         }
@@ -3252,7 +3588,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>A quote models prices and services for a customer.</p>
     pub fn post_quotes_quote(&self, quote: &str) -> request::PostQuotesQuoteRequest {
         request::PostQuotesQuoteRequest {
-            client: &self,
+            http_client: &self,
             quote: quote.to_owned(),
         }
     }
@@ -3262,7 +3598,7 @@ to an hour behind during outages. Search functionality is not available to merch
         quote: &str,
     ) -> request::PostQuotesQuoteAcceptRequest {
         request::PostQuotesQuoteAcceptRequest {
-            client: &self,
+            http_client: &self,
             quote: quote.to_owned(),
         }
     }
@@ -3272,7 +3608,7 @@ to an hour behind during outages. Search functionality is not available to merch
         quote: &str,
     ) -> request::PostQuotesQuoteCancelRequest {
         request::PostQuotesQuoteCancelRequest {
-            client: &self,
+            http_client: &self,
             quote: quote.to_owned(),
         }
     }
@@ -3282,7 +3618,7 @@ to an hour behind during outages. Search functionality is not available to merch
         quote: &str,
     ) -> request::GetQuotesQuoteComputedUpfrontLineItemsRequest {
         request::GetQuotesQuoteComputedUpfrontLineItemsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -3296,7 +3632,7 @@ to an hour behind during outages. Search functionality is not available to merch
         quote: &str,
     ) -> request::PostQuotesQuoteFinalizeRequest {
         request::PostQuotesQuoteFinalizeRequest {
-            client: &self,
+            http_client: &self,
             quote: quote.to_owned(),
         }
     }
@@ -3306,7 +3642,7 @@ to an hour behind during outages. Search functionality is not available to merch
         quote: &str,
     ) -> request::GetQuotesQuoteLineItemsRequest {
         request::GetQuotesQuoteLineItemsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -3320,7 +3656,7 @@ to an hour behind during outages. Search functionality is not available to merch
         quote: &str,
     ) -> request::GetQuotesQuotePdfRequest {
         request::GetQuotesQuotePdfRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             quote: quote.to_owned(),
         }
@@ -3330,7 +3666,7 @@ to an hour behind during outages. Search functionality is not available to merch
         &self,
     ) -> request::GetRadarEarlyFraudWarningsRequest {
         request::GetRadarEarlyFraudWarningsRequest {
-            client: &self,
+            http_client: &self,
             charge: None,
             ending_before: None,
             expand: None,
@@ -3347,7 +3683,7 @@ to an hour behind during outages. Search functionality is not available to merch
         early_fraud_warning: &str,
     ) -> request::GetRadarEarlyFraudWarningsEarlyFraudWarningRequest {
         request::GetRadarEarlyFraudWarningsEarlyFraudWarningRequest {
-            client: &self,
+            http_client: &self,
             early_fraud_warning: early_fraud_warning.to_owned(),
             expand: None,
         }
@@ -3358,7 +3694,7 @@ to an hour behind during outages. Search functionality is not available to merch
         value_list: &str,
     ) -> request::GetRadarValueListItemsRequest {
         request::GetRadarValueListItemsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -3373,7 +3709,7 @@ to an hour behind during outages. Search functionality is not available to merch
         &self,
     ) -> request::PostRadarValueListItemsRequest {
         request::PostRadarValueListItemsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves a <code>ValueListItem</code> object.</p>
@@ -3382,7 +3718,7 @@ to an hour behind during outages. Search functionality is not available to merch
         item: &str,
     ) -> request::GetRadarValueListItemsItemRequest {
         request::GetRadarValueListItemsItemRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             item: item.to_owned(),
         }
@@ -3393,14 +3729,14 @@ to an hour behind during outages. Search functionality is not available to merch
         item: &str,
     ) -> request::DeleteRadarValueListItemsItemRequest {
         request::DeleteRadarValueListItemsItemRequest {
-            client: &self,
+            http_client: &self,
             item: item.to_owned(),
         }
     }
     ///<p>Returns a list of <code>ValueList</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     pub fn get_radar_value_lists(&self) -> request::GetRadarValueListsRequest {
         request::GetRadarValueListsRequest {
-            client: &self,
+            http_client: &self,
             alias: None,
             contains: None,
             created: None,
@@ -3413,7 +3749,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Creates a new <code>ValueList</code> object, which can then be referenced in rules.</p>
     pub fn post_radar_value_lists(&self) -> request::PostRadarValueListsRequest {
         request::PostRadarValueListsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves a <code>ValueList</code> object.</p>
@@ -3422,7 +3758,7 @@ to an hour behind during outages. Search functionality is not available to merch
         value_list: &str,
     ) -> request::GetRadarValueListsValueListRequest {
         request::GetRadarValueListsValueListRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             value_list: value_list.to_owned(),
         }
@@ -3433,7 +3769,7 @@ to an hour behind during outages. Search functionality is not available to merch
         value_list: &str,
     ) -> request::PostRadarValueListsValueListRequest {
         request::PostRadarValueListsValueListRequest {
-            client: &self,
+            http_client: &self,
             value_list: value_list.to_owned(),
         }
     }
@@ -3443,14 +3779,14 @@ to an hour behind during outages. Search functionality is not available to merch
         value_list: &str,
     ) -> request::DeleteRadarValueListsValueListRequest {
         request::DeleteRadarValueListsValueListRequest {
-            client: &self,
+            http_client: &self,
             value_list: value_list.to_owned(),
         }
     }
-    ///<p>Returns a list of all refunds you’ve previously created. The refunds are returned in sorted order, with the most recent refunds appearing first. For convenience, the 10 most recent refunds are always available by default on the charge object.</p>
+    ///<p>Returns a list of all refunds you created. We return the refunds in sorted order, with the most recent refunds appearing first The 10 most recent refunds are always available by default on the Charge object.</p>
     pub fn get_refunds(&self) -> request::GetRefundsRequest {
         request::GetRefundsRequest {
-            client: &self,
+            http_client: &self,
             charge: None,
             created: None,
             ending_before: None,
@@ -3460,21 +3796,31 @@ to an hour behind during outages. Search functionality is not available to merch
             starting_after: None,
         }
     }
-    ///<p>Create a refund.</p>
+    /**<p>When you create a new refund, you must specify a Charge or a PaymentIntent object on which to create it.</p>
+
+<p>Creating a new refund will refund a charge that has previously been created but not yet refunded.
+Funds will be refunded to the credit or debit card that was originally charged.</p>
+
+<p>You can optionally refund only part of a charge.
+You can do so multiple times, until the entire charge has been refunded.</p>
+
+<p>Once entirely refunded, a charge can’t be refunded again.
+This method will raise an error when called on an already-refunded charge,
+or when trying to refund more money than is left on a charge.</p>*/
     pub fn post_refunds(&self) -> request::PostRefundsRequest {
         request::PostRefundsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of an existing refund.</p>
     pub fn get_refunds_refund(&self, refund: &str) -> request::GetRefundsRefundRequest {
         request::GetRefundsRefundRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             refund: refund.to_owned(),
         }
     }
-    /**<p>Updates the specified refund by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
+    /**<p>Updates the refund that you specify by setting the values of the passed parameters. Any parameters that you don’t provide remain unchanged.</p>
 
 <p>This request only accepts <code>metadata</code> as an argument.</p>*/
     pub fn post_refunds_refund(
@@ -3482,26 +3828,26 @@ to an hour behind during outages. Search functionality is not available to merch
         refund: &str,
     ) -> request::PostRefundsRefundRequest {
         request::PostRefundsRefundRequest {
-            client: &self,
+            http_client: &self,
             refund: refund.to_owned(),
         }
     }
     /**<p>Cancels a refund with a status of <code>requires_action</code>.</p>
 
-<p>Refunds in other states cannot be canceled, and only refunds for payment methods that require customer action will enter the <code>requires_action</code> state.</p>*/
+<p>You can’t cancel refunds in other states. Only refunds for payment methods that require customer action can enter the <code>requires_action</code> state.</p>*/
     pub fn post_refunds_refund_cancel(
         &self,
         refund: &str,
     ) -> request::PostRefundsRefundCancelRequest {
         request::PostRefundsRefundCancelRequest {
-            client: &self,
+            http_client: &self,
             refund: refund.to_owned(),
         }
     }
     ///<p>Returns a list of Report Runs, with the most recent appearing first.</p>
     pub fn get_reporting_report_runs(&self) -> request::GetReportingReportRunsRequest {
         request::GetReportingReportRunsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -3512,7 +3858,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Creates a new object and begin running the report. (Certain report types require a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
     pub fn post_reporting_report_runs(&self) -> request::PostReportingReportRunsRequest {
         request::PostReportingReportRunsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of an existing Report Run.</p>
@@ -3521,7 +3867,7 @@ to an hour behind during outages. Search functionality is not available to merch
         report_run: &str,
     ) -> request::GetReportingReportRunsReportRunRequest {
         request::GetReportingReportRunsReportRunRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             report_run: report_run.to_owned(),
         }
@@ -3529,7 +3875,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Returns a full list of Report Types.</p>
     pub fn get_reporting_report_types(&self) -> request::GetReportingReportTypesRequest {
         request::GetReportingReportTypesRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
         }
     }
@@ -3539,7 +3885,7 @@ to an hour behind during outages. Search functionality is not available to merch
         report_type: &str,
     ) -> request::GetReportingReportTypesReportTypeRequest {
         request::GetReportingReportTypesReportTypeRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             report_type: report_type.to_owned(),
         }
@@ -3547,7 +3893,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Returns a list of <code>Review</code> objects that have <code>open</code> set to <code>true</code>. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     pub fn get_reviews(&self) -> request::GetReviewsRequest {
         request::GetReviewsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -3558,7 +3904,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Retrieves a <code>Review</code> object.</p>
     pub fn get_reviews_review(&self, review: &str) -> request::GetReviewsReviewRequest {
         request::GetReviewsReviewRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             review: review.to_owned(),
         }
@@ -3569,17 +3915,17 @@ to an hour behind during outages. Search functionality is not available to merch
         review: &str,
     ) -> request::PostReviewsReviewApproveRequest {
         request::PostReviewsReviewApproveRequest {
-            client: &self,
+            http_client: &self,
             review: review.to_owned(),
         }
     }
-    ///<p>Returns a list of SetupAttempts associated with a provided SetupIntent.</p>
+    ///<p>Returns a list of SetupAttempts that associate with a provided SetupIntent.</p>
     pub fn get_setup_attempts(
         &self,
         setup_intent: &str,
     ) -> request::GetSetupAttemptsRequest {
         request::GetSetupAttemptsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -3591,7 +3937,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Returns a list of SetupIntents.</p>
     pub fn get_setup_intents(&self) -> request::GetSetupIntentsRequest {
         request::GetSetupIntentsRequest {
-            client: &self,
+            http_client: &self,
             attach_to_self: None,
             created: None,
             customer: None,
@@ -3604,11 +3950,11 @@ to an hour behind during outages. Search functionality is not available to merch
     }
     /**<p>Creates a SetupIntent object.</p>
 
-<p>After the SetupIntent is created, attach a payment method and <a href="/docs/api/setup_intents/confirm">confirm</a>
-to collect any required permissions to charge the payment method later.</p>*/
+<p>After you create the SetupIntent, attach a payment method and <a href="/docs/api/setup_intents/confirm">confirm</a>
+it to collect any required permissions to charge the payment method later.</p>*/
     pub fn post_setup_intents(&self) -> request::PostSetupIntentsRequest {
         request::PostSetupIntentsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     /**<p>Retrieves the details of a SetupIntent that has previously been created. </p>
@@ -3621,7 +3967,7 @@ to collect any required permissions to charge the payment method later.</p>*/
         intent: &str,
     ) -> request::GetSetupIntentsIntentRequest {
         request::GetSetupIntentsIntentRequest {
-            client: &self,
+            http_client: &self,
             client_secret: None,
             expand: None,
             intent: intent.to_owned(),
@@ -3633,19 +3979,19 @@ to collect any required permissions to charge the payment method later.</p>*/
         intent: &str,
     ) -> request::PostSetupIntentsIntentRequest {
         request::PostSetupIntentsIntentRequest {
-            client: &self,
+            http_client: &self,
             intent: intent.to_owned(),
         }
     }
-    /**<p>A SetupIntent object can be canceled when it is in one of these statuses: <code>requires_payment_method</code>, <code>requires_confirmation</code>, or <code>requires_action</code>. </p>
+    /**<p>You can cancel a SetupIntent object when it’s in one of these statuses: <code>requires_payment_method</code>, <code>requires_confirmation</code>, or <code>requires_action</code>. </p>
 
-<p>Once canceled, setup is abandoned and any operations on the SetupIntent will fail with an error.</p>*/
+<p>After you cancel it, setup is abandoned and any operations on the SetupIntent fail with an error.</p>*/
     pub fn post_setup_intents_intent_cancel(
         &self,
         intent: &str,
     ) -> request::PostSetupIntentsIntentCancelRequest {
         request::PostSetupIntentsIntentCancelRequest {
-            client: &self,
+            http_client: &self,
             intent: intent.to_owned(),
         }
     }
@@ -3661,13 +4007,14 @@ steps from the customer, the SetupIntent will transition to the
 <p>Otherwise, it will transition to the <code>requires_action</code> status and
 suggest additional actions via <code>next_action</code>. If setup fails,
 the SetupIntent will transition to the
-<code>requires_payment_method</code> status.</p>*/
+<code>requires_payment_method</code> status or the <code>canceled</code> status if the
+confirmation limit is reached.</p>*/
     pub fn post_setup_intents_intent_confirm(
         &self,
         intent: &str,
     ) -> request::PostSetupIntentsIntentConfirmRequest {
         request::PostSetupIntentsIntentConfirmRequest {
-            client: &self,
+            http_client: &self,
             intent: intent.to_owned(),
         }
     }
@@ -3677,14 +4024,14 @@ the SetupIntent will transition to the
         intent: &str,
     ) -> request::PostSetupIntentsIntentVerifyMicrodepositsRequest {
         request::PostSetupIntentsIntentVerifyMicrodepositsRequest {
-            client: &self,
+            http_client: &self,
             intent: intent.to_owned(),
         }
     }
     ///<p>Returns a list of your shipping rates.</p>
     pub fn get_shipping_rates(&self) -> request::GetShippingRatesRequest {
         request::GetShippingRatesRequest {
-            client: &self,
+            http_client: &self,
             active: None,
             created: None,
             currency: None,
@@ -3697,7 +4044,7 @@ the SetupIntent will transition to the
     ///<p>Creates a new shipping rate object.</p>
     pub fn post_shipping_rates(&self) -> request::PostShippingRatesRequest {
         request::PostShippingRatesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Returns the shipping rate object with the given ID.</p>
@@ -3706,7 +4053,7 @@ the SetupIntent will transition to the
         shipping_rate_token: &str,
     ) -> request::GetShippingRatesShippingRateTokenRequest {
         request::GetShippingRatesShippingRateTokenRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             shipping_rate_token: shipping_rate_token.to_owned(),
         }
@@ -3717,7 +4064,7 @@ the SetupIntent will transition to the
         shipping_rate_token: &str,
     ) -> request::PostShippingRatesShippingRateTokenRequest {
         request::PostShippingRatesShippingRateTokenRequest {
-            client: &self,
+            http_client: &self,
             shipping_rate_token: shipping_rate_token.to_owned(),
         }
     }
@@ -3726,7 +4073,7 @@ the SetupIntent will transition to the
         &self,
     ) -> request::GetSigmaScheduledQueryRunsRequest {
         request::GetSigmaScheduledQueryRunsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -3739,7 +4086,7 @@ the SetupIntent will transition to the
         scheduled_query_run: &str,
     ) -> request::GetSigmaScheduledQueryRunsScheduledQueryRunRequest {
         request::GetSigmaScheduledQueryRunsScheduledQueryRunRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             scheduled_query_run: scheduled_query_run.to_owned(),
         }
@@ -3747,13 +4094,13 @@ the SetupIntent will transition to the
     ///<p>Creates a new source object.</p>
     pub fn post_sources(&self) -> request::PostSourcesRequest {
         request::PostSourcesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves an existing source object. Supply the unique source ID from a source creation request and Stripe will return the corresponding up-to-date source object information.</p>
     pub fn get_sources_source(&self, source: &str) -> request::GetSourcesSourceRequest {
         request::GetSourcesSourceRequest {
-            client: &self,
+            http_client: &self,
             client_secret: None,
             expand: None,
             source: source.to_owned(),
@@ -3767,7 +4114,7 @@ the SetupIntent will transition to the
         source: &str,
     ) -> request::PostSourcesSourceRequest {
         request::PostSourcesSourceRequest {
-            client: &self,
+            http_client: &self,
             source: source.to_owned(),
         }
     }
@@ -3778,7 +4125,7 @@ the SetupIntent will transition to the
         source: &str,
     ) -> request::GetSourcesSourceMandateNotificationsMandateNotificationRequest {
         request::GetSourcesSourceMandateNotificationsMandateNotificationRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             mandate_notification: mandate_notification.to_owned(),
             source: source.to_owned(),
@@ -3790,7 +4137,7 @@ the SetupIntent will transition to the
         source: &str,
     ) -> request::GetSourcesSourceSourceTransactionsRequest {
         request::GetSourcesSourceSourceTransactionsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -3805,7 +4152,7 @@ the SetupIntent will transition to the
         source_transaction: &str,
     ) -> request::GetSourcesSourceSourceTransactionsSourceTransactionRequest {
         request::GetSourcesSourceSourceTransactionsSourceTransactionRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             source: source.to_owned(),
             source_transaction: source_transaction.to_owned(),
@@ -3817,7 +4164,7 @@ the SetupIntent will transition to the
         source: &str,
     ) -> request::PostSourcesSourceVerifyRequest {
         request::PostSourcesSourceVerifyRequest {
-            client: &self,
+            http_client: &self,
             source: source.to_owned(),
         }
     }
@@ -3827,7 +4174,7 @@ the SetupIntent will transition to the
         subscription: &str,
     ) -> request::GetSubscriptionItemsRequest {
         request::GetSubscriptionItemsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -3838,7 +4185,7 @@ the SetupIntent will transition to the
     ///<p>Adds a new item to an existing subscription. No existing items will be changed or replaced.</p>
     pub fn post_subscription_items(&self) -> request::PostSubscriptionItemsRequest {
         request::PostSubscriptionItemsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the subscription item with the given ID.</p>
@@ -3847,7 +4194,7 @@ the SetupIntent will transition to the
         item: &str,
     ) -> request::GetSubscriptionItemsItemRequest {
         request::GetSubscriptionItemsItemRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             item: item.to_owned(),
         }
@@ -3858,7 +4205,7 @@ the SetupIntent will transition to the
         item: &str,
     ) -> request::PostSubscriptionItemsItemRequest {
         request::PostSubscriptionItemsItemRequest {
-            client: &self,
+            http_client: &self,
             item: item.to_owned(),
         }
     }
@@ -3868,7 +4215,7 @@ the SetupIntent will transition to the
         item: &str,
     ) -> request::DeleteSubscriptionItemsItemRequest {
         request::DeleteSubscriptionItemsItemRequest {
-            client: &self,
+            http_client: &self,
             item: item.to_owned(),
         }
     }
@@ -3880,7 +4227,7 @@ the SetupIntent will transition to the
         subscription_item: &str,
     ) -> request::GetSubscriptionItemsSubscriptionItemUsageRecordSummariesRequest {
         request::GetSubscriptionItemsSubscriptionItemUsageRecordSummariesRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -3900,7 +4247,7 @@ the SetupIntent will transition to the
         subscription_item: &str,
     ) -> request::PostSubscriptionItemsSubscriptionItemUsageRecordsRequest {
         request::PostSubscriptionItemsSubscriptionItemUsageRecordsRequest {
-            client: &self,
+            http_client: &self,
             subscription_item: subscription_item.to_owned(),
         }
     }
@@ -3909,7 +4256,7 @@ the SetupIntent will transition to the
         &self,
     ) -> request::GetSubscriptionSchedulesRequest {
         request::GetSubscriptionSchedulesRequest {
-            client: &self,
+            http_client: &self,
             canceled_at: None,
             completed_at: None,
             created: None,
@@ -3927,7 +4274,7 @@ the SetupIntent will transition to the
         &self,
     ) -> request::PostSubscriptionSchedulesRequest {
         request::PostSubscriptionSchedulesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of an existing subscription schedule. You only need to supply the unique subscription schedule identifier that was returned upon subscription schedule creation.</p>
@@ -3936,7 +4283,7 @@ the SetupIntent will transition to the
         schedule: &str,
     ) -> request::GetSubscriptionSchedulesScheduleRequest {
         request::GetSubscriptionSchedulesScheduleRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             schedule: schedule.to_owned(),
         }
@@ -3947,7 +4294,7 @@ the SetupIntent will transition to the
         schedule: &str,
     ) -> request::PostSubscriptionSchedulesScheduleRequest {
         request::PostSubscriptionSchedulesScheduleRequest {
-            client: &self,
+            http_client: &self,
             schedule: schedule.to_owned(),
         }
     }
@@ -3957,7 +4304,7 @@ the SetupIntent will transition to the
         schedule: &str,
     ) -> request::PostSubscriptionSchedulesScheduleCancelRequest {
         request::PostSubscriptionSchedulesScheduleCancelRequest {
-            client: &self,
+            http_client: &self,
             schedule: schedule.to_owned(),
         }
     }
@@ -3967,14 +4314,15 @@ the SetupIntent will transition to the
         schedule: &str,
     ) -> request::PostSubscriptionSchedulesScheduleReleaseRequest {
         request::PostSubscriptionSchedulesScheduleReleaseRequest {
-            client: &self,
+            http_client: &self,
             schedule: schedule.to_owned(),
         }
     }
     ///<p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
     pub fn get_subscriptions(&self) -> request::GetSubscriptionsRequest {
         request::GetSubscriptionsRequest {
-            client: &self,
+            http_client: &self,
+            automatic_tax: None,
             collection_method: None,
             created: None,
             current_period_end: None,
@@ -3998,7 +4346,7 @@ The <code>payment_behavior</code> parameter determines the exact behavior of the
 Schedules provide the flexibility to model more complex billing configurations that change over time.</p>*/
     pub fn post_subscriptions(&self) -> request::PostSubscriptionsRequest {
         request::PostSubscriptionsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     /**<p>Search for subscriptions you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -4010,7 +4358,7 @@ to an hour behind during outages. Search functionality is not available to merch
         query: &str,
     ) -> request::GetSubscriptionsSearchRequest {
         request::GetSubscriptionsSearchRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             limit: None,
             page: None,
@@ -4023,18 +4371,38 @@ to an hour behind during outages. Search functionality is not available to merch
         subscription_exposed_id: &str,
     ) -> request::GetSubscriptionsSubscriptionExposedIdRequest {
         request::GetSubscriptionsSubscriptionExposedIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             subscription_exposed_id: subscription_exposed_id.to_owned(),
         }
     }
-    ///<p>Updates an existing subscription on a customer to match the specified parameters. When changing plans or quantities, we will optionally prorate the price we charge next month to make up for any price changes. To preview how the proration will be calculated, use the <a href="#upcoming_invoice">upcoming invoice</a> endpoint.</p>
+    /**<p>Updates an existing subscription to match the specified parameters.
+When changing prices or quantities, we optionally prorate the price we charge next month to make up for any price changes.
+To preview how the proration is calculated, use the <a href="/docs/api/invoices/upcoming">upcoming invoice</a> endpoint.</p>
+
+<p>By default, we prorate subscription changes. For example, if a customer signs up on May 1 for a <currency>100</currency> price, they’ll be billed <currency>100</currency> immediately. If on May 15 they switch to a <currency>200</currency> price, then on June 1 they’ll be billed <currency>250</currency> (<currency>200</currency> for a renewal of her subscription, plus a <currency>50</currency> prorating adjustment for half of the previous month’s <currency>100</currency> difference). Similarly, a downgrade generates a credit that is applied to the next invoice. We also prorate when you make quantity changes.</p>
+
+<p>Switching prices does not normally change the billing date or generate an immediate charge unless:</p>
+
+<ul>
+<li>The billing interval is changed (for example, from monthly to yearly).</li>
+<li>The subscription moves from free to paid, or paid to free.</li>
+<li>A trial starts or ends.</li>
+</ul>
+
+<p>In these cases, we apply a credit for the unused time on the previous price, immediately charge the customer using the new price, and reset the billing date.</p>
+
+<p>If you want to charge for an upgrade immediately, pass <code>proration_behavior</code> as <code>always_invoice</code> to create prorations, automatically invoice the customer for those proration adjustments, and attempt to collect payment. If you pass <code>create_prorations</code>, the prorations are created but not automatically invoiced. If you want to bill the customer for the prorations before the subscription’s renewal date, you need to manually <a href="/docs/api/invoices/create">invoice the customer</a>.</p>
+
+<p>If you don’t want to prorate, set the <code>proration_behavior</code> option to <code>none</code>. With this option, the customer is billed <currency>100</currency> on May 1 and <currency>200</currency> on June 1. Similarly, if you set <code>proration_behavior</code> to <code>none</code> when switching between different billing intervals (for example, from monthly to yearly), we don’t generate any credits for the old subscription’s unused time. We still reset the billing date and bill immediately for the new subscription.</p>
+
+<p>Updating the quantity on a subscription many times in an hour may result in <a href="/docs/rate-limits">rate limiting</a>. If you need to bill for a frequently changing quantity, consider integrating <a href="/docs/billing/subscriptions/usage-based">usage-based billing</a> instead.</p>*/
     pub fn post_subscriptions_subscription_exposed_id(
         &self,
         subscription_exposed_id: &str,
     ) -> request::PostSubscriptionsSubscriptionExposedIdRequest {
         request::PostSubscriptionsSubscriptionExposedIdRequest {
-            client: &self,
+            http_client: &self,
             subscription_exposed_id: subscription_exposed_id.to_owned(),
         }
     }
@@ -4048,7 +4416,7 @@ to an hour behind during outages. Search functionality is not available to merch
         subscription_exposed_id: &str,
     ) -> request::DeleteSubscriptionsSubscriptionExposedIdRequest {
         request::DeleteSubscriptionsSubscriptionExposedIdRequest {
-            client: &self,
+            http_client: &self,
             subscription_exposed_id: subscription_exposed_id.to_owned(),
         }
     }
@@ -4058,14 +4426,127 @@ to an hour behind during outages. Search functionality is not available to merch
         subscription_exposed_id: &str,
     ) -> request::DeleteSubscriptionsSubscriptionExposedIdDiscountRequest {
         request::DeleteSubscriptionsSubscriptionExposedIdDiscountRequest {
-            client: &self,
+            http_client: &self,
             subscription_exposed_id: subscription_exposed_id.to_owned(),
+        }
+    }
+    ///<p>Initiates resumption of a paused subscription, optionally resetting the billing cycle anchor and creating prorations. If a resumption invoice is generated, it must be paid or marked uncollectible before the subscription will be unpaused. If payment succeeds the subscription will become <code>active</code>, and if payment fails the subscription will be <code>past_due</code>. The resumption invoice will void automatically if not paid by the expiration date.</p>
+    pub fn post_subscriptions_subscription_resume(
+        &self,
+        subscription: &str,
+    ) -> request::PostSubscriptionsSubscriptionResumeRequest {
+        request::PostSubscriptionsSubscriptionResumeRequest {
+            http_client: &self,
+            subscription: subscription.to_owned(),
+        }
+    }
+    ///<p>Calculates tax based on input and returns a Tax <code>Calculation</code> object.</p>
+    pub fn post_tax_calculations(&self) -> request::PostTaxCalculationsRequest {
+        request::PostTaxCalculationsRequest {
+            http_client: &self,
+        }
+    }
+    ///<p>Retrieves the line items of a persisted tax calculation as a collection.</p>
+    pub fn get_tax_calculations_calculation_line_items(
+        &self,
+        calculation: &str,
+    ) -> request::GetTaxCalculationsCalculationLineItemsRequest {
+        request::GetTaxCalculationsCalculationLineItemsRequest {
+            http_client: &self,
+            calculation: calculation.to_owned(),
+            ending_before: None,
+            expand: None,
+            limit: None,
+            starting_after: None,
+        }
+    }
+    ///<p>Returns a list of Tax <code>Registration</code> objects.</p>
+    pub fn get_tax_registrations(&self) -> request::GetTaxRegistrationsRequest {
+        request::GetTaxRegistrationsRequest {
+            http_client: &self,
+            ending_before: None,
+            expand: None,
+            limit: None,
+            starting_after: None,
+            status: None,
+        }
+    }
+    ///<p>Creates a new Tax <code>Registration</code> object.</p>
+    pub fn post_tax_registrations(&self) -> request::PostTaxRegistrationsRequest {
+        request::PostTaxRegistrationsRequest {
+            http_client: &self,
+        }
+    }
+    /**<p>Updates an existing Tax <code>Registration</code> object.</p>
+
+<p>A registration cannot be deleted after it has been created. If you wish to end a registration you may do so by setting <code>expires_at</code>.</p>*/
+    pub fn post_tax_registrations_id(
+        &self,
+        id: &str,
+    ) -> request::PostTaxRegistrationsIdRequest {
+        request::PostTaxRegistrationsIdRequest {
+            http_client: &self,
+            id: id.to_owned(),
+        }
+    }
+    ///<p>Retrieves Tax <code>Settings</code> for a merchant.</p>
+    pub fn get_tax_settings(&self) -> request::GetTaxSettingsRequest {
+        request::GetTaxSettingsRequest {
+            http_client: &self,
+            expand: None,
+        }
+    }
+    ///<p>Updates Tax <code>Settings</code> parameters used in tax calculations. All parameters are editable but none can be removed once set.</p>
+    pub fn post_tax_settings(&self) -> request::PostTaxSettingsRequest {
+        request::PostTaxSettingsRequest {
+            http_client: &self,
+        }
+    }
+    ///<p>Creates a Tax <code>Transaction</code> from a calculation.</p>
+    pub fn post_tax_transactions_create_from_calculation(
+        &self,
+    ) -> request::PostTaxTransactionsCreateFromCalculationRequest {
+        request::PostTaxTransactionsCreateFromCalculationRequest {
+            http_client: &self,
+        }
+    }
+    ///<p>Partially or fully reverses a previously created <code>Transaction</code>.</p>
+    pub fn post_tax_transactions_create_reversal(
+        &self,
+    ) -> request::PostTaxTransactionsCreateReversalRequest {
+        request::PostTaxTransactionsCreateReversalRequest {
+            http_client: &self,
+        }
+    }
+    ///<p>Retrieves a Tax <code>Transaction</code> object.</p>
+    pub fn get_tax_transactions_transaction(
+        &self,
+        transaction: &str,
+    ) -> request::GetTaxTransactionsTransactionRequest {
+        request::GetTaxTransactionsTransactionRequest {
+            http_client: &self,
+            expand: None,
+            transaction: transaction.to_owned(),
+        }
+    }
+    ///<p>Retrieves the line items of a committed standalone transaction as a collection.</p>
+    pub fn get_tax_transactions_transaction_line_items(
+        &self,
+        transaction: &str,
+    ) -> request::GetTaxTransactionsTransactionLineItemsRequest {
+        request::GetTaxTransactionsTransactionLineItemsRequest {
+            http_client: &self,
+            ending_before: None,
+            expand: None,
+            limit: None,
+            starting_after: None,
+            transaction: transaction.to_owned(),
         }
     }
     ///<p>A list of <a href="https://stripe.com/docs/tax/tax-categories">all tax codes available</a> to add to Products in order to allow specific tax calculations.</p>
     pub fn get_tax_codes(&self) -> request::GetTaxCodesRequest {
         request::GetTaxCodesRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -4075,7 +4556,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Retrieves the details of an existing tax code. Supply the unique tax code ID and Stripe will return the corresponding tax code information.</p>
     pub fn get_tax_codes_id(&self, id: &str) -> request::GetTaxCodesIdRequest {
         request::GetTaxCodesIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -4083,7 +4564,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Returns a list of your tax rates. Tax rates are returned sorted by creation date, with the most recently created tax rates appearing first.</p>
     pub fn get_tax_rates(&self) -> request::GetTaxRatesRequest {
         request::GetTaxRatesRequest {
-            client: &self,
+            http_client: &self,
             active: None,
             created: None,
             ending_before: None,
@@ -4096,7 +4577,7 @@ to an hour behind during outages. Search functionality is not available to merch
     ///<p>Creates a new tax rate.</p>
     pub fn post_tax_rates(&self) -> request::PostTaxRatesRequest {
         request::PostTaxRatesRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves a tax rate with the given ID</p>
@@ -4105,7 +4586,7 @@ to an hour behind during outages. Search functionality is not available to merch
         tax_rate: &str,
     ) -> request::GetTaxRatesTaxRateRequest {
         request::GetTaxRatesTaxRateRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             tax_rate: tax_rate.to_owned(),
         }
@@ -4116,7 +4597,7 @@ to an hour behind during outages. Search functionality is not available to merch
         tax_rate: &str,
     ) -> request::PostTaxRatesTaxRateRequest {
         request::PostTaxRatesTaxRateRequest {
-            client: &self,
+            http_client: &self,
             tax_rate: tax_rate.to_owned(),
         }
     }
@@ -4125,7 +4606,7 @@ to an hour behind during outages. Search functionality is not available to merch
         &self,
     ) -> request::GetTerminalConfigurationsRequest {
         request::GetTerminalConfigurationsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             is_account_default: None,
@@ -4138,7 +4619,7 @@ to an hour behind during outages. Search functionality is not available to merch
         &self,
     ) -> request::PostTerminalConfigurationsRequest {
         request::PostTerminalConfigurationsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves a <code>Configuration</code> object.</p>
@@ -4147,7 +4628,7 @@ to an hour behind during outages. Search functionality is not available to merch
         configuration: &str,
     ) -> request::GetTerminalConfigurationsConfigurationRequest {
         request::GetTerminalConfigurationsConfigurationRequest {
-            client: &self,
+            http_client: &self,
             configuration: configuration.to_owned(),
             expand: None,
         }
@@ -4158,7 +4639,7 @@ to an hour behind during outages. Search functionality is not available to merch
         configuration: &str,
     ) -> request::PostTerminalConfigurationsConfigurationRequest {
         request::PostTerminalConfigurationsConfigurationRequest {
-            client: &self,
+            http_client: &self,
             configuration: configuration.to_owned(),
         }
     }
@@ -4168,7 +4649,7 @@ to an hour behind during outages. Search functionality is not available to merch
         configuration: &str,
     ) -> request::DeleteTerminalConfigurationsConfigurationRequest {
         request::DeleteTerminalConfigurationsConfigurationRequest {
-            client: &self,
+            http_client: &self,
             configuration: configuration.to_owned(),
         }
     }
@@ -4177,13 +4658,13 @@ to an hour behind during outages. Search functionality is not available to merch
         &self,
     ) -> request::PostTerminalConnectionTokensRequest {
         request::PostTerminalConnectionTokensRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Returns a list of <code>Location</code> objects.</p>
     pub fn get_terminal_locations(&self) -> request::GetTerminalLocationsRequest {
         request::GetTerminalLocationsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -4194,7 +4675,7 @@ to an hour behind during outages. Search functionality is not available to merch
 For further details, including which address fields are required in each country, see the <a href="/docs/terminal/fleet/locations">Manage locations</a> guide.</p>*/
     pub fn post_terminal_locations(&self) -> request::PostTerminalLocationsRequest {
         request::PostTerminalLocationsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves a <code>Location</code> object.</p>
@@ -4203,7 +4684,7 @@ For further details, including which address fields are required in each country
         location: &str,
     ) -> request::GetTerminalLocationsLocationRequest {
         request::GetTerminalLocationsLocationRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             location: location.to_owned(),
         }
@@ -4214,7 +4695,7 @@ For further details, including which address fields are required in each country
         location: &str,
     ) -> request::PostTerminalLocationsLocationRequest {
         request::PostTerminalLocationsLocationRequest {
-            client: &self,
+            http_client: &self,
             location: location.to_owned(),
         }
     }
@@ -4224,19 +4705,20 @@ For further details, including which address fields are required in each country
         location: &str,
     ) -> request::DeleteTerminalLocationsLocationRequest {
         request::DeleteTerminalLocationsLocationRequest {
-            client: &self,
+            http_client: &self,
             location: location.to_owned(),
         }
     }
     ///<p>Returns a list of <code>Reader</code> objects.</p>
     pub fn get_terminal_readers(&self) -> request::GetTerminalReadersRequest {
         request::GetTerminalReadersRequest {
-            client: &self,
+            http_client: &self,
             device_type: None,
             ending_before: None,
             expand: None,
             limit: None,
             location: None,
+            serial_number: None,
             starting_after: None,
             status: None,
         }
@@ -4244,7 +4726,7 @@ For further details, including which address fields are required in each country
     ///<p>Creates a new <code>Reader</code> object.</p>
     pub fn post_terminal_readers(&self) -> request::PostTerminalReadersRequest {
         request::PostTerminalReadersRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves a <code>Reader</code> object.</p>
@@ -4253,7 +4735,7 @@ For further details, including which address fields are required in each country
         reader: &str,
     ) -> request::GetTerminalReadersReaderRequest {
         request::GetTerminalReadersReaderRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             reader: reader.to_owned(),
         }
@@ -4264,7 +4746,7 @@ For further details, including which address fields are required in each country
         reader: &str,
     ) -> request::PostTerminalReadersReaderRequest {
         request::PostTerminalReadersReaderRequest {
-            client: &self,
+            http_client: &self,
             reader: reader.to_owned(),
         }
     }
@@ -4274,7 +4756,7 @@ For further details, including which address fields are required in each country
         reader: &str,
     ) -> request::DeleteTerminalReadersReaderRequest {
         request::DeleteTerminalReadersReaderRequest {
-            client: &self,
+            http_client: &self,
             reader: reader.to_owned(),
         }
     }
@@ -4284,7 +4766,7 @@ For further details, including which address fields are required in each country
         reader: &str,
     ) -> request::PostTerminalReadersReaderCancelActionRequest {
         request::PostTerminalReadersReaderCancelActionRequest {
-            client: &self,
+            http_client: &self,
             reader: reader.to_owned(),
         }
     }
@@ -4294,7 +4776,7 @@ For further details, including which address fields are required in each country
         reader: &str,
     ) -> request::PostTerminalReadersReaderProcessPaymentIntentRequest {
         request::PostTerminalReadersReaderProcessPaymentIntentRequest {
-            client: &self,
+            http_client: &self,
             reader: reader.to_owned(),
         }
     }
@@ -4304,7 +4786,17 @@ For further details, including which address fields are required in each country
         reader: &str,
     ) -> request::PostTerminalReadersReaderProcessSetupIntentRequest {
         request::PostTerminalReadersReaderProcessSetupIntentRequest {
-            client: &self,
+            http_client: &self,
+            reader: reader.to_owned(),
+        }
+    }
+    ///<p>Initiates a refund on a Reader</p>
+    pub fn post_terminal_readers_reader_refund_payment(
+        &self,
+        reader: &str,
+    ) -> request::PostTerminalReadersReaderRefundPaymentRequest {
+        request::PostTerminalReadersReaderRefundPaymentRequest {
+            http_client: &self,
             reader: reader.to_owned(),
         }
     }
@@ -4314,7 +4806,7 @@ For further details, including which address fields are required in each country
         reader: &str,
     ) -> request::PostTerminalReadersReaderSetReaderDisplayRequest {
         request::PostTerminalReadersReaderSetReaderDisplayRequest {
-            client: &self,
+            http_client: &self,
             reader: reader.to_owned(),
         }
     }
@@ -4324,8 +4816,56 @@ For further details, including which address fields are required in each country
         customer: &str,
     ) -> request::PostTestHelpersCustomersCustomerFundCashBalanceRequest {
         request::PostTestHelpersCustomersCustomerFundCashBalanceRequest {
-            client: &self,
+            http_client: &self,
             customer: customer.to_owned(),
+        }
+    }
+    ///<p>Create a test-mode authorization.</p>
+    pub fn post_test_helpers_issuing_authorizations(
+        &self,
+    ) -> request::PostTestHelpersIssuingAuthorizationsRequest {
+        request::PostTestHelpersIssuingAuthorizationsRequest {
+            http_client: &self,
+        }
+    }
+    ///<p>Capture a test-mode authorization.</p>
+    pub fn post_test_helpers_issuing_authorizations_authorization_capture(
+        &self,
+        authorization: &str,
+    ) -> request::PostTestHelpersIssuingAuthorizationsAuthorizationCaptureRequest {
+        request::PostTestHelpersIssuingAuthorizationsAuthorizationCaptureRequest {
+            http_client: &self,
+            authorization: authorization.to_owned(),
+        }
+    }
+    ///<p>Expire a test-mode Authorization.</p>
+    pub fn post_test_helpers_issuing_authorizations_authorization_expire(
+        &self,
+        authorization: &str,
+    ) -> request::PostTestHelpersIssuingAuthorizationsAuthorizationExpireRequest {
+        request::PostTestHelpersIssuingAuthorizationsAuthorizationExpireRequest {
+            http_client: &self,
+            authorization: authorization.to_owned(),
+        }
+    }
+    ///<p>Increment a test-mode Authorization.</p>
+    pub fn post_test_helpers_issuing_authorizations_authorization_increment(
+        &self,
+        authorization: &str,
+    ) -> request::PostTestHelpersIssuingAuthorizationsAuthorizationIncrementRequest {
+        request::PostTestHelpersIssuingAuthorizationsAuthorizationIncrementRequest {
+            http_client: &self,
+            authorization: authorization.to_owned(),
+        }
+    }
+    ///<p>Reverse a test-mode Authorization.</p>
+    pub fn post_test_helpers_issuing_authorizations_authorization_reverse(
+        &self,
+        authorization: &str,
+    ) -> request::PostTestHelpersIssuingAuthorizationsAuthorizationReverseRequest {
+        request::PostTestHelpersIssuingAuthorizationsAuthorizationReverseRequest {
+            http_client: &self,
+            authorization: authorization.to_owned(),
         }
     }
     ///<p>Updates the shipping status of the specified Issuing <code>Card</code> object to <code>delivered</code>.</p>
@@ -4334,7 +4874,7 @@ For further details, including which address fields are required in each country
         card: &str,
     ) -> request::PostTestHelpersIssuingCardsCardShippingDeliverRequest {
         request::PostTestHelpersIssuingCardsCardShippingDeliverRequest {
-            client: &self,
+            http_client: &self,
             card: card.to_owned(),
         }
     }
@@ -4344,7 +4884,7 @@ For further details, including which address fields are required in each country
         card: &str,
     ) -> request::PostTestHelpersIssuingCardsCardShippingFailRequest {
         request::PostTestHelpersIssuingCardsCardShippingFailRequest {
-            client: &self,
+            http_client: &self,
             card: card.to_owned(),
         }
     }
@@ -4354,7 +4894,7 @@ For further details, including which address fields are required in each country
         card: &str,
     ) -> request::PostTestHelpersIssuingCardsCardShippingReturnRequest {
         request::PostTestHelpersIssuingCardsCardShippingReturnRequest {
-            client: &self,
+            http_client: &self,
             card: card.to_owned(),
         }
     }
@@ -4364,8 +4904,34 @@ For further details, including which address fields are required in each country
         card: &str,
     ) -> request::PostTestHelpersIssuingCardsCardShippingShipRequest {
         request::PostTestHelpersIssuingCardsCardShippingShipRequest {
-            client: &self,
+            http_client: &self,
             card: card.to_owned(),
+        }
+    }
+    ///<p>Allows the user to capture an arbitrary amount, also known as a forced capture.</p>
+    pub fn post_test_helpers_issuing_transactions_create_force_capture(
+        &self,
+    ) -> request::PostTestHelpersIssuingTransactionsCreateForceCaptureRequest {
+        request::PostTestHelpersIssuingTransactionsCreateForceCaptureRequest {
+            http_client: &self,
+        }
+    }
+    ///<p>Allows the user to refund an arbitrary amount, also known as a unlinked refund.</p>
+    pub fn post_test_helpers_issuing_transactions_create_unlinked_refund(
+        &self,
+    ) -> request::PostTestHelpersIssuingTransactionsCreateUnlinkedRefundRequest {
+        request::PostTestHelpersIssuingTransactionsCreateUnlinkedRefundRequest {
+            http_client: &self,
+        }
+    }
+    ///<p>Refund a test-mode Transaction.</p>
+    pub fn post_test_helpers_issuing_transactions_transaction_refund(
+        &self,
+        transaction: &str,
+    ) -> request::PostTestHelpersIssuingTransactionsTransactionRefundRequest {
+        request::PostTestHelpersIssuingTransactionsTransactionRefundRequest {
+            http_client: &self,
+            transaction: transaction.to_owned(),
         }
     }
     ///<p>Expire a refund with a status of <code>requires_action</code>.</p>
@@ -4374,7 +4940,7 @@ For further details, including which address fields are required in each country
         refund: &str,
     ) -> request::PostTestHelpersRefundsRefundExpireRequest {
         request::PostTestHelpersRefundsRefundExpireRequest {
-            client: &self,
+            http_client: &self,
             refund: refund.to_owned(),
         }
     }
@@ -4384,7 +4950,7 @@ For further details, including which address fields are required in each country
         reader: &str,
     ) -> request::PostTestHelpersTerminalReadersReaderPresentPaymentMethodRequest {
         request::PostTestHelpersTerminalReadersReaderPresentPaymentMethodRequest {
-            client: &self,
+            http_client: &self,
             reader: reader.to_owned(),
         }
     }
@@ -4393,7 +4959,7 @@ For further details, including which address fields are required in each country
         &self,
     ) -> request::GetTestHelpersTestClocksRequest {
         request::GetTestHelpersTestClocksRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -4405,7 +4971,7 @@ For further details, including which address fields are required in each country
         &self,
     ) -> request::PostTestHelpersTestClocksRequest {
         request::PostTestHelpersTestClocksRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves a test clock.</p>
@@ -4414,7 +4980,7 @@ For further details, including which address fields are required in each country
         test_clock: &str,
     ) -> request::GetTestHelpersTestClocksTestClockRequest {
         request::GetTestHelpersTestClocksTestClockRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             test_clock: test_clock.to_owned(),
         }
@@ -4425,7 +4991,7 @@ For further details, including which address fields are required in each country
         test_clock: &str,
     ) -> request::DeleteTestHelpersTestClocksTestClockRequest {
         request::DeleteTestHelpersTestClocksTestClockRequest {
-            client: &self,
+            http_client: &self,
             test_clock: test_clock.to_owned(),
         }
     }
@@ -4435,7 +5001,7 @@ For further details, including which address fields are required in each country
         test_clock: &str,
     ) -> request::PostTestHelpersTestClocksTestClockAdvanceRequest {
         request::PostTestHelpersTestClocksTestClockAdvanceRequest {
-            client: &self,
+            http_client: &self,
             test_clock: test_clock.to_owned(),
         }
     }
@@ -4445,7 +5011,7 @@ For further details, including which address fields are required in each country
         id: &str,
     ) -> request::PostTestHelpersTreasuryInboundTransfersIdFailRequest {
         request::PostTestHelpersTreasuryInboundTransfersIdFailRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
@@ -4455,7 +5021,7 @@ For further details, including which address fields are required in each country
         id: &str,
     ) -> request::PostTestHelpersTreasuryInboundTransfersIdReturnRequest {
         request::PostTestHelpersTreasuryInboundTransfersIdReturnRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
@@ -4465,7 +5031,7 @@ For further details, including which address fields are required in each country
         id: &str,
     ) -> request::PostTestHelpersTreasuryInboundTransfersIdSucceedRequest {
         request::PostTestHelpersTreasuryInboundTransfersIdSucceedRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
@@ -4475,7 +5041,7 @@ For further details, including which address fields are required in each country
         id: &str,
     ) -> request::PostTestHelpersTreasuryOutboundPaymentsIdFailRequest {
         request::PostTestHelpersTreasuryOutboundPaymentsIdFailRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
@@ -4485,7 +5051,7 @@ For further details, including which address fields are required in each country
         id: &str,
     ) -> request::PostTestHelpersTreasuryOutboundPaymentsIdPostRequest {
         request::PostTestHelpersTreasuryOutboundPaymentsIdPostRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
@@ -4495,7 +5061,7 @@ For further details, including which address fields are required in each country
         id: &str,
     ) -> request::PostTestHelpersTreasuryOutboundPaymentsIdReturnRequest {
         request::PostTestHelpersTreasuryOutboundPaymentsIdReturnRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
@@ -4505,7 +5071,7 @@ For further details, including which address fields are required in each country
         outbound_transfer: &str,
     ) -> request::PostTestHelpersTreasuryOutboundTransfersOutboundTransferFailRequest {
         request::PostTestHelpersTreasuryOutboundTransfersOutboundTransferFailRequest {
-            client: &self,
+            http_client: &self,
             outbound_transfer: outbound_transfer.to_owned(),
         }
     }
@@ -4515,7 +5081,7 @@ For further details, including which address fields are required in each country
         outbound_transfer: &str,
     ) -> request::PostTestHelpersTreasuryOutboundTransfersOutboundTransferPostRequest {
         request::PostTestHelpersTreasuryOutboundTransfersOutboundTransferPostRequest {
-            client: &self,
+            http_client: &self,
             outbound_transfer: outbound_transfer.to_owned(),
         }
     }
@@ -4525,7 +5091,7 @@ For further details, including which address fields are required in each country
         outbound_transfer: &str,
     ) -> request::PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturnRequest {
         request::PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturnRequest {
-            client: &self,
+            http_client: &self,
             outbound_transfer: outbound_transfer.to_owned(),
         }
     }
@@ -4534,7 +5100,7 @@ For further details, including which address fields are required in each country
         &self,
     ) -> request::PostTestHelpersTreasuryReceivedCreditsRequest {
         request::PostTestHelpersTreasuryReceivedCreditsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Use this endpoint to simulate a test mode ReceivedDebit initiated by a third party. In live mode, you can’t directly create ReceivedDebits initiated by third parties.</p>
@@ -4542,20 +5108,20 @@ For further details, including which address fields are required in each country
         &self,
     ) -> request::PostTestHelpersTreasuryReceivedDebitsRequest {
         request::PostTestHelpersTreasuryReceivedDebitsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     /**<p>Creates a single-use token that represents a bank account’s details.
-This token can be used with any API method in place of a bank account dictionary. This token can be used only once, by attaching it to a <a href="#accounts">Custom account</a>.</p>*/
+You can use this token with any API method in place of a bank account dictionary. You can only use this token once. To do so, attach it to a <a href="#accounts">Custom account</a>.</p>*/
     pub fn post_tokens(&self) -> request::PostTokensRequest {
         request::PostTokensRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the token with the given ID.</p>
     pub fn get_tokens_token(&self, token: &str) -> request::GetTokensTokenRequest {
         request::GetTokensTokenRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             token: token.to_owned(),
         }
@@ -4563,7 +5129,7 @@ This token can be used with any API method in place of a bank account dictionary
     ///<p>Returns a list of top-ups.</p>
     pub fn get_topups(&self) -> request::GetTopupsRequest {
         request::GetTopupsRequest {
-            client: &self,
+            http_client: &self,
             amount: None,
             created: None,
             ending_before: None,
@@ -4576,13 +5142,13 @@ This token can be used with any API method in place of a bank account dictionary
     ///<p>Top up the balance of an account</p>
     pub fn post_topups(&self) -> request::PostTopupsRequest {
         request::PostTopupsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of a top-up that has previously been created. Supply the unique top-up ID that was returned from your previous request, and Stripe will return the corresponding top-up information.</p>
     pub fn get_topups_topup(&self, topup: &str) -> request::GetTopupsTopupRequest {
         request::GetTopupsTopupRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             topup: topup.to_owned(),
         }
@@ -4590,7 +5156,7 @@ This token can be used with any API method in place of a bank account dictionary
     ///<p>Updates the metadata of a top-up. Other top-up details are not editable by design.</p>
     pub fn post_topups_topup(&self, topup: &str) -> request::PostTopupsTopupRequest {
         request::PostTopupsTopupRequest {
-            client: &self,
+            http_client: &self,
             topup: topup.to_owned(),
         }
     }
@@ -4600,14 +5166,14 @@ This token can be used with any API method in place of a bank account dictionary
         topup: &str,
     ) -> request::PostTopupsTopupCancelRequest {
         request::PostTopupsTopupCancelRequest {
-            client: &self,
+            http_client: &self,
             topup: topup.to_owned(),
         }
     }
     ///<p>Returns a list of existing transfers sent to connected accounts. The transfers are returned in sorted order, with the most recently created transfers appearing first.</p>
     pub fn get_transfers(&self) -> request::GetTransfersRequest {
         request::GetTransfersRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             destination: None,
             ending_before: None,
@@ -4620,7 +5186,7 @@ This token can be used with any API method in place of a bank account dictionary
     ///<p>To send funds from your Stripe account to a connected account, you create a new transfer object. Your <a href="#balance">Stripe balance</a> must be able to cover the transfer amount, or you’ll receive an “Insufficient Funds” error.</p>
     pub fn post_transfers(&self) -> request::PostTransfersRequest {
         request::PostTransfersRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>You can see a list of the reversals belonging to a specific transfer. Note that the 10 most recent reversals are always available by default on the transfer object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional reversals.</p>
@@ -4629,7 +5195,7 @@ This token can be used with any API method in place of a bank account dictionary
         id: &str,
     ) -> request::GetTransfersIdReversalsRequest {
         request::GetTransfersIdReversalsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             id: id.to_owned(),
@@ -4647,7 +5213,7 @@ This token can be used with any API method in place of a bank account dictionary
         id: &str,
     ) -> request::PostTransfersIdReversalsRequest {
         request::PostTransfersIdReversalsRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
@@ -4657,7 +5223,7 @@ This token can be used with any API method in place of a bank account dictionary
         transfer: &str,
     ) -> request::GetTransfersTransferRequest {
         request::GetTransfersTransferRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             transfer: transfer.to_owned(),
         }
@@ -4670,7 +5236,7 @@ This token can be used with any API method in place of a bank account dictionary
         transfer: &str,
     ) -> request::PostTransfersTransferRequest {
         request::PostTransfersTransferRequest {
-            client: &self,
+            http_client: &self,
             transfer: transfer.to_owned(),
         }
     }
@@ -4681,7 +5247,7 @@ This token can be used with any API method in place of a bank account dictionary
         transfer: &str,
     ) -> request::GetTransfersTransferReversalsIdRequest {
         request::GetTransfersTransferReversalsIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
             transfer: transfer.to_owned(),
@@ -4696,7 +5262,7 @@ This token can be used with any API method in place of a bank account dictionary
         transfer: &str,
     ) -> request::PostTransfersTransferReversalsIdRequest {
         request::PostTransfersTransferReversalsIdRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
             transfer: transfer.to_owned(),
         }
@@ -4707,7 +5273,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::GetTreasuryCreditReversalsRequest {
         request::GetTreasuryCreditReversalsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             financial_account: financial_account.to_owned(),
@@ -4722,7 +5288,7 @@ This token can be used with any API method in place of a bank account dictionary
         &self,
     ) -> request::PostTreasuryCreditReversalsRequest {
         request::PostTreasuryCreditReversalsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of an existing CreditReversal by passing the unique CreditReversal ID from either the CreditReversal creation request or CreditReversal list</p>
@@ -4731,7 +5297,7 @@ This token can be used with any API method in place of a bank account dictionary
         credit_reversal: &str,
     ) -> request::GetTreasuryCreditReversalsCreditReversalRequest {
         request::GetTreasuryCreditReversalsCreditReversalRequest {
-            client: &self,
+            http_client: &self,
             credit_reversal: credit_reversal.to_owned(),
             expand: None,
         }
@@ -4742,7 +5308,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::GetTreasuryDebitReversalsRequest {
         request::GetTreasuryDebitReversalsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             financial_account: financial_account.to_owned(),
@@ -4758,7 +5324,7 @@ This token can be used with any API method in place of a bank account dictionary
         &self,
     ) -> request::PostTreasuryDebitReversalsRequest {
         request::PostTreasuryDebitReversalsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves a DebitReversal object.</p>
@@ -4767,7 +5333,7 @@ This token can be used with any API method in place of a bank account dictionary
         debit_reversal: &str,
     ) -> request::GetTreasuryDebitReversalsDebitReversalRequest {
         request::GetTreasuryDebitReversalsDebitReversalRequest {
-            client: &self,
+            http_client: &self,
             debit_reversal: debit_reversal.to_owned(),
             expand: None,
         }
@@ -4777,7 +5343,7 @@ This token can be used with any API method in place of a bank account dictionary
         &self,
     ) -> request::GetTreasuryFinancialAccountsRequest {
         request::GetTreasuryFinancialAccountsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -4790,7 +5356,7 @@ This token can be used with any API method in place of a bank account dictionary
         &self,
     ) -> request::PostTreasuryFinancialAccountsRequest {
         request::PostTreasuryFinancialAccountsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of a FinancialAccount.</p>
@@ -4799,7 +5365,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::GetTreasuryFinancialAccountsFinancialAccountRequest {
         request::GetTreasuryFinancialAccountsFinancialAccountRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             financial_account: financial_account.to_owned(),
         }
@@ -4810,7 +5376,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::PostTreasuryFinancialAccountsFinancialAccountRequest {
         request::PostTreasuryFinancialAccountsFinancialAccountRequest {
-            client: &self,
+            http_client: &self,
             financial_account: financial_account.to_owned(),
         }
     }
@@ -4820,7 +5386,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::GetTreasuryFinancialAccountsFinancialAccountFeaturesRequest {
         request::GetTreasuryFinancialAccountsFinancialAccountFeaturesRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             financial_account: financial_account.to_owned(),
         }
@@ -4831,7 +5397,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::PostTreasuryFinancialAccountsFinancialAccountFeaturesRequest {
         request::PostTreasuryFinancialAccountsFinancialAccountFeaturesRequest {
-            client: &self,
+            http_client: &self,
             financial_account: financial_account.to_owned(),
         }
     }
@@ -4841,7 +5407,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::GetTreasuryInboundTransfersRequest {
         request::GetTreasuryInboundTransfersRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             financial_account: financial_account.to_owned(),
@@ -4855,7 +5421,7 @@ This token can be used with any API method in place of a bank account dictionary
         &self,
     ) -> request::PostTreasuryInboundTransfersRequest {
         request::PostTreasuryInboundTransfersRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of an existing InboundTransfer.</p>
@@ -4864,7 +5430,7 @@ This token can be used with any API method in place of a bank account dictionary
         id: &str,
     ) -> request::GetTreasuryInboundTransfersIdRequest {
         request::GetTreasuryInboundTransfersIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -4875,7 +5441,7 @@ This token can be used with any API method in place of a bank account dictionary
         inbound_transfer: &str,
     ) -> request::PostTreasuryInboundTransfersInboundTransferCancelRequest {
         request::PostTreasuryInboundTransfersInboundTransferCancelRequest {
-            client: &self,
+            http_client: &self,
             inbound_transfer: inbound_transfer.to_owned(),
         }
     }
@@ -4885,7 +5451,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::GetTreasuryOutboundPaymentsRequest {
         request::GetTreasuryOutboundPaymentsRequest {
-            client: &self,
+            http_client: &self,
             customer: None,
             ending_before: None,
             expand: None,
@@ -4900,7 +5466,7 @@ This token can be used with any API method in place of a bank account dictionary
         &self,
     ) -> request::PostTreasuryOutboundPaymentsRequest {
         request::PostTreasuryOutboundPaymentsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of an existing OutboundPayment by passing the unique OutboundPayment ID from either the OutboundPayment creation request or OutboundPayment list.</p>
@@ -4909,7 +5475,7 @@ This token can be used with any API method in place of a bank account dictionary
         id: &str,
     ) -> request::GetTreasuryOutboundPaymentsIdRequest {
         request::GetTreasuryOutboundPaymentsIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -4920,7 +5486,7 @@ This token can be used with any API method in place of a bank account dictionary
         id: &str,
     ) -> request::PostTreasuryOutboundPaymentsIdCancelRequest {
         request::PostTreasuryOutboundPaymentsIdCancelRequest {
-            client: &self,
+            http_client: &self,
             id: id.to_owned(),
         }
     }
@@ -4930,7 +5496,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::GetTreasuryOutboundTransfersRequest {
         request::GetTreasuryOutboundTransfersRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             financial_account: financial_account.to_owned(),
@@ -4944,7 +5510,7 @@ This token can be used with any API method in place of a bank account dictionary
         &self,
     ) -> request::PostTreasuryOutboundTransfersRequest {
         request::PostTreasuryOutboundTransfersRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the details of an existing OutboundTransfer by passing the unique OutboundTransfer ID from either the OutboundTransfer creation request or OutboundTransfer list.</p>
@@ -4953,7 +5519,7 @@ This token can be used with any API method in place of a bank account dictionary
         outbound_transfer: &str,
     ) -> request::GetTreasuryOutboundTransfersOutboundTransferRequest {
         request::GetTreasuryOutboundTransfersOutboundTransferRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             outbound_transfer: outbound_transfer.to_owned(),
         }
@@ -4964,7 +5530,7 @@ This token can be used with any API method in place of a bank account dictionary
         outbound_transfer: &str,
     ) -> request::PostTreasuryOutboundTransfersOutboundTransferCancelRequest {
         request::PostTreasuryOutboundTransfersOutboundTransferCancelRequest {
-            client: &self,
+            http_client: &self,
             outbound_transfer: outbound_transfer.to_owned(),
         }
     }
@@ -4974,7 +5540,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::GetTreasuryReceivedCreditsRequest {
         request::GetTreasuryReceivedCreditsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             financial_account: financial_account.to_owned(),
@@ -4990,7 +5556,7 @@ This token can be used with any API method in place of a bank account dictionary
         id: &str,
     ) -> request::GetTreasuryReceivedCreditsIdRequest {
         request::GetTreasuryReceivedCreditsIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -5001,7 +5567,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::GetTreasuryReceivedDebitsRequest {
         request::GetTreasuryReceivedDebitsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             financial_account: financial_account.to_owned(),
@@ -5016,7 +5582,7 @@ This token can be used with any API method in place of a bank account dictionary
         id: &str,
     ) -> request::GetTreasuryReceivedDebitsIdRequest {
         request::GetTreasuryReceivedDebitsIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -5027,7 +5593,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::GetTreasuryTransactionEntriesRequest {
         request::GetTreasuryTransactionEntriesRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             effective_at: None,
             ending_before: None,
@@ -5045,7 +5611,7 @@ This token can be used with any API method in place of a bank account dictionary
         id: &str,
     ) -> request::GetTreasuryTransactionEntriesIdRequest {
         request::GetTreasuryTransactionEntriesIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -5056,7 +5622,7 @@ This token can be used with any API method in place of a bank account dictionary
         financial_account: &str,
     ) -> request::GetTreasuryTransactionsRequest {
         request::GetTreasuryTransactionsRequest {
-            client: &self,
+            http_client: &self,
             created: None,
             ending_before: None,
             expand: None,
@@ -5074,7 +5640,7 @@ This token can be used with any API method in place of a bank account dictionary
         id: &str,
     ) -> request::GetTreasuryTransactionsIdRequest {
         request::GetTreasuryTransactionsIdRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             id: id.to_owned(),
         }
@@ -5082,7 +5648,7 @@ This token can be used with any API method in place of a bank account dictionary
     ///<p>Returns a list of your webhook endpoints.</p>
     pub fn get_webhook_endpoints(&self) -> request::GetWebhookEndpointsRequest {
         request::GetWebhookEndpointsRequest {
-            client: &self,
+            http_client: &self,
             ending_before: None,
             expand: None,
             limit: None,
@@ -5092,7 +5658,7 @@ This token can be used with any API method in place of a bank account dictionary
     ///<p>A webhook endpoint must have a <code>url</code> and a list of <code>enabled_events</code>. You may optionally specify the Boolean <code>connect</code> parameter. If set to true, then a Connect webhook endpoint that notifies the specified <code>url</code> about events from all connected accounts is created; otherwise an account webhook endpoint that notifies the specified <code>url</code> only about events from your account is created. You can also create webhook endpoints in the <a href="https://dashboard.stripe.com/account/webhooks">webhooks settings</a> section of the Dashboard.</p>
     pub fn post_webhook_endpoints(&self) -> request::PostWebhookEndpointsRequest {
         request::PostWebhookEndpointsRequest {
-            client: &self,
+            http_client: &self,
         }
     }
     ///<p>Retrieves the webhook endpoint with the given ID.</p>
@@ -5101,7 +5667,7 @@ This token can be used with any API method in place of a bank account dictionary
         webhook_endpoint: &str,
     ) -> request::GetWebhookEndpointsWebhookEndpointRequest {
         request::GetWebhookEndpointsWebhookEndpointRequest {
-            client: &self,
+            http_client: &self,
             expand: None,
             webhook_endpoint: webhook_endpoint.to_owned(),
         }
@@ -5112,7 +5678,7 @@ This token can be used with any API method in place of a bank account dictionary
         webhook_endpoint: &str,
     ) -> request::PostWebhookEndpointsWebhookEndpointRequest {
         request::PostWebhookEndpointsWebhookEndpointRequest {
-            client: &self,
+            http_client: &self,
             webhook_endpoint: webhook_endpoint.to_owned(),
         }
     }
@@ -5122,7 +5688,7 @@ This token can be used with any API method in place of a bank account dictionary
         webhook_endpoint: &str,
     ) -> request::DeleteWebhookEndpointsWebhookEndpointRequest {
         request::DeleteWebhookEndpointsWebhookEndpointRequest {
-            client: &self,
+            http_client: &self,
             webhook_endpoint: webhook_endpoint.to_owned(),
         }
     }
@@ -5135,7 +5701,7 @@ impl StripeAuthentication {
     pub fn from_env() -> Self {
         Self::BasicAuth {
             basic_auth: std::env::var("STRIPE_BASIC_AUTH")
-                .expect("Environment variable STRIPE_BASIC_AUTH is not set."),
+                .expect("Environment variable BASIC_AUTH is not set."),
         }
     }
 }

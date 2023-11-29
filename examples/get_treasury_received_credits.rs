@@ -1,6 +1,6 @@
 #![allow(unused_imports)]
-use stripe2::StripeClient;
-use stripe2::model::*;
+use stripe::StripeClient;
+use stripe::model::*;
 #[tokio::main]
 async fn main() {
     let client = StripeClient::from_env();
@@ -10,10 +10,11 @@ async fn main() {
         .ending_before("your ending before")
         .expand(&["your expand"])
         .limit(1)
-        .linked_flows(::serde_json::json!({}))
+        .linked_flows(LinkedFlowsParam {
+            source_flow_type: "your source flow type".to_owned(),
+        })
         .starting_after("your starting after")
         .status("your status")
-        .send()
         .await
         .unwrap();
     println!("{:#?}", response);

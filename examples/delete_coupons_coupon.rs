@@ -1,10 +1,10 @@
 #![allow(unused_imports)]
-use stripe2::StripeClient;
-use stripe2::model::*;
+use stripe::StripeClient;
+use stripe::model::*;
 #[tokio::main]
 async fn main() {
     let client = StripeClient::from_env();
     let coupon = "your coupon";
-    let response = client.delete_coupons_coupon(coupon).send().await.unwrap();
+    let response = client.delete_coupons_coupon(coupon).await.unwrap();
     println!("{:#?}", response);
 }

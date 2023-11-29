@@ -4,79 +4,82 @@ use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+#[derive(Clone)]
 pub struct GetCreditNotesPreviewLinesRequest<'a> {
-    pub(crate) client: &'a StripeClient,
+    pub(crate) http_client: &'a StripeClient,
     pub amount: Option<i64>,
     pub credit_amount: Option<i64>,
+    pub effective_at: Option<i64>,
     pub ending_before: Option<String>,
     pub expand: Option<Vec<String>>,
     pub invoice: String,
     pub limit: Option<i64>,
-    pub lines: Option<Vec<serde_json::Value>>,
+    pub lines: Option<Vec<CreditNoteLineItemParams>>,
     pub memo: Option<String>,
     pub metadata: Option<serde_json::Value>,
     pub out_of_band_amount: Option<i64>,
     pub reason: Option<String>,
     pub refund: Option<String>,
     pub refund_amount: Option<i64>,
+    pub shipping_cost: Option<CreditNoteShippingCost>,
     pub starting_after: Option<String>,
 }
 impl<'a> GetCreditNotesPreviewLinesRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<serde_json::Value> {
-        let mut r = self.client.client.get("/v1/credit_notes/preview/lines");
+    pub async fn send(self) -> ::httpclient::InMemoryResult<CreditNoteLinesList> {
+        let mut r = self.http_client.client.get("/v1/credit_notes/preview/lines");
         if let Some(ref unwrapped) = self.amount {
-            r = r.push_query("amount", &unwrapped.to_string());
+            r = r.query("amount", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.credit_amount {
-            r = r.push_query("credit_amount", &unwrapped.to_string());
+            r = r.query("credit_amount", &unwrapped.to_string());
+        }
+        if let Some(ref unwrapped) = self.effective_at {
+            r = r.query("effective_at", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.ending_before {
-            r = r.push_query("ending_before", &unwrapped.to_string());
+            r = r.query("ending_before", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.expand {
             for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
+                r = r.query("expand[]", &item.to_string());
             }
         }
-        r = r.push_query("invoice", &self.invoice.to_string());
+        r = r.query("invoice", &self.invoice.to_string());
         if let Some(ref unwrapped) = self.limit {
-            r = r.push_query("limit", &unwrapped.to_string());
+            r = r.query("limit", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.lines {
             for item in unwrapped {
-                r = r.push_query("lines[]", &item.to_string());
+                r = r.query("lines[]", &item.to_string());
             }
         }
         if let Some(ref unwrapped) = self.memo {
-            r = r.push_query("memo", &unwrapped.to_string());
+            r = r.query("memo", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.metadata {
-            r = r.push_query("metadata", &unwrapped.to_string());
+            r = r.query("metadata", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.out_of_band_amount {
-            r = r.push_query("out_of_band_amount", &unwrapped.to_string());
+            r = r.query("out_of_band_amount", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.reason {
-            r = r.push_query("reason", &unwrapped.to_string());
+            r = r.query("reason", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.refund {
-            r = r.push_query("refund", &unwrapped.to_string());
+            r = r.query("refund", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.refund_amount {
-            r = r.push_query("refund_amount", &unwrapped.to_string());
+            r = r.query("refund_amount", &unwrapped.to_string());
+        }
+        if let Some(ref unwrapped) = self.shipping_cost {
+            r = r.query("shipping_cost", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.starting_after {
-            r = r.push_query("starting_after", &unwrapped.to_string());
+            r = r.query("starting_after", &unwrapped.to_string());
         }
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
+        r = self.http_client.authenticate(r);
+        let res = r.send_awaiting_body().await?;
+        res.json().map_err(Into::into)
     }
     pub fn amount(mut self, amount: i64) -> Self {
         self.amount = Some(amount);
@@ -84,6 +87,10 @@ impl<'a> GetCreditNotesPreviewLinesRequest<'a> {
     }
     pub fn credit_amount(mut self, credit_amount: i64) -> Self {
         self.credit_amount = Some(credit_amount);
+        self
+    }
+    pub fn effective_at(mut self, effective_at: i64) -> Self {
+        self.effective_at = Some(effective_at);
         self
     }
     pub fn ending_before(mut self, ending_before: &str) -> Self {
@@ -98,7 +105,7 @@ impl<'a> GetCreditNotesPreviewLinesRequest<'a> {
         self.limit = Some(limit);
         self
     }
-    pub fn lines(mut self, lines: Vec<serde_json::Value>) -> Self {
+    pub fn lines(mut self, lines: Vec<CreditNoteLineItemParams>) -> Self {
         self.lines = Some(lines);
         self
     }
@@ -126,8 +133,19 @@ impl<'a> GetCreditNotesPreviewLinesRequest<'a> {
         self.refund_amount = Some(refund_amount);
         self
     }
+    pub fn shipping_cost(mut self, shipping_cost: CreditNoteShippingCost) -> Self {
+        self.shipping_cost = Some(shipping_cost);
+        self
+    }
     pub fn starting_after(mut self, starting_after: &str) -> Self {
         self.starting_after = Some(starting_after.to_owned());
         self
+    }
+}
+impl<'a> ::std::future::IntoFuture for GetCreditNotesPreviewLinesRequest<'a> {
+    type Output = httpclient::InMemoryResult<CreditNoteLinesList>;
+    type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
     }
 }

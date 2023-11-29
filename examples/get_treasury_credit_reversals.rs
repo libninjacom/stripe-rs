@@ -1,6 +1,6 @@
 #![allow(unused_imports)]
-use stripe2::StripeClient;
-use stripe2::model::*;
+use stripe::StripeClient;
+use stripe::model::*;
 #[tokio::main]
 async fn main() {
     let client = StripeClient::from_env();
@@ -13,7 +13,6 @@ async fn main() {
         .received_credit("your received credit")
         .starting_after("your starting after")
         .status("your status")
-        .send()
         .await
         .unwrap();
     println!("{:#?}", response);

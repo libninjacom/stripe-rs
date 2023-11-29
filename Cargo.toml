@@ -1,7 +1,7 @@
 [package]
 name = "stripe2"
 edition = "2021"
-version = "29.0.0"
+version = "0.1.0"
 description = "Stripe client, generated from the OpenAPI spec."
 homepage = "https://github.com/libninjacom/stripe-rs"
 documentation = "https://docs.rs/stripe2"
@@ -11,23 +11,34 @@ repository = "https://github.com/libninjacom/stripe-rs"
 
 [dependencies]
 anyhow = "1.0.57"
-httpclient = "0.6.0"
+futures = "0.3.25"
 serde_json = "1.0.81"
+
+[dependencies.chrono]
+version = "0.4.26"
+features = ["serde"]
+
+[dependencies.httpclient]
+version = "0.18.0"
+features = []
+default-features = false
+
+[dependencies.rust_decimal]
+version = "1.28.1"
+features = ["serde-with-str"]
+default-features = false
 
 [dependencies.serde]
 version = "1.0.137"
 features = ["derive"]
-optional = false
+
 [dev-dependencies.tokio]
 version = "1.18.2"
 features = ["full"]
-optional = false
 
 [lib]
 path = "src/lib.rs"
-name = "stripe2"
-plugin = false
-proc-macro = false
+name = "stripe"
 edition = "2021"
 crate-type = ["rlib"]
 required-features = []
@@ -35,3655 +46,3041 @@ required-features = []
 [[example]]
 path = "examples/delete_accounts_account.rs"
 name = "delete_accounts_account"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_accounts_account_bank_accounts_id.rs"
 name = "delete_accounts_account_bank_accounts_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_accounts_account_external_accounts_id.rs"
 name = "delete_accounts_account_external_accounts_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_accounts_account_people_person.rs"
 name = "delete_accounts_account_people_person"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_accounts_account_persons_person.rs"
 name = "delete_accounts_account_persons_person"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_apple_pay_domains_domain.rs"
 name = "delete_apple_pay_domains_domain"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_coupons_coupon.rs"
 name = "delete_coupons_coupon"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_customers_customer.rs"
 name = "delete_customers_customer"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_customers_customer_bank_accounts_id.rs"
 name = "delete_customers_customer_bank_accounts_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_customers_customer_cards_id.rs"
 name = "delete_customers_customer_cards_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_customers_customer_discount.rs"
 name = "delete_customers_customer_discount"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_customers_customer_sources_id.rs"
 name = "delete_customers_customer_sources_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_customers_customer_subscriptions_subscription_exposed_id.rs"
 name = "delete_customers_customer_subscriptions_subscription_exposed_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_customers_customer_subscriptions_subscription_exposed_id_discount.rs"
 name = "delete_customers_customer_subscriptions_subscription_exposed_id_discount"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_customers_customer_tax_ids_id.rs"
 name = "delete_customers_customer_tax_ids_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_ephemeral_keys_key.rs"
 name = "delete_ephemeral_keys_key"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_invoiceitems_invoiceitem.rs"
 name = "delete_invoiceitems_invoiceitem"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_invoices_invoice.rs"
 name = "delete_invoices_invoice"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_plans_plan.rs"
 name = "delete_plans_plan"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_products_id.rs"
 name = "delete_products_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_radar_value_list_items_item.rs"
 name = "delete_radar_value_list_items_item"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_radar_value_lists_value_list.rs"
 name = "delete_radar_value_lists_value_list"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_skus_id.rs"
 name = "delete_skus_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_subscription_items_item.rs"
 name = "delete_subscription_items_item"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_subscriptions_subscription_exposed_id.rs"
 name = "delete_subscriptions_subscription_exposed_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_subscriptions_subscription_exposed_id_discount.rs"
 name = "delete_subscriptions_subscription_exposed_id_discount"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_terminal_configurations_configuration.rs"
 name = "delete_terminal_configurations_configuration"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_terminal_locations_location.rs"
 name = "delete_terminal_locations_location"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_terminal_readers_reader.rs"
 name = "delete_terminal_readers_reader"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_test_helpers_test_clocks_test_clock.rs"
 name = "delete_test_helpers_test_clocks_test_clock"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/delete_webhook_endpoints_webhook_endpoint.rs"
 name = "delete_webhook_endpoints_webhook_endpoint"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_account.rs"
 name = "get_account"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_accounts.rs"
 name = "get_accounts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_accounts_account.rs"
 name = "get_accounts_account"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_accounts_account_bank_accounts_id.rs"
 name = "get_accounts_account_bank_accounts_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_accounts_account_capabilities.rs"
 name = "get_accounts_account_capabilities"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_accounts_account_capabilities_capability.rs"
 name = "get_accounts_account_capabilities_capability"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_accounts_account_external_accounts.rs"
 name = "get_accounts_account_external_accounts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_accounts_account_external_accounts_id.rs"
 name = "get_accounts_account_external_accounts_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_accounts_account_people.rs"
 name = "get_accounts_account_people"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_accounts_account_people_person.rs"
 name = "get_accounts_account_people_person"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_accounts_account_persons.rs"
 name = "get_accounts_account_persons"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_accounts_account_persons_person.rs"
 name = "get_accounts_account_persons_person"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_apple_pay_domains.rs"
 name = "get_apple_pay_domains"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_apple_pay_domains_domain.rs"
 name = "get_apple_pay_domains_domain"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_application_fees.rs"
 name = "get_application_fees"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_application_fees_fee_refunds_id.rs"
 name = "get_application_fees_fee_refunds_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_application_fees_id.rs"
 name = "get_application_fees_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_application_fees_id_refunds.rs"
 name = "get_application_fees_id_refunds"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_apps_secrets.rs"
 name = "get_apps_secrets"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_apps_secrets_find.rs"
 name = "get_apps_secrets_find"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_balance.rs"
 name = "get_balance"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_balance_history.rs"
 name = "get_balance_history"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_balance_history_id.rs"
 name = "get_balance_history_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_balance_transactions.rs"
 name = "get_balance_transactions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_balance_transactions_id.rs"
 name = "get_balance_transactions_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_billing_portal_configurations.rs"
 name = "get_billing_portal_configurations"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_billing_portal_configurations_configuration.rs"
 name = "get_billing_portal_configurations_configuration"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_charges.rs"
 name = "get_charges"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_charges_charge.rs"
 name = "get_charges_charge"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_charges_charge_dispute.rs"
 name = "get_charges_charge_dispute"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_charges_charge_refunds.rs"
 name = "get_charges_charge_refunds"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_charges_charge_refunds_refund.rs"
 name = "get_charges_charge_refunds_refund"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_charges_search.rs"
 name = "get_charges_search"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_checkout_sessions.rs"
 name = "get_checkout_sessions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_checkout_sessions_session.rs"
 name = "get_checkout_sessions_session"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_checkout_sessions_session_line_items.rs"
 name = "get_checkout_sessions_session_line_items"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_climate_orders.rs"
+name = "get_climate_orders"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_climate_orders_order.rs"
+name = "get_climate_orders_order"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_climate_products.rs"
+name = "get_climate_products"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_climate_products_product.rs"
+name = "get_climate_products_product"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_climate_reservations.rs"
+name = "get_climate_reservations"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_climate_reservations_order.rs"
+name = "get_climate_reservations_order"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_climate_suppliers.rs"
+name = "get_climate_suppliers"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_climate_suppliers_supplier.rs"
+name = "get_climate_suppliers_supplier"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_country_specs.rs"
 name = "get_country_specs"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_country_specs_country.rs"
 name = "get_country_specs_country"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_coupons.rs"
 name = "get_coupons"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_coupons_coupon.rs"
 name = "get_coupons_coupon"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_credit_notes.rs"
 name = "get_credit_notes"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_credit_notes_credit_note_lines.rs"
 name = "get_credit_notes_credit_note_lines"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_credit_notes_id.rs"
 name = "get_credit_notes_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_credit_notes_preview.rs"
 name = "get_credit_notes_preview"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_credit_notes_preview_lines.rs"
 name = "get_credit_notes_preview_lines"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers.rs"
 name = "get_customers"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer.rs"
 name = "get_customers_customer"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_balance_transactions.rs"
 name = "get_customers_customer_balance_transactions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_balance_transactions_transaction.rs"
 name = "get_customers_customer_balance_transactions_transaction"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_bank_accounts.rs"
 name = "get_customers_customer_bank_accounts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_bank_accounts_id.rs"
 name = "get_customers_customer_bank_accounts_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_cards.rs"
 name = "get_customers_customer_cards"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_cards_id.rs"
 name = "get_customers_customer_cards_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_cash_balance.rs"
 name = "get_customers_customer_cash_balance"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_cash_balance_transactions.rs"
 name = "get_customers_customer_cash_balance_transactions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_cash_balance_transactions_transaction.rs"
 name = "get_customers_customer_cash_balance_transactions_transaction"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_discount.rs"
 name = "get_customers_customer_discount"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_payment_methods.rs"
 name = "get_customers_customer_payment_methods"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_payment_methods_payment_method.rs"
 name = "get_customers_customer_payment_methods_payment_method"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_sources.rs"
 name = "get_customers_customer_sources"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_sources_id.rs"
 name = "get_customers_customer_sources_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_subscriptions.rs"
 name = "get_customers_customer_subscriptions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_subscriptions_subscription_exposed_id.rs"
 name = "get_customers_customer_subscriptions_subscription_exposed_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_subscriptions_subscription_exposed_id_discount.rs"
 name = "get_customers_customer_subscriptions_subscription_exposed_id_discount"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_tax_ids.rs"
 name = "get_customers_customer_tax_ids"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_customer_tax_ids_id.rs"
 name = "get_customers_customer_tax_ids_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_customers_search.rs"
 name = "get_customers_search"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_disputes.rs"
 name = "get_disputes"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_disputes_dispute.rs"
 name = "get_disputes_dispute"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_events.rs"
 name = "get_events"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_events_id.rs"
 name = "get_events_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_exchange_rates.rs"
 name = "get_exchange_rates"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_exchange_rates_rate_id.rs"
 name = "get_exchange_rates_rate_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_file_links.rs"
 name = "get_file_links"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_file_links_link.rs"
 name = "get_file_links_link"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_files.rs"
 name = "get_files"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_files_file.rs"
 name = "get_files_file"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_financial_connections_accounts.rs"
 name = "get_financial_connections_accounts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_financial_connections_accounts_account.rs"
 name = "get_financial_connections_accounts_account"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_financial_connections_accounts_account_owners.rs"
 name = "get_financial_connections_accounts_account_owners"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_financial_connections_sessions_session.rs"
 name = "get_financial_connections_sessions_session"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_identity_verification_reports.rs"
 name = "get_identity_verification_reports"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_identity_verification_reports_report.rs"
 name = "get_identity_verification_reports_report"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_identity_verification_sessions.rs"
 name = "get_identity_verification_sessions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_identity_verification_sessions_session.rs"
 name = "get_identity_verification_sessions_session"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_invoiceitems.rs"
 name = "get_invoiceitems"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_invoiceitems_invoiceitem.rs"
 name = "get_invoiceitems_invoiceitem"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_invoices.rs"
 name = "get_invoices"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_invoices_invoice.rs"
 name = "get_invoices_invoice"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_invoices_invoice_lines.rs"
 name = "get_invoices_invoice_lines"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_invoices_search.rs"
 name = "get_invoices_search"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_invoices_upcoming.rs"
 name = "get_invoices_upcoming"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_invoices_upcoming_lines.rs"
 name = "get_invoices_upcoming_lines"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_authorizations.rs"
 name = "get_issuing_authorizations"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_authorizations_authorization.rs"
 name = "get_issuing_authorizations_authorization"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_cardholders.rs"
 name = "get_issuing_cardholders"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_cardholders_cardholder.rs"
 name = "get_issuing_cardholders_cardholder"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_cards.rs"
 name = "get_issuing_cards"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_cards_card.rs"
 name = "get_issuing_cards_card"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_disputes.rs"
 name = "get_issuing_disputes"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_disputes_dispute.rs"
 name = "get_issuing_disputes_dispute"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_settlements.rs"
 name = "get_issuing_settlements"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_settlements_settlement.rs"
 name = "get_issuing_settlements_settlement"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_issuing_tokens.rs"
+name = "get_issuing_tokens"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_issuing_tokens_token.rs"
+name = "get_issuing_tokens_token"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_transactions.rs"
 name = "get_issuing_transactions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_issuing_transactions_transaction.rs"
 name = "get_issuing_transactions_transaction"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_link_account_sessions_session.rs"
 name = "get_link_account_sessions_session"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_linked_accounts.rs"
 name = "get_linked_accounts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_linked_accounts_account.rs"
 name = "get_linked_accounts_account"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_linked_accounts_account_owners.rs"
 name = "get_linked_accounts_account_owners"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_mandates_mandate.rs"
 name = "get_mandates_mandate"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_orders.rs"
 name = "get_orders"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_orders_id.rs"
 name = "get_orders_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_orders_id_line_items.rs"
 name = "get_orders_id_line_items"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_payment_intents.rs"
 name = "get_payment_intents"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_payment_intents_intent.rs"
 name = "get_payment_intents_intent"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_payment_intents_search.rs"
 name = "get_payment_intents_search"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_payment_links.rs"
 name = "get_payment_links"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_payment_links_payment_link.rs"
 name = "get_payment_links_payment_link"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_payment_links_payment_link_line_items.rs"
 name = "get_payment_links_payment_link_line_items"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_payment_method_configurations.rs"
+name = "get_payment_method_configurations"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_payment_method_configurations_configuration.rs"
+name = "get_payment_method_configurations_configuration"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_payment_method_domains.rs"
+name = "get_payment_method_domains"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_payment_method_domains_payment_method_domain.rs"
+name = "get_payment_method_domains_payment_method_domain"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_payment_methods.rs"
 name = "get_payment_methods"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_payment_methods_payment_method.rs"
 name = "get_payment_methods_payment_method"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_payouts.rs"
 name = "get_payouts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_payouts_payout.rs"
 name = "get_payouts_payout"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_plans.rs"
 name = "get_plans"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_plans_plan.rs"
 name = "get_plans_plan"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_prices.rs"
 name = "get_prices"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_prices_price.rs"
 name = "get_prices_price"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_prices_search.rs"
 name = "get_prices_search"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_products.rs"
 name = "get_products"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_products_id.rs"
 name = "get_products_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_products_search.rs"
 name = "get_products_search"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_promotion_codes.rs"
 name = "get_promotion_codes"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_promotion_codes_promotion_code.rs"
 name = "get_promotion_codes_promotion_code"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_quotes.rs"
 name = "get_quotes"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_quotes_quote.rs"
 name = "get_quotes_quote"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_quotes_quote_computed_upfront_line_items.rs"
 name = "get_quotes_quote_computed_upfront_line_items"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_quotes_quote_line_items.rs"
 name = "get_quotes_quote_line_items"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_quotes_quote_pdf.rs"
 name = "get_quotes_quote_pdf"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_radar_early_fraud_warnings.rs"
 name = "get_radar_early_fraud_warnings"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_radar_early_fraud_warnings_early_fraud_warning.rs"
 name = "get_radar_early_fraud_warnings_early_fraud_warning"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_radar_value_list_items.rs"
 name = "get_radar_value_list_items"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_radar_value_list_items_item.rs"
 name = "get_radar_value_list_items_item"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_radar_value_lists.rs"
 name = "get_radar_value_lists"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_radar_value_lists_value_list.rs"
 name = "get_radar_value_lists_value_list"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_refunds.rs"
 name = "get_refunds"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_refunds_refund.rs"
 name = "get_refunds_refund"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_reporting_report_runs.rs"
 name = "get_reporting_report_runs"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_reporting_report_runs_report_run.rs"
 name = "get_reporting_report_runs_report_run"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_reporting_report_types.rs"
 name = "get_reporting_report_types"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_reporting_report_types_report_type.rs"
 name = "get_reporting_report_types_report_type"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_reviews.rs"
 name = "get_reviews"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_reviews_review.rs"
 name = "get_reviews_review"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_setup_attempts.rs"
 name = "get_setup_attempts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_setup_intents.rs"
 name = "get_setup_intents"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_setup_intents_intent.rs"
 name = "get_setup_intents_intent"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_shipping_rates.rs"
 name = "get_shipping_rates"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_shipping_rates_shipping_rate_token.rs"
 name = "get_shipping_rates_shipping_rate_token"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_sigma_scheduled_query_runs.rs"
 name = "get_sigma_scheduled_query_runs"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_sigma_scheduled_query_runs_scheduled_query_run.rs"
 name = "get_sigma_scheduled_query_runs_scheduled_query_run"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_skus.rs"
 name = "get_skus"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_skus_id.rs"
 name = "get_skus_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_sources_source.rs"
 name = "get_sources_source"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_sources_source_mandate_notifications_mandate_notification.rs"
 name = "get_sources_source_mandate_notifications_mandate_notification"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_sources_source_source_transactions.rs"
 name = "get_sources_source_source_transactions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_sources_source_source_transactions_source_transaction.rs"
 name = "get_sources_source_source_transactions_source_transaction"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_subscription_items.rs"
 name = "get_subscription_items"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_subscription_items_item.rs"
 name = "get_subscription_items_item"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_subscription_items_subscription_item_usage_record_summaries.rs"
 name = "get_subscription_items_subscription_item_usage_record_summaries"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_subscription_schedules.rs"
 name = "get_subscription_schedules"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_subscription_schedules_schedule.rs"
 name = "get_subscription_schedules_schedule"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_subscriptions.rs"
 name = "get_subscriptions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_subscriptions_search.rs"
 name = "get_subscriptions_search"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_subscriptions_subscription_exposed_id.rs"
 name = "get_subscriptions_subscription_exposed_id"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_tax_calculations_calculation_line_items.rs"
+name = "get_tax_calculations_calculation_line_items"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_tax_codes.rs"
 name = "get_tax_codes"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_tax_codes_id.rs"
 name = "get_tax_codes_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_tax_rates.rs"
 name = "get_tax_rates"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_tax_rates_tax_rate.rs"
 name = "get_tax_rates_tax_rate"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_tax_registrations.rs"
+name = "get_tax_registrations"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_tax_settings.rs"
+name = "get_tax_settings"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_tax_transactions_transaction.rs"
+name = "get_tax_transactions_transaction"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/get_tax_transactions_transaction_line_items.rs"
+name = "get_tax_transactions_transaction_line_items"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_terminal_configurations.rs"
 name = "get_terminal_configurations"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_terminal_configurations_configuration.rs"
 name = "get_terminal_configurations_configuration"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_terminal_locations.rs"
 name = "get_terminal_locations"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_terminal_locations_location.rs"
 name = "get_terminal_locations_location"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_terminal_readers.rs"
 name = "get_terminal_readers"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_terminal_readers_reader.rs"
 name = "get_terminal_readers_reader"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_test_helpers_test_clocks.rs"
 name = "get_test_helpers_test_clocks"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_test_helpers_test_clocks_test_clock.rs"
 name = "get_test_helpers_test_clocks_test_clock"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_tokens_token.rs"
 name = "get_tokens_token"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_topups.rs"
 name = "get_topups"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_topups_topup.rs"
 name = "get_topups_topup"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_transfers.rs"
 name = "get_transfers"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_transfers_id_reversals.rs"
 name = "get_transfers_id_reversals"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_transfers_transfer.rs"
 name = "get_transfers_transfer"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_transfers_transfer_reversals_id.rs"
 name = "get_transfers_transfer_reversals_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_credit_reversals.rs"
 name = "get_treasury_credit_reversals"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_credit_reversals_credit_reversal.rs"
 name = "get_treasury_credit_reversals_credit_reversal"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_debit_reversals.rs"
 name = "get_treasury_debit_reversals"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_debit_reversals_debit_reversal.rs"
 name = "get_treasury_debit_reversals_debit_reversal"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_financial_accounts.rs"
 name = "get_treasury_financial_accounts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_financial_accounts_financial_account.rs"
 name = "get_treasury_financial_accounts_financial_account"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_financial_accounts_financial_account_features.rs"
 name = "get_treasury_financial_accounts_financial_account_features"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_inbound_transfers.rs"
 name = "get_treasury_inbound_transfers"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_inbound_transfers_id.rs"
 name = "get_treasury_inbound_transfers_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_outbound_payments.rs"
 name = "get_treasury_outbound_payments"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_outbound_payments_id.rs"
 name = "get_treasury_outbound_payments_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_outbound_transfers.rs"
 name = "get_treasury_outbound_transfers"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_outbound_transfers_outbound_transfer.rs"
 name = "get_treasury_outbound_transfers_outbound_transfer"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_received_credits.rs"
 name = "get_treasury_received_credits"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_received_credits_id.rs"
 name = "get_treasury_received_credits_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_received_debits.rs"
 name = "get_treasury_received_debits"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_received_debits_id.rs"
 name = "get_treasury_received_debits_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_transaction_entries.rs"
 name = "get_treasury_transaction_entries"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_transaction_entries_id.rs"
 name = "get_treasury_transaction_entries_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_transactions.rs"
 name = "get_treasury_transactions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_treasury_transactions_id.rs"
 name = "get_treasury_transactions_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_webhook_endpoints.rs"
 name = "get_webhook_endpoints"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/get_webhook_endpoints_webhook_endpoint.rs"
 name = "get_webhook_endpoints_webhook_endpoint"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_account_links.rs"
 name = "post_account_links"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_account_sessions.rs"
+name = "post_account_sessions"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts.rs"
 name = "post_accounts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account.rs"
 name = "post_accounts_account"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account_bank_accounts.rs"
 name = "post_accounts_account_bank_accounts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account_bank_accounts_id.rs"
 name = "post_accounts_account_bank_accounts_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account_capabilities_capability.rs"
 name = "post_accounts_account_capabilities_capability"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account_external_accounts.rs"
 name = "post_accounts_account_external_accounts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account_external_accounts_id.rs"
 name = "post_accounts_account_external_accounts_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account_login_links.rs"
 name = "post_accounts_account_login_links"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account_people.rs"
 name = "post_accounts_account_people"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account_people_person.rs"
 name = "post_accounts_account_people_person"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account_persons.rs"
 name = "post_accounts_account_persons"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account_persons_person.rs"
 name = "post_accounts_account_persons_person"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_accounts_account_reject.rs"
 name = "post_accounts_account_reject"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_apple_pay_domains.rs"
 name = "post_apple_pay_domains"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_application_fees_fee_refunds_id.rs"
 name = "post_application_fees_fee_refunds_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_application_fees_id_refund.rs"
 name = "post_application_fees_id_refund"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_application_fees_id_refunds.rs"
 name = "post_application_fees_id_refunds"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_apps_secrets.rs"
 name = "post_apps_secrets"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_apps_secrets_delete.rs"
 name = "post_apps_secrets_delete"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_billing_portal_configurations.rs"
 name = "post_billing_portal_configurations"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_billing_portal_configurations_configuration.rs"
 name = "post_billing_portal_configurations_configuration"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_billing_portal_sessions.rs"
 name = "post_billing_portal_sessions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_charges.rs"
 name = "post_charges"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_charges_charge.rs"
 name = "post_charges_charge"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_charges_charge_capture.rs"
 name = "post_charges_charge_capture"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_charges_charge_dispute.rs"
 name = "post_charges_charge_dispute"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_charges_charge_dispute_close.rs"
 name = "post_charges_charge_dispute_close"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_charges_charge_refund.rs"
 name = "post_charges_charge_refund"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_charges_charge_refunds.rs"
 name = "post_charges_charge_refunds"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_charges_charge_refunds_refund.rs"
 name = "post_charges_charge_refunds_refund"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_checkout_sessions.rs"
 name = "post_checkout_sessions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_checkout_sessions_session_expire.rs"
 name = "post_checkout_sessions_session_expire"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_climate_orders.rs"
+name = "post_climate_orders"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_climate_orders_order.rs"
+name = "post_climate_orders_order"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_climate_orders_order_cancel.rs"
+name = "post_climate_orders_order_cancel"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_climate_reservations.rs"
+name = "post_climate_reservations"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_climate_reservations_order.rs"
+name = "post_climate_reservations_order"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_climate_reservations_order_cancel.rs"
+name = "post_climate_reservations_order_cancel"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_climate_reservations_order_confirm.rs"
+name = "post_climate_reservations_order_confirm"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_coupons.rs"
 name = "post_coupons"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_coupons_coupon.rs"
 name = "post_coupons_coupon"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_credit_notes.rs"
 name = "post_credit_notes"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_credit_notes_id.rs"
 name = "post_credit_notes_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_credit_notes_id_void.rs"
 name = "post_credit_notes_id_void"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers.rs"
 name = "post_customers"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer.rs"
 name = "post_customers_customer"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_balance_transactions.rs"
 name = "post_customers_customer_balance_transactions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_balance_transactions_transaction.rs"
 name = "post_customers_customer_balance_transactions_transaction"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_bank_accounts.rs"
 name = "post_customers_customer_bank_accounts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_bank_accounts_id.rs"
 name = "post_customers_customer_bank_accounts_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_bank_accounts_id_verify.rs"
 name = "post_customers_customer_bank_accounts_id_verify"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_cards.rs"
 name = "post_customers_customer_cards"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_cards_id.rs"
 name = "post_customers_customer_cards_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_cash_balance.rs"
 name = "post_customers_customer_cash_balance"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_funding_instructions.rs"
 name = "post_customers_customer_funding_instructions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_sources.rs"
 name = "post_customers_customer_sources"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_sources_id.rs"
 name = "post_customers_customer_sources_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_sources_id_verify.rs"
 name = "post_customers_customer_sources_id_verify"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_subscriptions.rs"
 name = "post_customers_customer_subscriptions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_subscriptions_subscription_exposed_id.rs"
 name = "post_customers_customer_subscriptions_subscription_exposed_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_customers_customer_tax_ids.rs"
 name = "post_customers_customer_tax_ids"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_disputes_dispute.rs"
 name = "post_disputes_dispute"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_disputes_dispute_close.rs"
 name = "post_disputes_dispute_close"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_ephemeral_keys.rs"
 name = "post_ephemeral_keys"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_file_links.rs"
 name = "post_file_links"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_file_links_link.rs"
 name = "post_file_links_link"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_files.rs"
 name = "post_files"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_financial_connections_accounts_account_disconnect.rs"
 name = "post_financial_connections_accounts_account_disconnect"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_financial_connections_accounts_account_refresh.rs"
 name = "post_financial_connections_accounts_account_refresh"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_financial_connections_sessions.rs"
 name = "post_financial_connections_sessions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_identity_verification_sessions.rs"
 name = "post_identity_verification_sessions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_identity_verification_sessions_session.rs"
 name = "post_identity_verification_sessions_session"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_identity_verification_sessions_session_cancel.rs"
 name = "post_identity_verification_sessions_session_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_identity_verification_sessions_session_redact.rs"
 name = "post_identity_verification_sessions_session_redact"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_invoiceitems.rs"
 name = "post_invoiceitems"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_invoiceitems_invoiceitem.rs"
 name = "post_invoiceitems_invoiceitem"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_invoices.rs"
 name = "post_invoices"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_invoices_invoice.rs"
 name = "post_invoices_invoice"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_invoices_invoice_finalize.rs"
 name = "post_invoices_invoice_finalize"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_invoices_invoice_lines_line_item_id.rs"
+name = "post_invoices_invoice_lines_line_item_id"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_invoices_invoice_mark_uncollectible.rs"
 name = "post_invoices_invoice_mark_uncollectible"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_invoices_invoice_pay.rs"
 name = "post_invoices_invoice_pay"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_invoices_invoice_send.rs"
 name = "post_invoices_invoice_send"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_invoices_invoice_void.rs"
 name = "post_invoices_invoice_void"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_authorizations_authorization.rs"
 name = "post_issuing_authorizations_authorization"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_authorizations_authorization_approve.rs"
 name = "post_issuing_authorizations_authorization_approve"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_authorizations_authorization_decline.rs"
 name = "post_issuing_authorizations_authorization_decline"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_cardholders.rs"
 name = "post_issuing_cardholders"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_cardholders_cardholder.rs"
 name = "post_issuing_cardholders_cardholder"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_cards.rs"
 name = "post_issuing_cards"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_cards_card.rs"
 name = "post_issuing_cards_card"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_disputes.rs"
 name = "post_issuing_disputes"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_disputes_dispute.rs"
 name = "post_issuing_disputes_dispute"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_disputes_dispute_submit.rs"
 name = "post_issuing_disputes_dispute_submit"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_settlements_settlement.rs"
 name = "post_issuing_settlements_settlement"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_issuing_tokens_token.rs"
+name = "post_issuing_tokens_token"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_issuing_transactions_transaction.rs"
 name = "post_issuing_transactions_transaction"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_link_account_sessions.rs"
 name = "post_link_account_sessions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_linked_accounts_account_disconnect.rs"
 name = "post_linked_accounts_account_disconnect"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_linked_accounts_account_refresh.rs"
 name = "post_linked_accounts_account_refresh"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_orders.rs"
 name = "post_orders"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_orders_id.rs"
 name = "post_orders_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_orders_id_cancel.rs"
 name = "post_orders_id_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_orders_id_reopen.rs"
 name = "post_orders_id_reopen"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_orders_id_submit.rs"
 name = "post_orders_id_submit"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_intents.rs"
 name = "post_payment_intents"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_intents_intent.rs"
 name = "post_payment_intents_intent"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_intents_intent_apply_customer_balance.rs"
 name = "post_payment_intents_intent_apply_customer_balance"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_intents_intent_cancel.rs"
 name = "post_payment_intents_intent_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_intents_intent_capture.rs"
 name = "post_payment_intents_intent_capture"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_intents_intent_confirm.rs"
 name = "post_payment_intents_intent_confirm"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_intents_intent_increment_authorization.rs"
 name = "post_payment_intents_intent_increment_authorization"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_intents_intent_verify_microdeposits.rs"
 name = "post_payment_intents_intent_verify_microdeposits"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_links.rs"
 name = "post_payment_links"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_links_payment_link.rs"
 name = "post_payment_links_payment_link"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_payment_method_configurations.rs"
+name = "post_payment_method_configurations"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_payment_method_configurations_configuration.rs"
+name = "post_payment_method_configurations_configuration"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_payment_method_domains.rs"
+name = "post_payment_method_domains"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_payment_method_domains_payment_method_domain.rs"
+name = "post_payment_method_domains_payment_method_domain"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_payment_method_domains_payment_method_domain_validate.rs"
+name = "post_payment_method_domains_payment_method_domain_validate"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_methods.rs"
 name = "post_payment_methods"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_methods_payment_method.rs"
 name = "post_payment_methods_payment_method"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_methods_payment_method_attach.rs"
 name = "post_payment_methods_payment_method_attach"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payment_methods_payment_method_detach.rs"
 name = "post_payment_methods_payment_method_detach"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payouts.rs"
 name = "post_payouts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payouts_payout.rs"
 name = "post_payouts_payout"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payouts_payout_cancel.rs"
 name = "post_payouts_payout_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_payouts_payout_reverse.rs"
 name = "post_payouts_payout_reverse"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_plans.rs"
 name = "post_plans"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_plans_plan.rs"
 name = "post_plans_plan"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_prices.rs"
 name = "post_prices"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_prices_price.rs"
 name = "post_prices_price"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_products.rs"
 name = "post_products"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_products_id.rs"
 name = "post_products_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_promotion_codes.rs"
 name = "post_promotion_codes"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_promotion_codes_promotion_code.rs"
 name = "post_promotion_codes_promotion_code"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_quotes.rs"
 name = "post_quotes"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_quotes_quote.rs"
 name = "post_quotes_quote"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_quotes_quote_accept.rs"
 name = "post_quotes_quote_accept"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_quotes_quote_cancel.rs"
 name = "post_quotes_quote_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_quotes_quote_finalize.rs"
 name = "post_quotes_quote_finalize"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_radar_value_list_items.rs"
 name = "post_radar_value_list_items"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_radar_value_lists.rs"
 name = "post_radar_value_lists"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_radar_value_lists_value_list.rs"
 name = "post_radar_value_lists_value_list"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_refunds.rs"
 name = "post_refunds"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_refunds_refund.rs"
 name = "post_refunds_refund"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_refunds_refund_cancel.rs"
 name = "post_refunds_refund_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_reporting_report_runs.rs"
 name = "post_reporting_report_runs"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_reviews_review_approve.rs"
 name = "post_reviews_review_approve"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_setup_intents.rs"
 name = "post_setup_intents"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_setup_intents_intent.rs"
 name = "post_setup_intents_intent"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_setup_intents_intent_cancel.rs"
 name = "post_setup_intents_intent_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_setup_intents_intent_confirm.rs"
 name = "post_setup_intents_intent_confirm"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_setup_intents_intent_verify_microdeposits.rs"
 name = "post_setup_intents_intent_verify_microdeposits"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_shipping_rates.rs"
 name = "post_shipping_rates"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_shipping_rates_shipping_rate_token.rs"
 name = "post_shipping_rates_shipping_rate_token"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_skus.rs"
 name = "post_skus"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_skus_id.rs"
 name = "post_skus_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_sources.rs"
 name = "post_sources"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_sources_source.rs"
 name = "post_sources_source"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_sources_source_verify.rs"
 name = "post_sources_source_verify"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_subscription_items.rs"
 name = "post_subscription_items"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_subscription_items_item.rs"
 name = "post_subscription_items_item"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_subscription_items_subscription_item_usage_records.rs"
 name = "post_subscription_items_subscription_item_usage_records"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_subscription_schedules.rs"
 name = "post_subscription_schedules"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_subscription_schedules_schedule.rs"
 name = "post_subscription_schedules_schedule"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_subscription_schedules_schedule_cancel.rs"
 name = "post_subscription_schedules_schedule_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_subscription_schedules_schedule_release.rs"
 name = "post_subscription_schedules_schedule_release"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_subscriptions.rs"
 name = "post_subscriptions"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_subscriptions_subscription_exposed_id.rs"
 name = "post_subscriptions_subscription_exposed_id"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_subscriptions_subscription_resume.rs"
+name = "post_subscriptions_subscription_resume"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_tax_calculations.rs"
+name = "post_tax_calculations"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_tax_rates.rs"
 name = "post_tax_rates"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_tax_rates_tax_rate.rs"
 name = "post_tax_rates_tax_rate"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_tax_registrations.rs"
+name = "post_tax_registrations"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_tax_registrations_id.rs"
+name = "post_tax_registrations_id"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_tax_settings.rs"
+name = "post_tax_settings"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_tax_transactions_create_from_calculation.rs"
+name = "post_tax_transactions_create_from_calculation"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_tax_transactions_create_reversal.rs"
+name = "post_tax_transactions_create_reversal"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_terminal_configurations.rs"
 name = "post_terminal_configurations"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_terminal_configurations_configuration.rs"
 name = "post_terminal_configurations_configuration"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_terminal_connection_tokens.rs"
 name = "post_terminal_connection_tokens"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_terminal_locations.rs"
 name = "post_terminal_locations"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_terminal_locations_location.rs"
 name = "post_terminal_locations_location"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_terminal_readers.rs"
 name = "post_terminal_readers"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_terminal_readers_reader.rs"
 name = "post_terminal_readers_reader"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_terminal_readers_reader_cancel_action.rs"
 name = "post_terminal_readers_reader_cancel_action"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_terminal_readers_reader_process_payment_intent.rs"
 name = "post_terminal_readers_reader_process_payment_intent"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_terminal_readers_reader_process_setup_intent.rs"
 name = "post_terminal_readers_reader_process_setup_intent"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_terminal_readers_reader_refund_payment.rs"
+name = "post_terminal_readers_reader_refund_payment"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_terminal_readers_reader_set_reader_display.rs"
 name = "post_terminal_readers_reader_set_reader_display"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_customers_customer_fund_cash_balance.rs"
 name = "post_test_helpers_customers_customer_fund_cash_balance"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_test_helpers_issuing_authorizations.rs"
+name = "post_test_helpers_issuing_authorizations"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_test_helpers_issuing_authorizations_authorization_capture.rs"
+name = "post_test_helpers_issuing_authorizations_authorization_capture"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_test_helpers_issuing_authorizations_authorization_expire.rs"
+name = "post_test_helpers_issuing_authorizations_authorization_expire"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_test_helpers_issuing_authorizations_authorization_increment.rs"
+name = "post_test_helpers_issuing_authorizations_authorization_increment"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_test_helpers_issuing_authorizations_authorization_reverse.rs"
+name = "post_test_helpers_issuing_authorizations_authorization_reverse"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_issuing_cards_card_shipping_deliver.rs"
 name = "post_test_helpers_issuing_cards_card_shipping_deliver"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_issuing_cards_card_shipping_fail.rs"
 name = "post_test_helpers_issuing_cards_card_shipping_fail"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_issuing_cards_card_shipping_return.rs"
 name = "post_test_helpers_issuing_cards_card_shipping_return"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_issuing_cards_card_shipping_ship.rs"
 name = "post_test_helpers_issuing_cards_card_shipping_ship"
-plugin = false
-proc-macro = false
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_test_helpers_issuing_transactions_create_force_capture.rs"
+name = "post_test_helpers_issuing_transactions_create_force_capture"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_test_helpers_issuing_transactions_create_unlinked_refund.rs"
+name = "post_test_helpers_issuing_transactions_create_unlinked_refund"
+edition = "2021"
+required-features = []
+
+[[example]]
+path = "examples/post_test_helpers_issuing_transactions_transaction_refund.rs"
+name = "post_test_helpers_issuing_transactions_transaction_refund"
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_refunds_refund_expire.rs"
 name = "post_test_helpers_refunds_refund_expire"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_terminal_readers_reader_present_payment_method.rs"
 name = "post_test_helpers_terminal_readers_reader_present_payment_method"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_test_clocks.rs"
 name = "post_test_helpers_test_clocks"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_test_clocks_test_clock_advance.rs"
 name = "post_test_helpers_test_clocks_test_clock_advance"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_treasury_inbound_transfers_id_fail.rs"
 name = "post_test_helpers_treasury_inbound_transfers_id_fail"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_treasury_inbound_transfers_id_return.rs"
 name = "post_test_helpers_treasury_inbound_transfers_id_return"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_treasury_inbound_transfers_id_succeed.rs"
 name = "post_test_helpers_treasury_inbound_transfers_id_succeed"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_treasury_outbound_payments_id_fail.rs"
 name = "post_test_helpers_treasury_outbound_payments_id_fail"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_treasury_outbound_payments_id_post.rs"
 name = "post_test_helpers_treasury_outbound_payments_id_post"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_treasury_outbound_payments_id_return.rs"
 name = "post_test_helpers_treasury_outbound_payments_id_return"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_treasury_outbound_transfers_outbound_transfer_fail.rs"
 name = "post_test_helpers_treasury_outbound_transfers_outbound_transfer_fail"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_treasury_outbound_transfers_outbound_transfer_post.rs"
 name = "post_test_helpers_treasury_outbound_transfers_outbound_transfer_post"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_treasury_outbound_transfers_outbound_transfer_return.rs"
 name = "post_test_helpers_treasury_outbound_transfers_outbound_transfer_return"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_treasury_received_credits.rs"
 name = "post_test_helpers_treasury_received_credits"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_test_helpers_treasury_received_debits.rs"
 name = "post_test_helpers_treasury_received_debits"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_tokens.rs"
 name = "post_tokens"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_topups.rs"
 name = "post_topups"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_topups_topup.rs"
 name = "post_topups_topup"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_topups_topup_cancel.rs"
 name = "post_topups_topup_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_transfers.rs"
 name = "post_transfers"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_transfers_id_reversals.rs"
 name = "post_transfers_id_reversals"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_transfers_transfer.rs"
 name = "post_transfers_transfer"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_transfers_transfer_reversals_id.rs"
 name = "post_transfers_transfer_reversals_id"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_treasury_credit_reversals.rs"
 name = "post_treasury_credit_reversals"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_treasury_debit_reversals.rs"
 name = "post_treasury_debit_reversals"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_treasury_financial_accounts.rs"
 name = "post_treasury_financial_accounts"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_treasury_financial_accounts_financial_account.rs"
 name = "post_treasury_financial_accounts_financial_account"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_treasury_financial_accounts_financial_account_features.rs"
 name = "post_treasury_financial_accounts_financial_account_features"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_treasury_inbound_transfers.rs"
 name = "post_treasury_inbound_transfers"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_treasury_inbound_transfers_inbound_transfer_cancel.rs"
 name = "post_treasury_inbound_transfers_inbound_transfer_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_treasury_outbound_payments.rs"
 name = "post_treasury_outbound_payments"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_treasury_outbound_payments_id_cancel.rs"
 name = "post_treasury_outbound_payments_id_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_treasury_outbound_transfers.rs"
 name = "post_treasury_outbound_transfers"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_treasury_outbound_transfers_outbound_transfer_cancel.rs"
 name = "post_treasury_outbound_transfers_outbound_transfer_cancel"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_webhook_endpoints.rs"
 name = "post_webhook_endpoints"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []
 
 [[example]]
 path = "examples/post_webhook_endpoints_webhook_endpoint.rs"
 name = "post_webhook_endpoints_webhook_endpoint"
-plugin = false
-proc-macro = false
 edition = "2021"
 required-features = []

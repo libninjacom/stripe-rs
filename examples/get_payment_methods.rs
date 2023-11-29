@@ -1,18 +1,17 @@
 #![allow(unused_imports)]
-use stripe2::StripeClient;
-use stripe2::model::*;
+use stripe::StripeClient;
+use stripe::model::*;
 #[tokio::main]
 async fn main() {
     let client = StripeClient::from_env();
-    let type_ = "your type";
     let response = client
-        .get_payment_methods(type_)
+        .get_payment_methods()
         .customer("your customer")
         .ending_before("your ending before")
         .expand(&["your expand"])
         .limit(1)
         .starting_after("your starting after")
-        .send()
+        .type_("your type")
         .await
         .unwrap();
     println!("{:#?}", response);

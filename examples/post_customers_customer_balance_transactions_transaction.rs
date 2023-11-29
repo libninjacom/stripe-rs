@@ -1,6 +1,6 @@
 #![allow(unused_imports)]
-use stripe2::StripeClient;
-use stripe2::model::*;
+use stripe::StripeClient;
+use stripe::model::*;
 #[tokio::main]
 async fn main() {
     let client = StripeClient::from_env();
@@ -8,7 +8,6 @@ async fn main() {
     let transaction = "your transaction";
     let response = client
         .post_customers_customer_balance_transactions_transaction(customer, transaction)
-        .send()
         .await
         .unwrap();
     println!("{:#?}", response);

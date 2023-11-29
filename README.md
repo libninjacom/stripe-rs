@@ -21,6 +21,14 @@
 </p>
 
 
+# Installation
+
+Add the following to your `Cargo.toml` file:
+
+```toml
+[dependencies]
+stripe2 = ".."
+```
 
 Stripe client, generated from the OpenAPI spec.
 

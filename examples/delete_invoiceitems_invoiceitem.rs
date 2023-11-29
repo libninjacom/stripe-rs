@@ -1,14 +1,10 @@
 #![allow(unused_imports)]
-use stripe2::StripeClient;
-use stripe2::model::*;
+use stripe::StripeClient;
+use stripe::model::*;
 #[tokio::main]
 async fn main() {
     let client = StripeClient::from_env();
     let invoiceitem = "your invoiceitem";
-    let response = client
-        .delete_invoiceitems_invoiceitem(invoiceitem)
-        .send()
-        .await
-        .unwrap();
+    let response = client.delete_invoiceitems_invoiceitem(invoiceitem).await.unwrap();
     println!("{:#?}", response);
 }

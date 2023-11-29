@@ -1,12 +1,12 @@
 #![allow(unused_imports)]
-use stripe2::StripeClient;
-use stripe2::model::*;
+use stripe::StripeClient;
+use stripe::model::*;
 #[tokio::main]
 async fn main() {
     let client = StripeClient::from_env();
     let response = client
         .get_issuing_cardholders()
-        .created(::serde_json::json!({}))
+        .created(serde_json::json!({}))
         .email("your email")
         .ending_before("your ending before")
         .expand(&["your expand"])
@@ -15,7 +15,6 @@ async fn main() {
         .starting_after("your starting after")
         .status("your status")
         .type_("your type")
-        .send()
         .await
         .unwrap();
     println!("{:#?}", response);

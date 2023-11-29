@@ -50,3 +50,10 @@ patch: test
 
 doc:
     cargo doc --no-deps --open
+
+download_openapi:
+    req https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.yaml > openapi.yaml
+
+libninja:
+    checkexec openapi.yaml -- just download_openapi
+    libninja gen --lang rust --repo libninjacom/stripe-rs -o . stripe openapi.yaml

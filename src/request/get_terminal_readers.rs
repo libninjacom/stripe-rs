@@ -4,51 +4,52 @@ use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+#[derive(Clone)]
 pub struct GetTerminalReadersRequest<'a> {
-    pub(crate) client: &'a StripeClient,
+    pub(crate) http_client: &'a StripeClient,
     pub device_type: Option<String>,
     pub ending_before: Option<String>,
     pub expand: Option<Vec<String>>,
     pub limit: Option<i64>,
     pub location: Option<String>,
+    pub serial_number: Option<String>,
     pub starting_after: Option<String>,
     pub status: Option<String>,
 }
 impl<'a> GetTerminalReadersRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<serde_json::Value> {
-        let mut r = self.client.client.get("/v1/terminal/readers");
+    pub async fn send(
+        self,
+    ) -> ::httpclient::InMemoryResult<TerminalReaderRetrieveReader> {
+        let mut r = self.http_client.client.get("/v1/terminal/readers");
         if let Some(ref unwrapped) = self.device_type {
-            r = r.push_query("device_type", &unwrapped.to_string());
+            r = r.query("device_type", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.ending_before {
-            r = r.push_query("ending_before", &unwrapped.to_string());
+            r = r.query("ending_before", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.expand {
             for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
+                r = r.query("expand[]", &item.to_string());
             }
         }
         if let Some(ref unwrapped) = self.limit {
-            r = r.push_query("limit", &unwrapped.to_string());
+            r = r.query("limit", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.location {
-            r = r.push_query("location", &unwrapped.to_string());
+            r = r.query("location", &unwrapped.to_string());
+        }
+        if let Some(ref unwrapped) = self.serial_number {
+            r = r.query("serial_number", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.starting_after {
-            r = r.push_query("starting_after", &unwrapped.to_string());
+            r = r.query("starting_after", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.status {
-            r = r.push_query("status", &unwrapped.to_string());
+            r = r.query("status", &unwrapped.to_string());
         }
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
+        r = self.http_client.authenticate(r);
+        let res = r.send_awaiting_body().await?;
+        res.json().map_err(Into::into)
     }
     pub fn device_type(mut self, device_type: &str) -> Self {
         self.device_type = Some(device_type.to_owned());
@@ -70,6 +71,10 @@ impl<'a> GetTerminalReadersRequest<'a> {
         self.location = Some(location.to_owned());
         self
     }
+    pub fn serial_number(mut self, serial_number: &str) -> Self {
+        self.serial_number = Some(serial_number.to_owned());
+        self
+    }
     pub fn starting_after(mut self, starting_after: &str) -> Self {
         self.starting_after = Some(starting_after.to_owned());
         self
@@ -77,5 +82,12 @@ impl<'a> GetTerminalReadersRequest<'a> {
     pub fn status(mut self, status: &str) -> Self {
         self.status = Some(status.to_owned());
         self
+    }
+}
+impl<'a> ::std::future::IntoFuture for GetTerminalReadersRequest<'a> {
+    type Output = httpclient::InMemoryResult<TerminalReaderRetrieveReader>;
+    type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
     }
 }

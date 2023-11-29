@@ -1,9 +1,9 @@
 #![allow(unused_imports)]
-use stripe2::StripeClient;
-use stripe2::model::*;
+use stripe::StripeClient;
+use stripe::model::*;
 #[tokio::main]
 async fn main() {
     let client = StripeClient::from_env();
-    let response = client.post_link_account_sessions().send().await.unwrap();
+    let response = client.post_link_account_sessions().await.unwrap();
     println!("{:#?}", response);
 }

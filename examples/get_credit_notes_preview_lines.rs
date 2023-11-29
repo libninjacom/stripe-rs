@@ -1,6 +1,6 @@
 #![allow(unused_imports)]
-use stripe2::StripeClient;
-use stripe2::model::*;
+use stripe::StripeClient;
+use stripe::model::*;
 #[tokio::main]
 async fn main() {
     let client = StripeClient::from_env();
@@ -9,18 +9,30 @@ async fn main() {
         .get_credit_notes_preview_lines(invoice)
         .amount(1)
         .credit_amount(1)
+        .effective_at(1)
         .ending_before("your ending before")
         .expand(&["your expand"])
         .limit(1)
-        .lines(vec![::serde_json::json!({})])
+        .lines(
+            vec![
+                CreditNoteLineItemParams { amount : Some(1), description :
+                Some("your description".to_owned()), invoice_line_item :
+                Some("your invoice line item".to_owned()), quantity : Some(1),
+                tax_amounts : Some(serde_json::json!({})), tax_rates :
+                Some(serde_json::json!({})), type_ : "your type".to_owned(), unit_amount
+                : Some(1), unit_amount_decimal : Some(rust_decimal::dec!(100.01)) }
+            ],
+        )
         .memo("your memo")
-        .metadata(::serde_json::json!({}))
+        .metadata(serde_json::json!({}))
         .out_of_band_amount(1)
         .reason("your reason")
         .refund("your refund")
         .refund_amount(1)
+        .shipping_cost(CreditNoteShippingCost {
+            shipping_rate: Some("your shipping rate".to_owned()),
+        })
         .starting_after("your starting after")
-        .send()
         .await
         .unwrap();
     println!("{:#?}", response);

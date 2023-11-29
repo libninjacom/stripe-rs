@@ -4,8 +4,9 @@ use crate::StripeClient;
 /**Create this with the associated client method.
 
 That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+#[derive(Clone)]
 pub struct GetRadarValueListItemsRequest<'a> {
-    pub(crate) client: &'a StripeClient,
+    pub(crate) http_client: &'a StripeClient,
     pub created: Option<serde_json::Value>,
     pub ending_before: Option<String>,
     pub expand: Option<Vec<String>>,
@@ -15,38 +16,32 @@ pub struct GetRadarValueListItemsRequest<'a> {
     pub value_list: String,
 }
 impl<'a> GetRadarValueListItemsRequest<'a> {
-    pub async fn send(self) -> anyhow::Result<serde_json::Value> {
-        let mut r = self.client.client.get("/v1/radar/value_list_items");
+    pub async fn send(self) -> ::httpclient::InMemoryResult<RadarListListItemList> {
+        let mut r = self.http_client.client.get("/v1/radar/value_list_items");
         if let Some(ref unwrapped) = self.created {
-            r = r.push_query("created", &unwrapped.to_string());
+            r = r.query("created", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.ending_before {
-            r = r.push_query("ending_before", &unwrapped.to_string());
+            r = r.query("ending_before", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.expand {
             for item in unwrapped {
-                r = r.push_query("expand[]", &item.to_string());
+                r = r.query("expand[]", &item.to_string());
             }
         }
         if let Some(ref unwrapped) = self.limit {
-            r = r.push_query("limit", &unwrapped.to_string());
+            r = r.query("limit", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.starting_after {
-            r = r.push_query("starting_after", &unwrapped.to_string());
+            r = r.query("starting_after", &unwrapped.to_string());
         }
         if let Some(ref unwrapped) = self.value {
-            r = r.push_query("value", &unwrapped.to_string());
+            r = r.query("value", &unwrapped.to_string());
         }
-        r = r.push_query("value_list", &self.value_list.to_string());
-        r = self.client.authenticate(r);
-        let res = r.send().await.unwrap().error_for_status();
-        match res {
-            Ok(res) => res.json().await.map_err(|e| anyhow::anyhow!("{:?}", e)),
-            Err(res) => {
-                let text = res.text().await.map_err(|e| anyhow::anyhow!("{:?}", e))?;
-                Err(anyhow::anyhow!("{:?}", text))
-            }
-        }
+        r = r.query("value_list", &self.value_list.to_string());
+        r = self.http_client.authenticate(r);
+        let res = r.send_awaiting_body().await?;
+        res.json().map_err(Into::into)
     }
     pub fn created(mut self, created: serde_json::Value) -> Self {
         self.created = Some(created);
@@ -71,5 +66,12 @@ impl<'a> GetRadarValueListItemsRequest<'a> {
     pub fn value(mut self, value: &str) -> Self {
         self.value = Some(value.to_owned());
         self
+    }
+}
+impl<'a> ::std::future::IntoFuture for GetRadarValueListItemsRequest<'a> {
+    type Output = httpclient::InMemoryResult<RadarListListItemList>;
+    type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
+    fn into_future(self) -> Self::IntoFuture {
+        Box::pin(self.send())
     }
 }

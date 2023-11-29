@@ -1,6 +1,6 @@
 #![allow(unused_imports)]
-use stripe2::StripeClient;
-use stripe2::model::*;
+use stripe::StripeClient;
+use stripe::model::*;
 #[tokio::main]
 async fn main() {
     let client = StripeClient::from_env();
@@ -8,7 +8,6 @@ async fn main() {
     let response = client
         .get_shipping_rates_shipping_rate_token(shipping_rate_token)
         .expand(&["your expand"])
-        .send()
         .await
         .unwrap();
     println!("{:#?}", response);

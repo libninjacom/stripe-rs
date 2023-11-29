@@ -1,6 +1,6 @@
 #![allow(unused_imports)]
-use stripe2::StripeClient;
-use stripe2::model::*;
+use stripe::StripeClient;
+use stripe::model::*;
 #[tokio::main]
 async fn main() {
     let client = StripeClient::from_env();
@@ -12,7 +12,6 @@ async fn main() {
             subscription_exposed_id,
         )
         .expand(&["your expand"])
-        .send()
         .await
         .unwrap();
     println!("{:#?}", response);
