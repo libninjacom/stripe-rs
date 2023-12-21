@@ -4,12 +4,13 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_radar_early_fraud_warnings`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetRadarEarlyFraudWarningsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetRadarEarlyFraudWarningsRequest {
     pub charge: Option<String>,
+    pub created: Option<serde_json::Value>,
     pub ending_before: Option<String>,
     pub expand: Option<Vec<String>>,
     pub limit: Option<i64>,
@@ -20,6 +21,10 @@ impl GetRadarEarlyFraudWarningsRequest {}
 impl FluentRequest<'_, GetRadarEarlyFraudWarningsRequest> {
     pub fn charge(mut self, charge: &str) -> Self {
         self.params.charge = Some(charge.to_owned());
+        self
+    }
+    pub fn created(mut self, created: serde_json::Value) -> Self {
+        self.params.created = Some(created);
         self
     }
     pub fn ending_before(mut self, ending_before: &str) -> Self {
@@ -47,10 +52,10 @@ impl FluentRequest<'_, GetRadarEarlyFraudWarningsRequest> {
 }
 impl<'a> ::std::future::IntoFuture
 for FluentRequest<'a, GetRadarEarlyFraudWarningsRequest> {
-    type Output = httpclient::InMemoryResult<RadarEarlyFraudWarningList>;
+    type Output = httpclient::InMemoryResult<GetRadarEarlyFraudWarningsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/radar/early_fraud_warnings";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

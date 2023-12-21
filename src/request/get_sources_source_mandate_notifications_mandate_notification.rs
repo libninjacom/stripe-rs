@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_sources_source_mandate_notifications_mandate_notification`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`SourceMandateNotification`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetSourcesSourceMandateNotificationsMandateNotificationRequest {
     pub expand: Option<Vec<String>>,
@@ -27,7 +27,7 @@ for FluentRequest<'a, GetSourcesSourceMandateNotificationsMandateNotificationReq
     type Output = httpclient::InMemoryResult<SourceMandateNotification>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/sources/{source}/mandate_notifications/{mandate_notification}",
                 mandate_notification = self.params.mandate_notification, source = self

@@ -1,8 +1,9 @@
-
 use serde::{Serialize, Deserialize};
 use super::BalanceAmount;
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct BalanceDetail {
+    ///Funds that are available for use.
     pub available: Vec<BalanceAmount>,
 }
 impl std::fmt::Display for BalanceDetail {

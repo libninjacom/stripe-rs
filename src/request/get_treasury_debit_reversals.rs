@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_treasury_debit_reversals`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetTreasuryDebitReversalsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetTreasuryDebitReversalsRequest {
     pub ending_before: Option<String>,
@@ -53,12 +53,10 @@ impl FluentRequest<'_, GetTreasuryDebitReversalsRequest> {
 }
 impl<'a> ::std::future::IntoFuture
 for FluentRequest<'a, GetTreasuryDebitReversalsRequest> {
-    type Output = httpclient::InMemoryResult<
-        TreasuryReceivedDebitsResourceDebitReversalList,
-    >;
+    type Output = httpclient::InMemoryResult<GetTreasuryDebitReversalsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/treasury/debit_reversals";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_financial_connections_accounts_account_disconnect`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`FinancialConnectionsAccount`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostFinancialConnectionsAccountsAccountDisconnectRequest {
     pub account: String,
@@ -18,7 +18,7 @@ for FluentRequest<'a, PostFinancialConnectionsAccountsAccountDisconnectRequest> 
     type Output = httpclient::InMemoryResult<FinancialConnectionsAccount>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/financial_connections/accounts/{account}/disconnect", account = self
                 .params.account

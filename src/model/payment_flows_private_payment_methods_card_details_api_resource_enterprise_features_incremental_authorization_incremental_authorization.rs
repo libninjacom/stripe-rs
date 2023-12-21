@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesIncrementalAuthorizationIncrementalAuthorization {
+    ///Indicates whether or not the incremental authorization feature is supported.
     pub status: String,
 }
 impl std::fmt::Display

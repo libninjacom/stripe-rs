@@ -1,6 +1,5 @@
-
 use serde::{Serialize, Deserialize};
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct SubscriptionCancellationReasonCreationParam {
     pub enabled: bool,
     pub options: serde_json::Value,

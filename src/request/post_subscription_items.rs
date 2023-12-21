@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_subscription_items`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`SubscriptionItem`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostSubscriptionItemsRequest {}
 impl PostSubscriptionItemsRequest {}
@@ -15,7 +15,7 @@ impl<'a> ::std::future::IntoFuture for FluentRequest<'a, PostSubscriptionItemsRe
     type Output = httpclient::InMemoryResult<SubscriptionItem>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/subscription_items";
             let mut r = self.client.client.post(url);
             r = r.set_query(self.params);

@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourcePhoneNumberCollection {
+    ///If `true`, a phone number will be collected during checkout.
     pub enabled: bool,
 }
 impl std::fmt::Display for PaymentLinksResourcePhoneNumberCollection {

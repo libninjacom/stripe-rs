@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::delete_accounts_account`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`DeletedAccount`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DeleteAccountsAccountRequest {
     pub account: String,
@@ -17,7 +17,7 @@ impl<'a> ::std::future::IntoFuture for FluentRequest<'a, DeleteAccountsAccountRe
     type Output = httpclient::InMemoryResult<DeletedAccount>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!("/v1/accounts/{account}", account = self.params.account);
             let mut r = self.client.client.delete(url);
             r = r.set_query(self.params);

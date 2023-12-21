@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_balance_history`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetBalanceHistoryResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetBalanceHistoryRequest {
     pub created: Option<serde_json::Value>,
@@ -61,10 +61,10 @@ impl FluentRequest<'_, GetBalanceHistoryRequest> {
     }
 }
 impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetBalanceHistoryRequest> {
-    type Output = httpclient::InMemoryResult<BalanceTransactionsList>;
+    type Output = httpclient::InMemoryResult<GetBalanceHistoryResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/balance/history";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

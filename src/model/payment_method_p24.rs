@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PaymentMethodP24 {
+    ///The customer's bank, if provided.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub bank: Option<String>,
 }

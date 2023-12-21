@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct SubscriptionAutomaticTax {
+    ///Whether Stripe automatically computes tax on this subscription.
     pub enabled: bool,
 }
 impl std::fmt::Display for SubscriptionAutomaticTax {

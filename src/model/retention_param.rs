@@ -1,7 +1,6 @@
-
 use serde::{Serialize, Deserialize};
 use super::CouponOfferParam;
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RetentionParam {
     pub coupon_offer: CouponOfferParam,
     #[serde(rename = "type")]

@@ -1,9 +1,12 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DeletedPerson {
+    ///Always true for a deleted object
     pub deleted: bool,
+    ///Unique identifier for the object.
     pub id: String,
+    ///String representing the object's type. Objects of the same type share the same value.
     pub object: String,
 }
 impl std::fmt::Display for DeletedPerson {

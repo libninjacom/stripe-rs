@@ -1,4 +1,3 @@
-
 use serde::{Serialize, Deserialize};
 use super::{OneTimePriceData, Period};
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

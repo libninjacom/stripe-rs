@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_disputes_dispute_close`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`Dispute`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostDisputesDisputeCloseRequest {
     pub dispute: String,
@@ -18,7 +18,7 @@ for FluentRequest<'a, PostDisputesDisputeCloseRequest> {
     type Output = httpclient::InMemoryResult<Dispute>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/disputes/{dispute}/close", dispute = self.params.dispute
             );

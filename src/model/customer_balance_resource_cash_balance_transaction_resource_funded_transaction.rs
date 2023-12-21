@@ -1,8 +1,9 @@
-
 use serde::{Serialize, Deserialize};
 use super::CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer;
-#[derive(Debug, Clone, Serialize, Deserialize)]
+///
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction {
+    ///
     pub bank_transfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer,
 }
 impl std::fmt::Display

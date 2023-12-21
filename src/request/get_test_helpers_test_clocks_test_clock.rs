@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_test_helpers_test_clocks_test_clock`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`TestHelpersTestClock`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetTestHelpersTestClocksTestClockRequest {
     pub expand: Option<Vec<String>>,
@@ -26,7 +26,7 @@ for FluentRequest<'a, GetTestHelpersTestClocksTestClockRequest> {
     type Output = httpclient::InMemoryResult<TestHelpersTestClock>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/test_helpers/test_clocks/{test_clock}", test_clock = self.params
                 .test_clock

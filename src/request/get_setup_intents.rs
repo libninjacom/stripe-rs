@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_setup_intents`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetSetupIntentsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetSetupIntentsRequest {
     pub attach_to_self: Option<bool>,
@@ -56,10 +56,10 @@ impl FluentRequest<'_, GetSetupIntentsRequest> {
     }
 }
 impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetSetupIntentsRequest> {
-    type Output = httpclient::InMemoryResult<PaymentFlowsSetupIntentList>;
+    type Output = httpclient::InMemoryResult<GetSetupIntentsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/setup_intents";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_prices`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetPricesResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetPricesRequest {
     pub active: Option<bool>,
@@ -78,10 +78,10 @@ impl FluentRequest<'_, GetPricesRequest> {
     }
 }
 impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetPricesRequest> {
-    type Output = httpclient::InMemoryResult<PriceList>;
+    type Output = httpclient::InMemoryResult<GetPricesResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/prices";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PaymentMethodLink {
+    ///Account owner's email address.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub email: Option<String>,
 }

@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_accounts_account_login_links`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`LoginLink`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostAccountsAccountLoginLinksRequest {
     pub account: String,
@@ -18,7 +18,7 @@ for FluentRequest<'a, PostAccountsAccountLoginLinksRequest> {
     type Output = httpclient::InMemoryResult<LoginLink>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/accounts/{account}/login_links", account = self.params.account
             );

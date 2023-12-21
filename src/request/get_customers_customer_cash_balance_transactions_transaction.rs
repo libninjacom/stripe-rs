@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_customers_customer_cash_balance_transactions_transaction`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`CustomerCashBalanceTransaction`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetCustomersCustomerCashBalanceTransactionsTransactionRequest {
     pub customer: String,
@@ -27,7 +27,7 @@ for FluentRequest<'a, GetCustomersCustomerCashBalanceTransactionsTransactionRequ
     type Output = httpclient::InMemoryResult<CustomerCashBalanceTransaction>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/customers/{customer}/cash_balance_transactions/{transaction}",
                 customer = self.params.customer, transaction = self.params.transaction

@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_tax_transactions_transaction_line_items`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetTaxTransactionsTransactionLineItemsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetTaxTransactionsTransactionLineItemsRequest {
     pub ending_before: Option<String>,
@@ -39,11 +39,11 @@ impl FluentRequest<'_, GetTaxTransactionsTransactionLineItemsRequest> {
 impl<'a> ::std::future::IntoFuture
 for FluentRequest<'a, GetTaxTransactionsTransactionLineItemsRequest> {
     type Output = httpclient::InMemoryResult<
-        TaxProductResourceTaxTransactionLineItemList,
+        GetTaxTransactionsTransactionLineItemsResponse,
     >;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/tax/transactions/{transaction}/line_items", transaction = self
                 .params.transaction

@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CheckoutCardInstallmentsOptions {
+    ///Indicates if installments are enabled
     #[serde(skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
 }

@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_issuing_disputes`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`IssuingDispute`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostIssuingDisputesRequest {}
 impl PostIssuingDisputesRequest {}
@@ -15,7 +15,7 @@ impl<'a> ::std::future::IntoFuture for FluentRequest<'a, PostIssuingDisputesRequ
     type Output = httpclient::InMemoryResult<IssuingDispute>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/issuing/disputes";
             let mut r = self.client.client.post(url);
             r = r.set_query(self.params);

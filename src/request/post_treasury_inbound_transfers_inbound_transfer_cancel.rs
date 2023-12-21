@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_treasury_inbound_transfers_inbound_transfer_cancel`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`TreasuryInboundTransfer`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostTreasuryInboundTransfersInboundTransferCancelRequest {
     pub inbound_transfer: String,
@@ -18,7 +18,7 @@ for FluentRequest<'a, PostTreasuryInboundTransfersInboundTransferCancelRequest> 
     type Output = httpclient::InMemoryResult<TreasuryInboundTransfer>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/treasury/inbound_transfers/{inbound_transfer}/cancel",
                 inbound_transfer = self.params.inbound_transfer

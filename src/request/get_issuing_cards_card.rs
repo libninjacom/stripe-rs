@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_issuing_cards_card`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`IssuingCard`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetIssuingCardsCardRequest {
     pub card: String,
@@ -25,7 +25,7 @@ impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetIssuingCardsCardRequ
     type Output = httpclient::InMemoryResult<IssuingCard>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!("/v1/issuing/cards/{card}", card = self.params.card);
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

@@ -1,5 +1,5 @@
-
 use serde::{Serialize, Deserialize};
+///Settings for automatic tax lookup for this invoice.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AutomaticTaxParam {
     pub enabled: bool,

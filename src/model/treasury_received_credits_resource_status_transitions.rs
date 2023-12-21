@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TreasuryReceivedCreditsResourceStatusTransitions {
+    ///Timestamp describing when the CreditReversal changed status to `posted`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub posted_at: Option<i64>,
 }

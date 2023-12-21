@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_treasury_outbound_payments_id_cancel`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`TreasuryOutboundPayment`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostTreasuryOutboundPaymentsIdCancelRequest {
     pub id: String,
@@ -18,7 +18,7 @@ for FluentRequest<'a, PostTreasuryOutboundPaymentsIdCancelRequest> {
     type Output = httpclient::InMemoryResult<TreasuryOutboundPayment>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/treasury/outbound_payments/{id}/cancel", id = self.params.id
             );

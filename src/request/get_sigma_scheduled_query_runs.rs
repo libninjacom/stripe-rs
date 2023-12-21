@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_sigma_scheduled_query_runs`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetSigmaScheduledQueryRunsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetSigmaScheduledQueryRunsRequest {
     pub ending_before: Option<String>,
@@ -37,10 +37,10 @@ impl FluentRequest<'_, GetSigmaScheduledQueryRunsRequest> {
 }
 impl<'a> ::std::future::IntoFuture
 for FluentRequest<'a, GetSigmaScheduledQueryRunsRequest> {
-    type Output = httpclient::InMemoryResult<SigmaScheduledQueryRunList>;
+    type Output = httpclient::InMemoryResult<GetSigmaScheduledQueryRunsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/sigma/scheduled_query_runs";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

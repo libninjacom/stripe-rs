@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
-#[derive(Debug, Clone, Serialize, Deserialize)]
+///
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction {
+    ///The [Refund](https://stripe.com/docs/api/refunds/object) that moved these funds into the customer's cash balance.
     pub refund: serde_json::Value,
 }
 impl std::fmt::Display

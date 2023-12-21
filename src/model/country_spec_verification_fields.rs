@@ -1,9 +1,11 @@
-
 use serde::{Serialize, Deserialize};
 use super::CountrySpecVerificationFieldDetails;
-#[derive(Debug, Clone, Serialize, Deserialize)]
+///
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CountrySpecVerificationFields {
+    ///
     pub company: CountrySpecVerificationFieldDetails,
+    ///
     pub individual: CountrySpecVerificationFieldDetails,
 }
 impl std::fmt::Display for CountrySpecVerificationFields {

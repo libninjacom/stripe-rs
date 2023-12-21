@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_sources_source_source_transactions_source_transaction`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`SourceTransaction`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetSourcesSourceSourceTransactionsSourceTransactionRequest {
     pub expand: Option<Vec<String>>,
@@ -27,7 +27,7 @@ for FluentRequest<'a, GetSourcesSourceSourceTransactionsSourceTransactionRequest
     type Output = httpclient::InMemoryResult<SourceTransaction>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/sources/{source}/source_transactions/{source_transaction}", source =
                 self.params.source, source_transaction = self.params.source_transaction

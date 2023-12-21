@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_webhook_endpoints`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetWebhookEndpointsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetWebhookEndpointsRequest {
     pub ending_before: Option<String>,
@@ -36,10 +36,10 @@ impl FluentRequest<'_, GetWebhookEndpointsRequest> {
     }
 }
 impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetWebhookEndpointsRequest> {
-    type Output = httpclient::InMemoryResult<NotificationWebhookEndpointList>;
+    type Output = httpclient::InMemoryResult<GetWebhookEndpointsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/webhook_endpoints";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

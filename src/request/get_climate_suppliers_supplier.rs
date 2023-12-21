@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_climate_suppliers_supplier`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`ClimateSupplier`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetClimateSuppliersSupplierRequest {
     pub expand: Option<Vec<String>>,
@@ -26,7 +26,7 @@ for FluentRequest<'a, GetClimateSuppliersSupplierRequest> {
     type Output = httpclient::InMemoryResult<ClimateSupplier>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/climate/suppliers/{supplier}", supplier = self.params.supplier
             );

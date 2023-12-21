@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_payment_intents`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`PaymentIntent`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostPaymentIntentsRequest {}
 impl PostPaymentIntentsRequest {}
@@ -15,7 +15,7 @@ impl<'a> ::std::future::IntoFuture for FluentRequest<'a, PostPaymentIntentsReque
     type Output = httpclient::InMemoryResult<PaymentIntent>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/payment_intents";
             let mut r = self.client.client.post(url);
             r = r.set_query(self.params);

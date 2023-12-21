@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_subscriptions_subscription_resume`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`Subscription`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostSubscriptionsSubscriptionResumeRequest {
     pub subscription: String,
@@ -18,7 +18,7 @@ for FluentRequest<'a, PostSubscriptionsSubscriptionResumeRequest> {
     type Output = httpclient::InMemoryResult<Subscription>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/subscriptions/{subscription}/resume", subscription = self.params
                 .subscription

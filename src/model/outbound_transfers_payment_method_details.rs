@@ -1,14 +1,17 @@
-
 use serde::{Serialize, Deserialize};
 use super::{
     OutboundTransfersPaymentMethodDetailsUsBankAccount,
     TreasurySharedResourceBillingDetails,
 };
-#[derive(Debug, Clone, Serialize, Deserialize)]
+///
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct OutboundTransfersPaymentMethodDetails {
+    ///
     pub billing_details: TreasurySharedResourceBillingDetails,
+    ///The type of the payment method used in the OutboundTransfer.
     #[serde(rename = "type")]
     pub type_: String,
+    ///
     #[serde(skip_serializing_if = "Option::is_none")]
     pub us_bank_account: Option<OutboundTransfersPaymentMethodDetailsUsBankAccount>,
 }

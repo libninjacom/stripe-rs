@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_payment_method_domains_payment_method_domain_validate`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`PaymentMethodDomain`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostPaymentMethodDomainsPaymentMethodDomainValidateRequest {
     pub payment_method_domain: String,
@@ -18,7 +18,7 @@ for FluentRequest<'a, PostPaymentMethodDomainsPaymentMethodDomainValidateRequest
     type Output = httpclient::InMemoryResult<PaymentMethodDomain>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/payment_method_domains/{payment_method_domain}/validate",
                 payment_method_domain = self.params.payment_method_domain

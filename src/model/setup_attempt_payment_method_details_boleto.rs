@@ -1,5 +1,5 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct SetupAttemptPaymentMethodDetailsBoleto {}
 impl std::fmt::Display for SetupAttemptPaymentMethodDetailsBoleto {

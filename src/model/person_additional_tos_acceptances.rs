@@ -1,8 +1,9 @@
-
 use serde::{Serialize, Deserialize};
 use super::PersonAdditionalTosAcceptance;
-#[derive(Debug, Clone, Serialize, Deserialize)]
+///
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PersonAdditionalTosAcceptances {
+    ///
     pub account: PersonAdditionalTosAcceptance,
 }
 impl std::fmt::Display for PersonAdditionalTosAcceptances {

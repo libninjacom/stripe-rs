@@ -4,11 +4,12 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_checkout_sessions`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetCheckoutSessionsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetCheckoutSessionsRequest {
+    pub created: Option<serde_json::Value>,
     pub customer: Option<String>,
     pub customer_details: Option<CustomerDetailsParams>,
     pub ending_before: Option<String>,
@@ -22,6 +23,10 @@ pub struct GetCheckoutSessionsRequest {
 }
 impl GetCheckoutSessionsRequest {}
 impl FluentRequest<'_, GetCheckoutSessionsRequest> {
+    pub fn created(mut self, created: serde_json::Value) -> Self {
+        self.params.created = Some(created);
+        self
+    }
     pub fn customer(mut self, customer: &str) -> Self {
         self.params.customer = Some(customer.to_owned());
         self
@@ -66,10 +71,10 @@ impl FluentRequest<'_, GetCheckoutSessionsRequest> {
     }
 }
 impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetCheckoutSessionsRequest> {
-    type Output = httpclient::InMemoryResult<PaymentPagesCheckoutSessionList>;
+    type Output = httpclient::InMemoryResult<GetCheckoutSessionsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/checkout/sessions";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_quotes_quote_line_items`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetQuotesQuoteLineItemsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetQuotesQuoteLineItemsRequest {
     pub ending_before: Option<String>,
@@ -38,10 +38,10 @@ impl FluentRequest<'_, GetQuotesQuoteLineItemsRequest> {
 }
 impl<'a> ::std::future::IntoFuture
 for FluentRequest<'a, GetQuotesQuoteLineItemsRequest> {
-    type Output = httpclient::InMemoryResult<QuotesResourceListLineItems>;
+    type Output = httpclient::InMemoryResult<GetQuotesQuoteLineItemsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/quotes/{quote}/line_items", quote = self.params.quote
             );

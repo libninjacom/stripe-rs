@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PortalPaymentMethodUpdate {
+    ///Whether the feature is enabled.
     pub enabled: bool,
 }
 impl std::fmt::Display for PortalPaymentMethodUpdate {

@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PaymentPagesCheckoutSessionPhoneNumberCollection {
+    ///Indicates whether phone number collection is enabled for the session
     pub enabled: bool,
 }
 impl std::fmt::Display for PaymentPagesCheckoutSessionPhoneNumberCollection {

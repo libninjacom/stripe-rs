@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard {
+    ///Two-letter CA province code ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
     pub province: String,
 }
 impl std::fmt::Display

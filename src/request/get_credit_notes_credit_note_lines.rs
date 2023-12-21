@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_credit_notes_credit_note_lines`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetCreditNotesCreditNoteLinesResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetCreditNotesCreditNoteLinesRequest {
     pub credit_note: String,
@@ -38,10 +38,10 @@ impl FluentRequest<'_, GetCreditNotesCreditNoteLinesRequest> {
 }
 impl<'a> ::std::future::IntoFuture
 for FluentRequest<'a, GetCreditNotesCreditNoteLinesRequest> {
-    type Output = httpclient::InMemoryResult<CreditNoteLinesList>;
+    type Output = httpclient::InMemoryResult<GetCreditNotesCreditNoteLinesResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/credit_notes/{credit_note}/lines", credit_note = self.params
                 .credit_note

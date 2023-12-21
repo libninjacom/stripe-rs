@@ -15,6 +15,7 @@ async fn main() {
             shipping: Some(serde_json::json!({})),
             tax: Some(TaxParam {
                 ip_address: Some(serde_json::json!({})),
+                validate_location: Some("your validate location".to_owned()),
             }),
             tax_exempt: Some("your tax exempt".to_owned()),
             tax_ids: Some(

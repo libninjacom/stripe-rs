@@ -1,10 +1,13 @@
-
 use serde::{Serialize, Deserialize};
 use super::TreasuryFinancialAccountsResourceTogglesSettingStatusDetails;
+///Toggle settings for enabling/disabling the ABA address feature
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TreasuryFinancialAccountsResourceAbaToggleSettings {
+    ///Whether the FinancialAccount should have the Feature.
     pub requested: bool,
+    ///Whether the Feature is operational.
     pub status: String,
+    ///Additional details; includes at least one entry when the status is not `active`.
     pub status_details: Vec<
         TreasuryFinancialAccountsResourceTogglesSettingStatusDetails,
     >,

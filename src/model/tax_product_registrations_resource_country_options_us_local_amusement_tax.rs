@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax {
+    ///A [FIPS code](https://www.census.gov/library/reference/code-lists/ansi.html) representing the local jurisdiction.
     pub jurisdiction: String,
 }
 impl std::fmt::Display

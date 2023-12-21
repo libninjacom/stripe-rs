@@ -1,7 +1,6 @@
-
 use serde::{Serialize, Deserialize};
 use super::RecurringAdhoc;
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RecurringPriceData {
     pub currency: String,
     pub product: String,

@@ -1,5 +1,5 @@
-
 use serde::{Serialize, Deserialize};
+///Data used to generate a new [Price](https://stripe.com/docs/api/prices) object inline.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct OneTimePriceData {
     pub currency: String,

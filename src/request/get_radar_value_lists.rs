@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_radar_value_lists`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetRadarValueListsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetRadarValueListsRequest {
     pub alias: Option<String>,
@@ -51,10 +51,10 @@ impl FluentRequest<'_, GetRadarValueListsRequest> {
     }
 }
 impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetRadarValueListsRequest> {
-    type Output = httpclient::InMemoryResult<RadarListListList>;
+    type Output = httpclient::InMemoryResult<GetRadarValueListsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/radar/value_lists";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

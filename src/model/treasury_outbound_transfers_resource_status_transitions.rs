@@ -1,13 +1,17 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TreasuryOutboundTransfersResourceStatusTransitions {
+    ///Timestamp describing when an OutboundTransfer changed status to `canceled`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub canceled_at: Option<i64>,
+    ///Timestamp describing when an OutboundTransfer changed status to `failed`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub failed_at: Option<i64>,
+    ///Timestamp describing when an OutboundTransfer changed status to `posted`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub posted_at: Option<i64>,
+    ///Timestamp describing when an OutboundTransfer changed status to `returned`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub returned_at: Option<i64>,
 }

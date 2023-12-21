@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_identity_verification_sessions`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetIdentityVerificationSessionsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetIdentityVerificationSessionsRequest {
     pub created: Option<serde_json::Value>,
@@ -47,10 +47,10 @@ impl FluentRequest<'_, GetIdentityVerificationSessionsRequest> {
 }
 impl<'a> ::std::future::IntoFuture
 for FluentRequest<'a, GetIdentityVerificationSessionsRequest> {
-    type Output = httpclient::InMemoryResult<GelatoVerificationSessionList>;
+    type Output = httpclient::InMemoryResult<GetIdentityVerificationSessionsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/identity/verification_sessions";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

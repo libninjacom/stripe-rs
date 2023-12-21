@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct SigmaScheduledQueryRunError {
+    ///Information about the run failure.
     pub message: String,
 }
 impl std::fmt::Display for SigmaScheduledQueryRunError {

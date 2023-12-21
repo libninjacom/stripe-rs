@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_accounts_account_capabilities_capability`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`Capability`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostAccountsAccountCapabilitiesCapabilityRequest {
     pub account: String,
@@ -19,7 +19,7 @@ for FluentRequest<'a, PostAccountsAccountCapabilitiesCapabilityRequest> {
     type Output = httpclient::InMemoryResult<Capability>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/accounts/{account}/capabilities/{capability}", account = self.params
                 .account, capability = self.params.capability

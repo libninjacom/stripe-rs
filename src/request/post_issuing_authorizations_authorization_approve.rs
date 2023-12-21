@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_issuing_authorizations_authorization_approve`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`IssuingAuthorization`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostIssuingAuthorizationsAuthorizationApproveRequest {
     pub authorization: String,
@@ -18,7 +18,7 @@ for FluentRequest<'a, PostIssuingAuthorizationsAuthorizationApproveRequest> {
     type Output = httpclient::InMemoryResult<IssuingAuthorization>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/issuing/authorizations/{authorization}/approve", authorization =
                 self.params.authorization

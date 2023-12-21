@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TaxProductRegistrationsResourceCountryOptionsSimplified {
+    ///Type of registration in `country`.
     #[serde(rename = "type")]
     pub type_: String,
 }

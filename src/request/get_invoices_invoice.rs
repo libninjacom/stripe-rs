@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_invoices_invoice`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`Invoice`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetInvoicesInvoiceRequest {
     pub expand: Option<Vec<String>>,
@@ -25,7 +25,7 @@ impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetInvoicesInvoiceReque
     type Output = httpclient::InMemoryResult<Invoice>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!("/v1/invoices/{invoice}", invoice = self.params.invoice);
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

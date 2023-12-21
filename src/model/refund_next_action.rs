@@ -1,9 +1,11 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RefundNextAction {
+    ///Contains the refund details.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub display_details: Option<serde_json::Value>,
+    ///Type of the next action to perform.
     #[serde(rename = "type")]
     pub type_: String,
 }

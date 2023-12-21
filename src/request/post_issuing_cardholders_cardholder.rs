@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::post_issuing_cardholders_cardholder`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`IssuingCardholder`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostIssuingCardholdersCardholderRequest {
     pub cardholder: String,
@@ -18,7 +18,7 @@ for FluentRequest<'a, PostIssuingCardholdersCardholderRequest> {
     type Output = httpclient::InMemoryResult<IssuingCardholder>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/issuing/cardholders/{cardholder}", cardholder = self.params
                 .cardholder

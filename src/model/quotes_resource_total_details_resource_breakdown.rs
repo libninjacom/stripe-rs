@@ -1,9 +1,11 @@
-
 use serde::{Serialize, Deserialize};
 use super::{LineItemsDiscountAmount, LineItemsTaxAmount};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct QuotesResourceTotalDetailsResourceBreakdown {
+    ///The aggregated discounts.
     pub discounts: Vec<LineItemsDiscountAmount>,
+    ///The aggregated tax amounts by rate.
     pub taxes: Vec<LineItemsTaxAmount>,
 }
 impl std::fmt::Display for QuotesResourceTotalDetailsResourceBreakdown {

@@ -6,6 +6,7 @@ async fn main() {
     let client = StripeClient::from_env();
     let response = client
         .get_checkout_sessions()
+        .created(serde_json::json!({}))
         .customer("your customer")
         .customer_details(CustomerDetailsParams {
             email: "your email".to_owned(),

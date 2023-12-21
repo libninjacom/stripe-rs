@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_reporting_report_types`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetReportingReportTypesResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetReportingReportTypesRequest {
     pub expand: Option<Vec<String>>,
@@ -22,10 +22,10 @@ impl FluentRequest<'_, GetReportingReportTypesRequest> {
 }
 impl<'a> ::std::future::IntoFuture
 for FluentRequest<'a, GetReportingReportTypesRequest> {
-    type Output = httpclient::InMemoryResult<FinancialReportingFinanceReportTypeList>;
+    type Output = httpclient::InMemoryResult<GetReportingReportTypesResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/reporting/report_types";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

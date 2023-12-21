@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PaymentLinksResourceAutomaticTax {
+    ///If `true`, tax will be calculated automatically using the customer's location.
     pub enabled: bool,
 }
 impl std::fmt::Display for PaymentLinksResourceAutomaticTax {

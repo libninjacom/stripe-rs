@@ -56,4 +56,4 @@ download_openapi:
 
 libninja:
     checkexec openapi.yaml -- just download_openapi
-    libninja gen --lang rust --repo libninjacom/stripe-rs -o . stripe openapi.yaml
+    libninja gen -lrust stripe openapi.yaml

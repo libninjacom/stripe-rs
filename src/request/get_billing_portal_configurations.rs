@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_billing_portal_configurations`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetBillingPortalConfigurationsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetBillingPortalConfigurationsRequest {
     pub active: Option<bool>,
@@ -47,10 +47,10 @@ impl FluentRequest<'_, GetBillingPortalConfigurationsRequest> {
 }
 impl<'a> ::std::future::IntoFuture
 for FluentRequest<'a, GetBillingPortalConfigurationsRequest> {
-    type Output = httpclient::InMemoryResult<PortalPublicResourceConfigurationList>;
+    type Output = httpclient::InMemoryResult<GetBillingPortalConfigurationsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/billing_portal/configurations";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

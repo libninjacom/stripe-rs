@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_radar_early_fraud_warnings_early_fraud_warning`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`RadarEarlyFraudWarning`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetRadarEarlyFraudWarningsEarlyFraudWarningRequest {
     pub early_fraud_warning: String,
@@ -26,7 +26,7 @@ for FluentRequest<'a, GetRadarEarlyFraudWarningsEarlyFraudWarningRequest> {
     type Output = httpclient::InMemoryResult<RadarEarlyFraudWarning>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/radar/early_fraud_warnings/{early_fraud_warning}",
                 early_fraud_warning = self.params.early_fraud_warning

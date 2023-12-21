@@ -1,4 +1,3 @@
-
 use serde::{Serialize, Deserialize};
 use super::{DataParams, TaxParam};
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_application_fees`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetApplicationFeesResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetApplicationFeesRequest {
     pub charge: Option<String>,
@@ -46,10 +46,10 @@ impl FluentRequest<'_, GetApplicationFeesRequest> {
     }
 }
 impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetApplicationFeesRequest> {
-    type Output = httpclient::InMemoryResult<PlatformEarningList>;
+    type Output = httpclient::InMemoryResult<GetApplicationFeesResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/application_fees";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

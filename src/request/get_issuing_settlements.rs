@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_issuing_settlements`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetIssuingSettlementsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetIssuingSettlementsRequest {
     pub created: Option<serde_json::Value>,
@@ -41,10 +41,10 @@ impl FluentRequest<'_, GetIssuingSettlementsRequest> {
     }
 }
 impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetIssuingSettlementsRequest> {
-    type Output = httpclient::InMemoryResult<IssuingSettlementList>;
+    type Output = httpclient::InMemoryResult<GetIssuingSettlementsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/issuing/settlements";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

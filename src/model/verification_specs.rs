@@ -1,4 +1,3 @@
-
 use serde::{Serialize, Deserialize};
 use super::VerificationDocumentSpecs;
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,5 +1,5 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PaymentMethodWechatPay {}
 impl std::fmt::Display for PaymentMethodWechatPay {

@@ -1,7 +1,6 @@
-
 use serde::{Serialize, Deserialize};
 use super::Address;
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Shipping {
     pub address: Address,
     #[serde(skip_serializing_if = "Option::is_none")]

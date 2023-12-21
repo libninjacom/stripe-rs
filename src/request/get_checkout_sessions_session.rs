@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_checkout_sessions_session`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`CheckoutSession`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetCheckoutSessionsSessionRequest {
     pub expand: Option<Vec<String>>,
@@ -26,7 +26,7 @@ for FluentRequest<'a, GetCheckoutSessionsSessionRequest> {
     type Output = httpclient::InMemoryResult<CheckoutSession>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/checkout/sessions/{session}", session = self.params.session
             );

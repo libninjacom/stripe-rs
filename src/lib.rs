@@ -28,6 +28,7 @@ impl StripeAuthentication {
     }
 }
 use base64::{Engine, engine::general_purpose::STANDARD_NO_PAD};
+#[derive(Clone)]
 pub struct FluentRequest<'a, T> {
     pub(crate) client: &'a StripeClient,
     pub params: T,
@@ -1084,6 +1085,7 @@ or when trying to refund more money than is left on a charge.</p>*/
         FluentRequest {
             client: self,
             params: request::GetCheckoutSessionsRequest {
+                created: None,
                 customer: None,
                 customer_details: None,
                 ending_before: None,
@@ -2577,6 +2579,36 @@ To change the default, you should <a href="/docs/api#update_customer">update the
             },
         }
     }
+    ///<p>Subscribes to periodic refreshes of data associated with a Financial Connections <code>Account</code>.</p>
+    pub fn post_financial_connections_accounts_account_subscribe(
+        &self,
+        account: &str,
+    ) -> FluentRequest<
+        '_,
+        request::PostFinancialConnectionsAccountsAccountSubscribeRequest,
+    > {
+        FluentRequest {
+            client: self,
+            params: request::PostFinancialConnectionsAccountsAccountSubscribeRequest {
+                account: account.to_owned(),
+            },
+        }
+    }
+    ///<p>Unsubscribes from periodic refreshes of data associated with a Financial Connections <code>Account</code>.</p>
+    pub fn post_financial_connections_accounts_account_unsubscribe(
+        &self,
+        account: &str,
+    ) -> FluentRequest<
+        '_,
+        request::PostFinancialConnectionsAccountsAccountUnsubscribeRequest,
+    > {
+        FluentRequest {
+            client: self,
+            params: request::PostFinancialConnectionsAccountsAccountUnsubscribeRequest {
+                account: account.to_owned(),
+            },
+        }
+    }
     ///<p>To launch the Financial Connections authorization flow, create a <code>Session</code>. The session’s <code>client_secret</code> can be used to launch the flow using Stripe.js.</p>
     pub fn post_financial_connections_sessions(
         &self,
@@ -2597,6 +2629,40 @@ To change the default, you should <a href="/docs/api#update_customer">update the
             params: request::GetFinancialConnectionsSessionsSessionRequest {
                 expand: None,
                 session: session.to_owned(),
+            },
+        }
+    }
+    ///<p>Returns a list of Financial Connections <code>Transaction</code> objects.</p>
+    pub fn get_financial_connections_transactions(
+        &self,
+        account: &str,
+    ) -> FluentRequest<'_, request::GetFinancialConnectionsTransactionsRequest> {
+        FluentRequest {
+            client: self,
+            params: request::GetFinancialConnectionsTransactionsRequest {
+                account: account.to_owned(),
+                ending_before: None,
+                expand: None,
+                limit: None,
+                starting_after: None,
+                transacted_at: None,
+                transaction_refresh: None,
+            },
+        }
+    }
+    ///<p>Retrieves the details of a Financial Connections <code>Transaction</code></p>
+    pub fn get_financial_connections_transactions_transaction(
+        &self,
+        transaction: &str,
+    ) -> FluentRequest<
+        '_,
+        request::GetFinancialConnectionsTransactionsTransactionRequest,
+    > {
+        FluentRequest {
+            client: self,
+            params: request::GetFinancialConnectionsTransactionsTransactionRequest {
+                expand: None,
+                transaction: transaction.to_owned(),
             },
         }
     }
@@ -4512,6 +4578,7 @@ to an hour behind during outages. Search functionality is not available to merch
             client: self,
             params: request::GetRadarEarlyFraudWarningsRequest {
                 charge: None,
+                created: None,
                 ending_before: None,
                 expand: None,
                 limit: None,

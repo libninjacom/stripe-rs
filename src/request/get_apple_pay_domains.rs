@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_apple_pay_domains`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetApplePayDomainsResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetApplePayDomainsRequest {
     pub domain_name: Option<String>,
@@ -41,10 +41,10 @@ impl FluentRequest<'_, GetApplePayDomainsRequest> {
     }
 }
 impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetApplePayDomainsRequest> {
-    type Output = httpclient::InMemoryResult<ApplePayDomainList>;
+    type Output = httpclient::InMemoryResult<GetApplePayDomainsResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/apple_pay/domains";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

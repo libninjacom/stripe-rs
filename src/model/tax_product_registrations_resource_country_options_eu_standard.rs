@@ -1,7 +1,8 @@
-
 use serde::{Serialize, Deserialize};
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TaxProductRegistrationsResourceCountryOptionsEuStandard {
+    ///Place of supply scheme used in an EU standard registration.
     pub place_of_supply_scheme: String,
 }
 impl std::fmt::Display for TaxProductRegistrationsResourceCountryOptionsEuStandard {

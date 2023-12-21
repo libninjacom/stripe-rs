@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_files`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetFilesResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetFilesRequest {
     pub created: Option<serde_json::Value>,
@@ -46,10 +46,10 @@ impl FluentRequest<'_, GetFilesRequest> {
     }
 }
 impl<'a> ::std::future::IntoFuture for FluentRequest<'a, GetFilesRequest> {
-    type Output = httpclient::InMemoryResult<FileResourceFileList>;
+    type Output = httpclient::InMemoryResult<GetFilesResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = "/v1/files";
             let mut r = self.client.client.get(url);
             r = r.set_query(self.params);

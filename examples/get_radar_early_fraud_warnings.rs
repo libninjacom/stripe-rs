@@ -7,6 +7,7 @@ async fn main() {
     let response = client
         .get_radar_early_fraud_warnings()
         .charge("your charge")
+        .created(serde_json::json!({}))
         .ending_before("your ending before")
         .expand(&["your expand"])
         .limit(1)

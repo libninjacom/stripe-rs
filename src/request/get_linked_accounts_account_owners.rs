@@ -4,9 +4,9 @@ use crate::FluentRequest;
 use serde::{Serialize, Deserialize};
 use httpclient::InMemoryResponseExt;
 use crate::StripeClient;
-/**Create this with the associated client method.
+/**You should use this struct via [`StripeClient::get_linked_accounts_account_owners`].
 
-That method takes required values as arguments. Set optional values using builder methods on this struct.*/
+On request success, this will return a [`GetLinkedAccountsAccountOwnersResponse`].*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetLinkedAccountsAccountOwnersRequest {
     pub account: String,
@@ -39,10 +39,10 @@ impl FluentRequest<'_, GetLinkedAccountsAccountOwnersRequest> {
 }
 impl<'a> ::std::future::IntoFuture
 for FluentRequest<'a, GetLinkedAccountsAccountOwnersRequest> {
-    type Output = httpclient::InMemoryResult<BankConnectionsResourceOwnerList>;
+    type Output = httpclient::InMemoryResult<GetLinkedAccountsAccountOwnersResponse>;
     type IntoFuture = ::futures::future::BoxFuture<'a, Self::Output>;
     fn into_future(self) -> Self::IntoFuture {
-        Box::pin(async {
+        Box::pin(async move {
             let url = &format!(
                 "/v1/linked_accounts/{account}/owners", account = self.params.account
             );
